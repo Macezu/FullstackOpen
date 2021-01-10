@@ -33,6 +33,7 @@ const App = ({anecdotes}) => {
     console.log(votes)
   }
 
+  
 
   return (
     <div>
