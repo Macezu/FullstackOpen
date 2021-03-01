@@ -1,7 +1,6 @@
-POST http://localhost:3001/api/persons/
+POST https://nodeosa3.herokuapp.com/api/persons
 Content-Type: application/json
 
 {
-    "name" : "Ismo Laitela",
-    "number": "145-592487" 
+    "Mia Khalifa" : "099-411277664" 
 }

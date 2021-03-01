@@ -1,0 +1,6 @@
+PUT http://localhost:3001/api/persons/6038fcee03d7b461780b2adf
+Content-Type: application/json
+
+{
+    "Ismo Laitela" : "044-557426" 
+}

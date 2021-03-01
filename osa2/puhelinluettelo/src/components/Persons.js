@@ -1,23 +1,32 @@
 import React from 'react'
 import axios from 'axios'
 
-const ListItem = ({ person, reset }) => {
-  for (let key in person) {
-    if (person.hasOwnProperty(key)) {
-      return (<li>{key} {person[key]} <button onClick={() => deletePerson(person,reset)}>delete</button></li>)
+
+const baseUrl = '/api/persons'
+
+
+const ListItem = ({ key,person }) => {
+  for (let val in person) {
+    if (person.hasOwnProperty(val)) {
+      return (<li>{val} {person[val]}</li>)
     }
   }
 }
 
 
-const deletePerson = (person,reset) =>{
-  console.log(person.id)
-  axios.delete(`http://localhost:3001/persons/${person.id}`).catch(error => console.log('error'))
+
+const deletePerson = (id,reset) => {
+  axios.delete(`${baseUrl}/${id}`).catch(error => console.log('error'))
   reset()
-  
+
 }
 
-const Persons = ({ persons,filter, reset }) => {
+const Persons = ({ persons,filter,reset }) => {
+  let ids = persons.map(person => <li><button onClick={() => deletePerson(person.id,reset)}>delete</button></li>)
+  persons = persons.map(person => person.obj)
+
+
+
 
   let listItems = []
   const final = []
@@ -32,15 +41,17 @@ const Persons = ({ persons,filter, reset }) => {
           final.push(obj)
       }
     }
-    listItems = final.map((person,i) => <ListItem key={i} person={person} reset={reset} />)
+    listItems = final.map((person,i) => <ListItem key={i} person={person} />)
   } else {
-    listItems = persons.map((person,i) => <ListItem key={i} person={person} reset={reset} />)
+    listItems = persons.map((person,i) => <ListItem key={i} person={person} />)
   }
+
+
 
 
   return (
     <ul>
-      {listItems}
+      {listItems}{ids}
     </ul>
   )
 

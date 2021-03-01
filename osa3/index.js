@@ -1,110 +1,127 @@
-const { response } = require('express')
+/* eslint-disable linebreak-style */
 const express = require('express')
+require('dotenv').config()
 const app = express()
-
-var fs = require('fs')
+const Phonebook = require('./models/person')
 var morgan = require('morgan')
-var path = require('path')
 const cors = require('cors')
 
 app.use(cors())
 
-morgan.token('id', function getId (req) {
+morgan.token('id',function getId(req) {
     return req.id
-  })
+})
 
 app.use(morgan('tiny'))
 
 app.use(express.json())
-
-let persons = [{
-    id : 1,
-    name : "Arto Hellas",
-    number : "040-123456"
-},{
-    id: 2,
-    name : "Ada Lovelace",
-    number : "39-44-5323523"
-},{
-    id: 3,
-    name : "Johnny Sins",
-    number : "39-04-4512845"
-}, {
-    id: 4,
-    name : "Dan Abramov",
-    number : "39-23-6423122"
-}
-]
+app.use(express.static('build'))
 
 
-app.get('/', (req, res) => res.send('Hello World!'))
+
+app.get('/',(req,res) => res.send('Hello World!'))
+
 app.get('/api/persons',(req,res) => {
-        res.json(persons)
+    Phonebook.find({}).then(person => {
+        res.json(person)
+    })
 })
 
 app.get('/info',(req,res) => {
-    const count = persons.length
-    const date = Date()
+    Phonebook.count({},function (err,count) {
+        const date = Date()
+        console.log('there are %d jungle adventures',count)
+        res.send(`Phonebook has info for ${count} people. <br/><br/> ${date}`)
+    })
 
-    res.send(`Phonebook has info for ${count} people. <br/><br/> ${date}`)
 })
 
-app.get('/api/persons/:id',(req,res) => {
-    const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id)
-    if (person){
-        console.log(person)
-        res.json(person)
-    } else {
-        res.status(404).end
-    }
+app.get('/api/persons/:id',(req,res,next) => {
+    Phonebook.findById(req.params.id)
+        .then(person => {
+            if (person) {
+                res.json(person)
+            } else { res.status(404).end() }
+        })
+        .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id',(request,response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-
-    response.status(204).end()
-})
-
-app.post('/api/persons',(request,response) => {
-    const body = request.body
-    const names = persons.map(obj => obj.name)
-
-    if (!body.name) {
-        return response.status(400).json({
-            error: 'no name given'
-        })
-    } else if(!body.number){
-        return response.status(400).json({
-            error: 'no number given'
-        })
-    } else if(names.includes(body.name)){
-        return response.status(400).json({
-            error: 'number already found in records'
-        })
-    }
-
+app.put('/api/persons/:id',(req,res,next) => {
+    const body = req.body
+    console.log(body)
     const person = {
-        id: generateId(),
-        name: body.name,
-        number : body.number
-
+        obj: body
     }
 
-    persons = persons.concat(person)
+    Phonebook.findByIdAndUpdate(req.params.id,person,{ new: true })
+        .then(updatePrson => {
+            console.log(updatePrson)
+            res.json(updatePrson)
+        }).catch(error => next(error))
 
-    response.json(persons)
+
+
 })
 
-let generateId = ()=>{
-    min = Math.ceil(5);
-    max = Math.floor(1500);
-  return Math.floor(Math.random() * (max - min) + min); 
+app.delete('/api/persons/:id',(req,res,next) => {
+
+    Phonebook.findByIdAndRemove(req.params.id).then(response => {
+        if (response) {
+            console.log(`Successfully deleted document that had the form: ${response}.`)
+        } else {
+            console.log('No document matches the provided query.')
+        }
+        res.status(204).end()
+    })
+        .catch((error) => next(error))
+})
+
+app.post('/api/persons',(req,res,next) => {
+    const body = req.body
+    if (!body) {
+        return res.status(400).json({ error: 'content missing' })
+    }
+
+
+    let newp = { [Object.keys(body)]: Object.values(body)[0] }
+    const person = new Phonebook()
+    person.obj = newp
+
+
+    person.save().then(savedPerson => {
+        res.json(savedPerson)
+    }).catch((error) => {
+        next(error)
+    })
+
+
+})
+
+const unknownEndpoint = (request,response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
 }
 
+// olemattomien osoitteiden käsittely
+app.use(unknownEndpoint)
 
-const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
+const errorHandler = (error,request,response,next) => {
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        console.error(error.message)
+        return response.status(400).json({ error: error.message })
+    }
+
+    next(error)
+}
+
+app.use(errorHandler)
+
+
+
+// eslint-disable-next-line no-undef
+const PORT = process.env.PORT
+app.listen(PORT,() => {
     console.log(`Server running on port ${PORT}`)
-  })
+})

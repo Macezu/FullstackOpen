@@ -27,6 +27,7 @@ const App = () => {
   },[successMessage,errorMessage])
 
   const reset = (error) => {
+    console.log(`NYT TÄÄLLÄ ${error}`)
     setNewName('')
     setNewNumber('')
     if (error === undefined) {
@@ -36,7 +37,12 @@ const App = () => {
       },3000)
     } if (error === true) {
       console.log('true')
-      setErrorMessage("Server wasn't up to date")
+      setErrorMessage("Error")
+      setTimeout(() => {
+        setErrorMessage(null)
+      },3000)
+    } else {
+      setErrorMessage(error)
       setTimeout(() => {
         setErrorMessage(null)
       },3000)
@@ -55,7 +61,7 @@ const App = () => {
         {message}
       </div>
     )
-  
+
 
   }
 
@@ -69,7 +75,7 @@ const App = () => {
         {message}
       </div>
     )
-  
+
 
   }
 
@@ -84,14 +90,16 @@ const App = () => {
     let found = false
 
     for (let person of persons) {
-      if (person.hasOwnProperty(newName)) {
+      if (person.obj.hasOwnProperty(newName)) {
         id = person.id
         found = true
+
       }
     }
 
-    if (found) {
+    console.log(personObject)
 
+    if (found) {
       Numberbase
         .updateNumber(id,personObject)
         .then(returnedperson => {
@@ -103,17 +111,20 @@ const App = () => {
           }
 
 
+        }).catch(error => {
+          console.log(error.response.data)
         })
 
 
     } else {
-
       Numberbase
         .create(personObject)
         .then(returnedbase => {
           setPersons(persons.concat(returnedbase))
+        }).catch(error => {
+          console.log(error.data.error)
+          reset(error.data.error)
         })
-      reset()
     }
 
   }
