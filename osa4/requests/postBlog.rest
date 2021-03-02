@@ -1,0 +1,9 @@
+POST Http://localhost:3001/api/blogs/
+Content-Type: application/json
+
+{
+    "title": "Koiralle aivojumppaa",
+    "author": "Timo T.A Mikkonen",
+    "url": "www.kissatkoiratjame.fi",
+    "likes": 10
+}
