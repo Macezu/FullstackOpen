@@ -1,6 +1,5 @@
-import React,{ useState,useEffect } from 'react'
+import React,{ useState,useEffect,useRef } from 'react'
 import Blog from './components/Blog'
-import BlogDetailed from './components/BlogDetailed'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Toggable'
@@ -22,15 +21,17 @@ const App = () => {
   const [successMessage,setMessage] = useState(null)
   const [errorMessage,setError] = useState(null)
 
+  const blogRef = useRef()
+
   useEffect(() => {
     blogService.getAll()
       .catch((error) => {
-        console.log("Kissa")
         setError(error)
       })
       .then(blogs =>
         setBlogs(blogs)
       )
+
   },[successMessage,errorMessage])
 
   useEffect(() => {
@@ -70,6 +71,39 @@ const App = () => {
 
   }
 
+  const addLike = async (event) => {
+    event.preventDefault()
+
+    let likedObj = blogRef.current.getObj()
+    likedObj.likes++
+
+    let toBeUpdated = {
+      'user': likedObj.user.id,
+      'likes': likedObj.likes,
+      'author': likedObj.author,
+      'title': likedObj.title,
+      'url': likedObj.url
+    }
+
+    console.log(toBeUpdated)
+
+
+    try {
+      await blogService.update(likedObj.id,toBeUpdated)
+      setMessage("Liked!")
+      setTimeout(() => [
+        setMessage(null)
+      ],2000)
+    } catch (error) {
+      setError(error)
+      setTimeout(() => {
+        setError(null)
+      },2000)
+      console.log(error)
+    }
+
+  }
+
   const addBlog = async (event) => {
     event.preventDefault()
 
@@ -98,6 +132,29 @@ const App = () => {
         setError(null)
       },3000)
     }
+  }
+
+  const removeBlog = async (event) => {
+    event.preventDefault()
+    let likedObj = blogRef.current.getObj()
+    let really = window.confirm(`Sure you want to delete ${likedObj.title}?`)
+
+
+    if (really) {
+      try {
+        await blogService.remove(likedObj.id)
+        setMessage("Removed succesfully")
+        setTimeout(() => {
+          setMessage(null)
+        },2000)
+      } catch (error) {
+        setError(error)
+        setTimeout(() => {
+          setError(null)
+        },2000)
+      }
+    }
+
   }
 
 
@@ -152,15 +209,9 @@ const App = () => {
     </Togglable>
   )
 
-  const blogSimp = (blog) => (
-      <Blog key={blog.id} blog={blog}/>
-  )
-
-  const blogDetail = (blog) => (
-    <Togglable buttonLabel="view"> 
-        <BlogDetailed key={blog.id} blog={blog}/>
-    </Togglable>
-  )
+  const blogListed = (blog) => {
+    return <Blog key={blog.id} blog={blog} handleLikeClicked={addLike} handleRemoveClicked={removeBlog} ref={blogRef} />
+  }
 
 
 
@@ -181,8 +232,8 @@ const App = () => {
           {logOut()}
           <br></br><br></br>
           {blogForm()}
-          {blogs.map(blog => 
-            <li>{blogSimp(blog)}{blogDetail(blog)}</li>
+          {blogs.sort((y,x) => x.likes > y.likes).map(blog =>
+            <li>{blogListed(blog)}</li>
           )}
         </div>
       }
