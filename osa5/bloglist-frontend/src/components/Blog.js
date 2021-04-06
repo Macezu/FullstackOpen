@@ -39,11 +39,11 @@ const Blog = React.forwardRef((props,ref) => {
   })
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <div>
         {props.blog.title} {props.blog.author} <button style={btnStyle} onClick={toggleVisibility}>view</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="togglableContent">
         {props.blog.url}
         <br />
         Likes: {props.blog.likes} <button style={btnStyle} onClick={props.handleLikeClicked} >likes</button>

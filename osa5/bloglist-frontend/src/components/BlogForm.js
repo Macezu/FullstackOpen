@@ -11,12 +11,13 @@ const BlogForm = ({
   url
 }) => {
   return (
-    <div>
+    <div className="formDiv">
       <h3>Create New Blog</h3>
       <form onSubmit={onSubmit}>
         title
         <input
           value={title}
+          name="Title"
           onChange={handleTitleChange}
         />
         <br></br>
