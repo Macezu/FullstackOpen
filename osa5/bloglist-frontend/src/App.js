@@ -1,21 +1,21 @@
-import React,{ useState,useEffect,useRef } from 'react'
-import Blog from './components/Blog'
-import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
-import Togglable from './components/Toggable'
-import loginService from './services/login'
-import blogService from './services/blogs'
+import React,{ useState,useEffect,useRef } from "react"
+import Blog from "./components/Blog"
+import LoginForm from "./components/LoginForm"
+import BlogForm from "./components/BlogForm"
+import Togglable from "./components/Toggable"
+import loginService from "./services/login"
+import blogService from "./services/blogs"
 
 
 const App = () => {
-  const [username,setUsername] = useState('')
-  const [password,setPassword] = useState('')
-  const [title,setTitle] = useState('')
-  const [author,setAuthor] = useState('')
-  const [url,setUrl] = useState('')
+  const [username,setUsername] = useState("")
+  const [password,setPassword] = useState("")
+  const [title,setTitle] = useState("")
+  const [author,setAuthor] = useState("")
+  const [url,setUrl] = useState("")
 
   const [blogs,setBlogs] = useState([])
-  const [newBlog,setNewBlog] = useState('')
+  const [,setNewBlog] = useState("")
 
   const [user,setUser] = useState(null)
   const [successMessage,setMessage] = useState(null)
@@ -35,7 +35,7 @@ const App = () => {
   },[successMessage,errorMessage])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
     if (loggedUserJSON) {
       try {
         const user = JSON.parse(loggedUserJSON)
@@ -57,11 +57,11 @@ const App = () => {
         password,
       })
       window.localStorage.setItem(
-        'loggedBlogappUser',JSON.stringify(user)
+        "loggedBlogappUser",JSON.stringify(user)
       )
       setUser(user)
-      setUsername('')
-      setPassword('')
+      setUsername("")
+      setPassword("")
     } catch (exception) {
       setError(`Encountered an error: ${exception.statusText}`)
       setTimeout(() => {
@@ -78,11 +78,11 @@ const App = () => {
     likedObj.likes++
 
     let toBeUpdated = {
-      'user': likedObj.user.id,
-      'likes': likedObj.likes,
-      'author': likedObj.author,
-      'title': likedObj.title,
-      'url': likedObj.url
+      "user": likedObj.user.id,
+      "likes": likedObj.likes,
+      "author": likedObj.author,
+      "title": likedObj.title,
+      "url": likedObj.url
     }
 
     console.log(toBeUpdated)
@@ -113,16 +113,16 @@ const App = () => {
         author,
         url
       })
-      setTitle('')
-      setAuthor('')
-      setUrl('')
+      setTitle("")
+      setAuthor("")
+      setUrl("")
       setMessage(`${title} written by ${author} was added!`)
       setTimeout(() => {
         blogService
           .create(newBlog)
           .then(returnedBlog => {
             setBlogs(blogs.concat(returnedBlog))
-            setNewBlog('')
+            setNewBlog("")
           })
       },2000)
 
@@ -159,7 +159,7 @@ const App = () => {
 
 
 
-  const logOut = (event) => (
+  const logOut = () => (
     <button type="submit" onClick={() => {
       window.localStorage.clear()
       setUser(null)
@@ -233,7 +233,7 @@ const App = () => {
           <br></br><br></br>
           {blogForm()}
           {blogs.sort((y,x) => x.likes > y.likes).map(blog =>
-            <li>{blogListed(blog)}</li>
+            <li key={blog.id}>{blogListed(blog)}</li>
           )}
         </div>
       }

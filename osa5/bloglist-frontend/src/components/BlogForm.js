@@ -1,4 +1,5 @@
-import React from 'react'
+
+import React from "react"
 
 const BlogForm = ({
   onSubmit,
@@ -27,7 +28,7 @@ const BlogForm = ({
         />
         <br></br>
         url
-          <input
+        <input
           value={url}
           name="Url"
           onChange={handleUrlChange}
