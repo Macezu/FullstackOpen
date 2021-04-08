@@ -1,4 +1,3 @@
-
 import React from "react"
 
 const BlogForm = ({
@@ -8,7 +7,7 @@ const BlogForm = ({
   handleUrlChange,
   title,
   author,
-  url
+  url,
 }) => {
   return (
     <div className="formDiv">
@@ -16,30 +15,22 @@ const BlogForm = ({
       <form onSubmit={onSubmit}>
         title
         <input
+          id="addTitle"
           value={title}
           name="Title"
           onChange={handleTitleChange}
         />
         <br></br>
         author
-        <input
-          value={author}
-          name="Author"
-          onChange={handleAuthorChange}
-        />
+        <input id="addAuthor" value={author} name="Author" onChange={handleAuthorChange} />
         <br></br>
         url
-        <input
-          value={url}
-          name="Url"
-          onChange={handleUrlChange}
-        />
+        <input id="addUrl" value={url} name="Url" onChange={handleUrlChange} />
         <br></br>
-        <button type="submit">save</button>
+        <button id="saveBlog" type="submit">save</button>
       </form>
     </div>
   )
 }
 
 export default BlogForm
-

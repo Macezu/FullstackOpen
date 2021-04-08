@@ -50,7 +50,7 @@ const Blog = React.forwardRef((props,ref) => {
         <br />
         {props.blog.user.name}
         <br />
-        <button style={btnRStyle} onClick={props.handleRemoveClicked}>Remove</button>
+        <button className="removeBlog" style={btnRStyle} onClick={props.handleRemoveClicked}>Remove</button>
       </div>
     </div>
   )
