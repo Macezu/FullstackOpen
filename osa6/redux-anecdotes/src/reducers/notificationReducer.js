@@ -1,13 +1,9 @@
 let initialNotification = "Welcome young padawan!"
 
 const reducer = (state = initialNotification, action) => {
-  console.log("state now: ", state)
-  console.log("action", action)
   switch (action.type) {
     case "NEW":
-      return `${action.data} has been added`
-    case "LIKED":
-      return `${action.data} has been liked by someone`
+      return `${action.data}`
     case "RESTORE":
       return initialNotification
     default:
@@ -15,22 +11,18 @@ const reducer = (state = initialNotification, action) => {
   }
 }
 
-export const newNotification = (content) => {
-  return {
-    type: "NEW",
-    data: content,
+export const setNotification = (content, timeout) => {
+  return async (dispatch) => {
+    dispatch({
+      type: "NEW",
+      data: content,
+    })
+    setTimeout(() => {
+      dispatch({
+        type: "RESTORE",
+      })
+    }, timeout)
   }
-}
-
-export const likedNotification = (content) => {
-  return {
-    type: "LIKED",
-    data: content,
-  }
-}
-
-export const restoreNotification = () => {
-  return { type: "RESTORE" }
 }
 
 export default reducer

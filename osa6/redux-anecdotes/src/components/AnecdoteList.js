@@ -1,10 +1,7 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { vote } from "../reducers/anecdoteReducer"
-import {
-  likedNotification,
-  restoreNotification,
-} from "../reducers/notificationReducer"
+import {setNotification} from "../reducers/notificationReducer"
 
 const btnStyle = {
   borderRadius: 12,
@@ -37,11 +34,8 @@ const AnecdoteList = () => {
   })
 
   const addLike = (anecdote) => {
-    dispatch(vote(anecdote.id))
-    dispatch(likedNotification(anecdote.content))
-    setTimeout(() => {
-      dispatch(restoreNotification())
-    }, 5000)
+    dispatch(vote(anecdote))
+    dispatch(setNotification(`you voted '${anecdote.content}'`, 2000))
   }
 
   return (
