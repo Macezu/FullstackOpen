@@ -1,17 +1,12 @@
 import React from "react"
-import { useDispatch } from "react-redux"
+import { connect } from "react-redux"
 import { createFilter } from "../reducers/filterReducer"
 
-
-const Filter = () => {
-
-  const dispatch = useDispatch()
+const Filter = (props) => {
 
   const handleChange = (event) => {
-    // input-kentän arvo muuttujassa event.target.value
-    event.preventDefault()
     let content = event.target.value
-    dispatch(createFilter(content))
+    props.createFilter(content)
   }
   const style = {
     marginBottom: 10,
@@ -24,4 +19,18 @@ const Filter = () => {
   )
 }
 
-export default Filter
+const mapDispatchToProps = {
+  createFilter,
+}
+
+const mapStateToProps = (state) => {
+  return {
+    anecdote: state.anecdote,
+    filter: state.filter,
+  };
+};
+const ConnectedNotes = connect(mapStateToProps, mapDispatchToProps)(Filter)
+
+export default ConnectedNotes
+
+

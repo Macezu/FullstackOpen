@@ -1,4 +1,5 @@
 let initialNotification = "Welcome young padawan!"
+let cooldown
 
 const reducer = (state = initialNotification, action) => {
   switch (action.type) {
@@ -11,7 +12,9 @@ const reducer = (state = initialNotification, action) => {
   }
 }
 
-export const setNotification = (content, timeout) => {
+export const setNotification = (content, sec) => {
+  clearTimeout(cooldown);
+  
   return async (dispatch) => {
     dispatch({
       type: "NEW",
@@ -21,7 +24,7 @@ export const setNotification = (content, timeout) => {
       dispatch({
         type: "RESTORE",
       })
-    }, timeout)
+    }, sec * 2)
   }
 }
 
