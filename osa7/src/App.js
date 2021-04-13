@@ -1,5 +1,12 @@
 import React, { useState } from "react"
-import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  useHistory,
+} from "react-router-dom"
 
 const Menu = () => {
   const padding = {
@@ -26,7 +33,7 @@ const AnecdoteList = ({ anecdotes }) => (
     <ul>
       {anecdotes.map((anecdote) => (
         <li key={anecdote.id}>
-        <Link to={`/${anecdote.id}`}>{anecdote.content}</Link>
+          <Link to={`/${anecdote.id}`}>{anecdote.content}</Link>
         </li>
       ))}
     </ul>
@@ -34,15 +41,19 @@ const AnecdoteList = ({ anecdotes }) => (
 )
 
 const Anecdote = ({ anecdotes }) => {
-  const id = useParams().id  
-  const anecdote = anecdotes.find(n => n.id === id)
+  const id = useParams().id
+  console.log(id)
+  const anecdote = anecdotes.find((n) => n.id === id)
+  anecdotes.forEach((x) => console.log(x))
   return (
     <div>
-      <h2>{anecdote.content} by {anecdote.author}</h2>
+      <h2>
+        {anecdote.content} by {anecdote.author}
+      </h2>
       <div>has {anecdote.votes} votes</div>
-      <div>for more info see: <a href={anecdote.info}>{anecdote.info}</a>
+      <div>
+        for more info see: <a href={anecdote.info}>{anecdote.info}</a>
       </div>
-      
     </div>
   )
 }
@@ -84,6 +95,7 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
+  const history = useHistory()
   const [content, setContent] = useState("")
   const [author, setAuthor] = useState("")
   const [info, setInfo] = useState("")
@@ -96,6 +108,7 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     })
+    history.push("/")
   }
 
   return (
@@ -155,6 +168,10 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`New Anecdote: ${anecdote.content} was added`)
+    setTimeout(() => {
+      setNotification("")
+    }, 10000)
   }
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id)
@@ -175,15 +192,16 @@ const App = () => {
       <h1>Software anecdotes</h1>
       <Router>
         <Menu />
+        <div>{notification}</div>
         <Switch>
-        <Route path="/:id">
-          <Anecdote anecdotes={anecdotes}/>
-        </Route>
           <Route path="/create">
             <CreateNew addNew={addNew} />
           </Route>
           <Route path="/about">
             <About />
+          </Route>
+          <Route path="/:id">
+            <Anecdote anecdotes={anecdotes} />
           </Route>
           <Route path="/">
             <AnecdoteList anecdotes={anecdotes} />
