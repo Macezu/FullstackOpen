@@ -1,0 +1,11 @@
+POST Http://localhost:3001/api/blogs/
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWQiOiI2MDRiNGVmYmEwYTA1ZjEwNzA5MzcxYzgiLCJpYXQiOjE2MTU2NDAzODAsImV4cCI6MTYxNTY0Mzk4MH0.RQUnWL5xcXKcvKR5ItHUc3Pb37KlSIJlGASzCDL6Ql4
+
+{
+    "title": "No titles",
+    "author": "Secreman",
+    "url": "www.wedontdotitleshere.fi",
+    "likes": 1337,
+    "userId" : "604a3834f1aef88ae04c6f3b"
+}
