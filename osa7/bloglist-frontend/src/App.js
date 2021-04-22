@@ -6,10 +6,8 @@ import Togglable from "./components/Toggable"
 import Notification from "./components/Notification"
 import loginService from "./services/login"
 import blogService from "./services/blogs"
-import {
-  createNotification,
-  clearNotification
-} from "./reducers/notificationReducer"
+import { createNotification, clearNotification } from "./reducers/notificationReducer"
+import { getBlogs , addNewBlog } from "./reducers/blogReducer"
 import { useSelector, useDispatch } from "react-redux"
 
 const App = () => {
@@ -18,24 +16,17 @@ const App = () => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
-  const [blogs, setBlogs] = useState([])
-  const [, setNewBlog] = useState("")
 
   const [user, setUser] = useState(null)
 
   const dispatch = useDispatch()
-  const notification = useSelector((state) => state)
+  const allBlogs = useSelector(state => state.blog)
 
   const blogRef = useRef()
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .catch((error) => {
-        dispatch(createNotification(error, "failure"))
-      })
-      .then((blogs) => setBlogs(blogs))
-  }, [notification])
+    dispatch(getBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
@@ -103,11 +94,11 @@ const App = () => {
     event.preventDefault()
 
     try {
-      const newBlog = await blogService.create({
+      const newBlog = {
         title,
         author,
         url
-      })
+      }
       setTitle("")
       setAuthor("")
       setUrl("")
@@ -118,11 +109,9 @@ const App = () => {
         )
       )
       setTimeout(() => {
-        blogService.create(newBlog).then((returnedBlog) => {
-          setBlogs(blogs.concat(returnedBlog))
-          setNewBlog("")
-        })
+        dispatch(clearNotification())
       }, 2000)
+      dispatch(addNewBlog(newBlog))
     } catch (error) {
       dispatch(createNotification(error, "failure"))
       setTimeout(() => {
@@ -191,6 +180,7 @@ const App = () => {
   )
 
   const blogListed = (blog) => {
+    console.log(blog)
     return (
       <Blog
         key={blog.id}
@@ -215,7 +205,7 @@ const App = () => {
           <br></br>
           <br></br>
           {blogForm()}
-          {blogs
+          {allBlogs
             .sort((y, x) => x.likes > y.likes)
             .map((blog) => (
               <li key={blog.id}>{blogListed(blog)}</li>
