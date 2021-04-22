@@ -1,38 +1,41 @@
-import React,{ useState,useEffect,useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Blog from "./components/Blog"
 import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/BlogForm"
 import Togglable from "./components/Toggable"
+import Notification from "./components/Notification"
 import loginService from "./services/login"
 import blogService from "./services/blogs"
-
+import {
+  createNotification,
+  clearNotification
+} from "./reducers/notificationReducer"
+import { useSelector, useDispatch } from "react-redux"
 
 const App = () => {
-  const [username,setUsername] = useState("")
-  const [password,setPassword] = useState("")
-  const [title,setTitle] = useState("")
-  const [author,setAuthor] = useState("")
-  const [url,setUrl] = useState("")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
+  const [url, setUrl] = useState("")
+  const [blogs, setBlogs] = useState([])
+  const [, setNewBlog] = useState("")
 
-  const [blogs,setBlogs] = useState([])
-  const [,setNewBlog] = useState("")
+  const [user, setUser] = useState(null)
 
-  const [user,setUser] = useState(null)
-  const [successMessage,setMessage] = useState(null)
-  const [errorMessage,setError] = useState(null)
+  const dispatch = useDispatch()
+  const notification = useSelector((state) => state)
 
   const blogRef = useRef()
 
   useEffect(() => {
-    blogService.getAll()
+    blogService
+      .getAll()
       .catch((error) => {
-        setError(error)
+        dispatch(createNotification(error, "failure"))
       })
-      .then(blogs =>
-        setBlogs(blogs)
-      )
-
-  },[successMessage,errorMessage])
+      .then((blogs) => setBlogs(blogs))
+  }, [notification])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
@@ -42,11 +45,10 @@ const App = () => {
         setUser(user)
         blogService.setToken(user.token)
       } catch (error) {
-        setError(error.statusText)
+        dispatch(createNotification(error, "failure"))
       }
-
     }
-  },[])
+  }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -54,21 +56,18 @@ const App = () => {
     try {
       const user = await loginService.login({
         username,
-        password,
+        password
       })
-      window.localStorage.setItem(
-        "loggedBlogappUser",JSON.stringify(user)
-      )
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
       setUser(user)
       setUsername("")
       setPassword("")
     } catch (exception) {
-      setError(`Encountered an error: ${exception.statusText}`)
+      dispatch(createNotification(exception.statusText, "failure"))
       setTimeout(() => {
-        setError(null)
-      },3000)
+        dispatch(clearNotification())
+      }, 3000)
     }
-
   }
 
   const addLike = async (event) => {
@@ -78,30 +77,26 @@ const App = () => {
     likedObj.likes++
 
     let toBeUpdated = {
-      "user": likedObj.user.id,
-      "likes": likedObj.likes,
-      "author": likedObj.author,
-      "title": likedObj.title,
-      "url": likedObj.url
+      user: likedObj.user.id,
+      likes: likedObj.likes,
+      author: likedObj.author,
+      title: likedObj.title,
+      url: likedObj.url
     }
 
     console.log(toBeUpdated)
 
-
     try {
-      await blogService.update(likedObj.id,toBeUpdated)
-      setMessage("Liked!")
-      setTimeout(() => [
-        setMessage(null)
-      ],2000)
+      await blogService.update(likedObj.id, toBeUpdated)
+      dispatch(createNotification("Liked", "success"))
+      setTimeout(() => [dispatch(clearNotification())], 2000)
     } catch (error) {
-      setError(error)
+      dispatch(createNotification(error))
       setTimeout(() => {
-        setError(null)
-      },2000)
+        dispatch(clearNotification())
+      }, 2000)
       console.log(error)
     }
-
   }
 
   const addBlog = async (event) => {
@@ -116,21 +111,23 @@ const App = () => {
       setTitle("")
       setAuthor("")
       setUrl("")
-      setMessage(`${title} written by ${author} was added!`)
+      dispatch(
+        createNotification(
+          `${title} written by ${author} was added!`,
+          "success"
+        )
+      )
       setTimeout(() => {
-        blogService
-          .create(newBlog)
-          .then(returnedBlog => {
-            setBlogs(blogs.concat(returnedBlog))
-            setNewBlog("")
-          })
-      },2000)
-
+        blogService.create(newBlog).then((returnedBlog) => {
+          setBlogs(blogs.concat(returnedBlog))
+          setNewBlog("")
+        })
+      }, 2000)
     } catch (error) {
-      setError(`Encountered an error: ${error}`)
+      dispatch(createNotification(error, "failure"))
       setTimeout(() => {
-        setError(null)
-      },3000)
+        dispatch(clearNotification())
+      }, 3000)
     }
   }
 
@@ -139,49 +136,33 @@ const App = () => {
     let likedObj = blogRef.current.getObj()
     let really = window.confirm(`Sure you want to delete ${likedObj.title}?`)
 
-
     if (really) {
       try {
         await blogService.remove(likedObj.id)
-        setMessage("Removed succesfully")
+        dispatch(createNotification("Removed succesfully", "success"))
         setTimeout(() => {
-          setMessage(null)
-        },2000)
+          dispatch(clearNotification())
+        }, 2000)
       } catch (error) {
-        setError(error)
+        dispatch(createNotification(error, "failure"))
         setTimeout(() => {
-          setError(null)
-        },2000)
+          dispatch(clearNotification())
+        }, 2000)
       }
     }
-
   }
-
-
 
   const logOut = () => (
-    <button type="submit" onClick={() => {
-      window.localStorage.clear()
-      setUser(null)
-    }}> log out
+    <button
+      type="submit"
+      onClick={() => {
+        window.localStorage.clear()
+        setUser(null)
+      }}
+    >
+      log out
     </button>
   )
-
-  const Notification = ({ message }) => {
-    return (message) ?
-      <div className="success">
-        {message}
-      </div> :
-      null
-  }
-
-  const Error = ({ message }) => {
-    return (message) ?
-      <div className="failure">
-        {message}
-      </div> :
-      null
-  }
 
   const loginForm = () => (
     <Togglable buttonLabel="log in">
@@ -210,37 +191,39 @@ const App = () => {
   )
 
   const blogListed = (blog) => {
-    return <Blog key={blog.id} blog={blog} handleLikeClicked={addLike} handleRemoveClicked={removeBlog} ref={blogRef} />
+    return (
+      <Blog
+        key={blog.id}
+        blog={blog}
+        handleLikeClicked={addLike}
+        handleRemoveClicked={removeBlog}
+        ref={blogRef}
+      />
+    )
   }
-
-
-
-
 
   return (
     <div>
       <h2>Blogs</h2>
-      <Error message={errorMessage} />
-      <Notification message={successMessage} />
-      {user === null ?
-        <div>
-          {loginForm()}
-        </div>
-        :
+      <Notification />
+      {user === null ? (
+        <div>{loginForm()}</div>
+      ) : (
         <div>
           <p>{user.name} logged in</p>
           {logOut()}
-          <br></br><br></br>
+          <br></br>
+          <br></br>
           {blogForm()}
-          {blogs.sort((y,x) => x.likes > y.likes).map(blog =>
-            <li key={blog.id}>{blogListed(blog)}</li>
-          )}
+          {blogs
+            .sort((y, x) => x.likes > y.likes)
+            .map((blog) => (
+              <li key={blog.id}>{blogListed(blog)}</li>
+            ))}
         </div>
-      }
+      )}
     </div>
   )
 }
-
-
 
 export default App
