@@ -4,10 +4,9 @@ import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/BlogForm"
 import Togglable from "./components/Toggable"
 import Notification from "./components/Notification"
-import loginService from "./services/login"
-import blogService from "./services/blogs"
 import { createNotification, clearNotification } from "./reducers/notificationReducer"
-import { getBlogs , addNewBlog } from "./reducers/blogReducer"
+import { getBlogs , addNewBlog , updateBlog , deleteBlog , setToken } from "./reducers/blogReducer"
+import {  initUser, logInUser , logOutUser } from "./reducers/userReducer"
 import { useSelector, useDispatch } from "react-redux"
 
 const App = () => {
@@ -17,10 +16,11 @@ const App = () => {
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
 
-  const [user, setUser] = useState(null)
+
 
   const dispatch = useDispatch()
   const allBlogs = useSelector(state => state.blog)
+  const user = useSelector(state => state.user)
 
   const blogRef = useRef()
 
@@ -33,24 +33,24 @@ const App = () => {
     if (loggedUserJSON) {
       try {
         const user = JSON.parse(loggedUserJSON)
-        setUser(user)
-        blogService.setToken(user.token)
+        dispatch(initUser(user))
+        dispatch(setToken(user.token))
       } catch (error) {
         dispatch(createNotification(error, "failure"))
       }
     }
-  }, [])
+  }, [dispatch])
 
   const handleLogin = async (event) => {
     event.preventDefault()
 
     try {
-      const user = await loginService.login({
+      const user = await dispatch(logInUser({
         username,
         password
-      })
+      }))
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
-      setUser(user)
+      dispatch(logInUser(user))
       setUsername("")
       setPassword("")
     } catch (exception) {
@@ -61,32 +61,21 @@ const App = () => {
     }
   }
 
-  const addLike = async (event) => {
-    event.preventDefault()
+  const addLike = async (id) => {
 
-    let likedObj = blogRef.current.getObj()
-    likedObj.likes++
 
-    let toBeUpdated = {
-      user: likedObj.user.id,
-      likes: likedObj.likes,
-      author: likedObj.author,
-      title: likedObj.title,
-      url: likedObj.url
-    }
-
-    console.log(toBeUpdated)
+    const foundObj = allBlogs.find((b) => b.id === id)
+    foundObj.likes++
 
     try {
-      await blogService.update(likedObj.id, toBeUpdated)
+      dispatch(updateBlog(id, foundObj))
       dispatch(createNotification("Liked", "success"))
       setTimeout(() => [dispatch(clearNotification())], 2000)
     } catch (error) {
-      dispatch(createNotification(error))
+      dispatch(createNotification(error.response.data,"failure"))
       setTimeout(() => {
         dispatch(clearNotification())
       }, 2000)
-      console.log(error)
     }
   }
 
@@ -113,7 +102,7 @@ const App = () => {
       }, 2000)
       dispatch(addNewBlog(newBlog))
     } catch (error) {
-      dispatch(createNotification(error, "failure"))
+      dispatch(createNotification(error.response.data, "failure"))
       setTimeout(() => {
         dispatch(clearNotification())
       }, 3000)
@@ -127,13 +116,13 @@ const App = () => {
 
     if (really) {
       try {
-        await blogService.remove(likedObj.id)
+        dispatch(deleteBlog(likedObj.id))
         dispatch(createNotification("Removed succesfully", "success"))
         setTimeout(() => {
           dispatch(clearNotification())
         }, 2000)
       } catch (error) {
-        dispatch(createNotification(error, "failure"))
+        dispatch(createNotification(error.response.data, "failure"))
         setTimeout(() => {
           dispatch(clearNotification())
         }, 2000)
@@ -146,7 +135,7 @@ const App = () => {
       type="submit"
       onClick={() => {
         window.localStorage.clear()
-        setUser(null)
+        dispatch(logOutUser)
       }}
     >
       log out
@@ -180,7 +169,6 @@ const App = () => {
   )
 
   const blogListed = (blog) => {
-    console.log(blog)
     return (
       <Blog
         key={blog.id}

@@ -46,7 +46,7 @@ const Blog = React.forwardRef((props,ref) => {
       <div style={showWhenVisible} className="togglableContent">
         {props.blog.url}
         <br />
-        Likes: {props.blog.likes} <button style={btnStyle} onClick={props.handleLikeClicked} >likes</button>
+        Likes: {props.blog.likes} <button style={btnStyle} onClick={ () => props.handleLikeClicked(props.blog.id)} >likes</button>
         <br />
         {props.blog.user.name}
         <br />

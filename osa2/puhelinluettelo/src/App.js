@@ -36,7 +36,6 @@ const App = () => {
         setSuccesfull(null)
       },3000)
     } if (error === true) {
-      console.log('true')
       setErrorMessage("Error")
       setTimeout(() => {
         setErrorMessage(null)
