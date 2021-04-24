@@ -14,6 +14,7 @@ import {
   updateBlog,
   deleteBlog
 } from "./reducers/blogReducer"
+import { getAllUsers } from "./reducers/allUsersReducer"
 import { initUser, logInUser, logOutUser } from "./reducers/userReducer"
 import storage from "./utils/localstrg"
 import { useSelector, useDispatch } from "react-redux"
@@ -25,10 +26,10 @@ const App = () => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
-  const [users, setUsers] = useState("[]")
 
   const dispatch = useDispatch()
   const allBlogs = useSelector((state) => state.blog)
+  const allUsers = useSelector((state) => state.users)
   const user = useSelector((state) => state.user)
 
   const blogRef = useRef()
@@ -43,8 +44,8 @@ const App = () => {
   }, [dispatch])
 
   useEffect(() => {
-    setUsers("")
-  }, [users])
+    dispatch(getAllUsers())
+  }, [dispatch])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -198,7 +199,28 @@ const App = () => {
     </div>
   )
 
-  const Users = () => <div></div>
+  const Users = () => {
+    if (!user) {
+      return loginForm()
+    }
+    return (
+      <>
+        <div>
+          <p>{user.name} logged in</p>
+          {logOut()}
+          {allUsers ? (
+            <div>No Users Found</div>
+          ) : (
+            <div>
+              {allUsers.map((user) => (
+                <li key={user.id}>{user}</li>
+              ))}
+            </div>
+          )}
+        </div>
+      </>
+    )
+  }
 
   return (
     <div>
