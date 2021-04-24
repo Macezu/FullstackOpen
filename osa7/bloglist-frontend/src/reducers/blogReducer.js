@@ -61,8 +61,8 @@ export const deleteBlog = (id) => {
   }
 }
 
-export const setToken = () => {
-  blogService.setToken()
+export const setToken = (token) => {
+  blogService.setToken(token)
 }
 
 export default blogReducer

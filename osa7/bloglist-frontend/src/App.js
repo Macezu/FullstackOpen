@@ -17,6 +17,7 @@ import {
 import { initUser, logInUser, logOutUser } from "./reducers/userReducer"
 import storage from "./utils/localstrg"
 import { useSelector, useDispatch } from "react-redux"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
 const App = () => {
   const [username, setUsername] = useState("")
@@ -24,6 +25,7 @@ const App = () => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
+  const [users, setUsers] = useState("[]")
 
   const dispatch = useDispatch()
   const allBlogs = useSelector((state) => state.blog)
@@ -39,6 +41,10 @@ const App = () => {
     const user = storage.loadUser()
     dispatch(initUser(user))
   }, [dispatch])
+
+  useEffect(() => {
+    setUsers("")
+  }, [users])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -125,8 +131,8 @@ const App = () => {
     <button
       type="submit"
       onClick={() => {
-        window.localStorage.clear()
-        dispatch(logOutUser)
+        dispatch(logOutUser())
+        storage.logoutUser()
       }}
     >
       log out
@@ -171,10 +177,8 @@ const App = () => {
     )
   }
 
-  return (
+  const Home = () => (
     <div>
-      <h2>Blogs</h2>
-      <Notification />
       {user === null ? (
         <div>{loginForm()}</div>
       ) : (
@@ -191,6 +195,27 @@ const App = () => {
             ))}
         </div>
       )}
+    </div>
+  )
+
+  const Users = () => <div></div>
+
+  return (
+    <div>
+      <Router>
+        <div>
+          <h2>Blogs</h2>
+          <Notification />
+        </div>
+        <Switch>
+          <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   )
 }
