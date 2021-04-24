@@ -1,15 +1,16 @@
 /* eslint-disable indent */
 
 import loginService from "../services/login"
+import storage from "../utils/localstrg"
 
-const userReducer = (state = {}, action) => {
+const userReducer = (state = null, action) => {
   switch (action.type) {
-    case "INIT":
+    case "INITUSER":
       return action.data
     case "LOGIN":
       return action.data
     case "LOGOUT":
-      return (state = {})
+      return (state = null)
     default:
       return state
   }
@@ -17,7 +18,7 @@ const userReducer = (state = {}, action) => {
 
 export const initUser = (user) => {
   return {
-    type: "INIT",
+    type: "INITUSER",
     data: user
   }
 }
@@ -25,6 +26,7 @@ export const initUser = (user) => {
 export const logInUser = (credentials) => {
   return async (dispatch) => {
     const response = await loginService.login(credentials)
+    storage.saveUser(response)
     dispatch({
       type: "LOGIN",
       data: response

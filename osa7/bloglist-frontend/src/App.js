@@ -4,9 +4,18 @@ import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/BlogForm"
 import Togglable from "./components/Toggable"
 import Notification from "./components/Notification"
-import { createNotification, clearNotification } from "./reducers/notificationReducer"
-import { getBlogs , addNewBlog , updateBlog , deleteBlog , setToken } from "./reducers/blogReducer"
-import {  initUser, logInUser , logOutUser } from "./reducers/userReducer"
+import {
+  createNotification,
+  clearNotification
+} from "./reducers/notificationReducer"
+import {
+  getBlogs,
+  addNewBlog,
+  updateBlog,
+  deleteBlog
+} from "./reducers/blogReducer"
+import { initUser, logInUser, logOutUser } from "./reducers/userReducer"
+import storage from "./utils/localstrg"
 import { useSelector, useDispatch } from "react-redux"
 
 const App = () => {
@@ -16,11 +25,9 @@ const App = () => {
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
 
-
-
   const dispatch = useDispatch()
-  const allBlogs = useSelector(state => state.blog)
-  const user = useSelector(state => state.user)
+  const allBlogs = useSelector((state) => state.blog)
+  const user = useSelector((state) => state.user)
 
   const blogRef = useRef()
 
@@ -29,28 +36,14 @@ const App = () => {
   }, [dispatch])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
-    if (loggedUserJSON) {
-      try {
-        const user = JSON.parse(loggedUserJSON)
-        dispatch(initUser(user))
-        dispatch(setToken(user.token))
-      } catch (error) {
-        dispatch(createNotification(error, "failure"))
-      }
-    }
+    const user = storage.loadUser()
+    dispatch(initUser(user))
   }, [dispatch])
 
   const handleLogin = async (event) => {
     event.preventDefault()
-
     try {
-      const user = await dispatch(logInUser({
-        username,
-        password
-      }))
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
-      dispatch(logInUser(user))
+      dispatch(logInUser({ username, password }))
       setUsername("")
       setPassword("")
     } catch (exception) {
@@ -62,8 +55,6 @@ const App = () => {
   }
 
   const addLike = async (id) => {
-
-
     const foundObj = allBlogs.find((b) => b.id === id)
     foundObj.likes++
 
@@ -72,7 +63,7 @@ const App = () => {
       dispatch(createNotification("Liked", "success"))
       setTimeout(() => [dispatch(clearNotification())], 2000)
     } catch (error) {
-      dispatch(createNotification(error.response.data,"failure"))
+      dispatch(createNotification(error.response.data, "failure"))
       setTimeout(() => {
         dispatch(clearNotification())
       }, 2000)
