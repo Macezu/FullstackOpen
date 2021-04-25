@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import Blog from "./components/Blog"
+import User from "./components/User"
 import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/BlogForm"
 import Togglable from "./components/Toggable"
@@ -45,6 +46,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getAllUsers())
+    console.log(allUsers)
   }, [dispatch])
 
   const handleLogin = async (event) => {
@@ -59,6 +61,10 @@ const App = () => {
         dispatch(clearNotification())
       }, 3000)
     }
+  }
+
+  const handleUserClicked = (id) => {
+    console.log(`ID: ${id}`)
   }
 
   const addLike = async (id) => {
@@ -178,6 +184,12 @@ const App = () => {
     )
   }
 
+  const userListed = (user) => {
+    return (
+      <User key={user.id} user={user} handleUserClicked={handleUserClicked} />
+    )
+  }
+
   const Home = () => (
     <div>
       {user === null ? (
@@ -208,12 +220,14 @@ const App = () => {
         <div>
           <p>{user.name} logged in</p>
           {logOut()}
-          {allUsers ? (
+          <h3>Users</h3>
+          {allUsers === null ? (
             <div>No Users Found</div>
           ) : (
             <div>
+              <h5 style={{ marginLeft: 100 }}>blogs created</h5>
               {allUsers.map((user) => (
-                <li key={user.id}>{user}</li>
+                <li key={user.id}>{userListed(user)}</li>
               ))}
             </div>
           )}

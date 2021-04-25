@@ -2,7 +2,7 @@
 
 import usersService from "../services/users"
 
-const allUserReducer = (state = [], action) => {
+const allUserReducer = (state = null, action) => {
   switch (action.type) {
     case "INITALLUSERS":
       return action.data
