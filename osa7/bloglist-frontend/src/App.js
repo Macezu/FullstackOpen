@@ -19,7 +19,12 @@ import { getAllUsers } from "./reducers/allUsersReducer"
 import { initUser, logInUser, logOutUser } from "./reducers/userReducer"
 import storage from "./utils/localstrg"
 import { useSelector, useDispatch } from "react-redux"
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useParams
+} from "react-router-dom"
 
 const App = () => {
   const [username, setUsername] = useState("")
@@ -220,12 +225,11 @@ const App = () => {
         <div>
           <p>{user.name} logged in</p>
           {logOut()}
-          <h3>Users</h3>
           {allUsers === null ? (
             <div>No Users Found</div>
           ) : (
             <div>
-              <h5 style={{ marginLeft: 100 }}>blogs created</h5>
+              <h3>Users</h3> <h5 style={{ marginLeft: 100 }}>blogs created</h5>
               {allUsers.map((user) => (
                 <li key={user.id}>{userListed(user)}</li>
               ))}
@@ -233,6 +237,22 @@ const App = () => {
           )}
         </div>
       </>
+    )
+  }
+
+  const UserDetailed = () => {
+    const id = useParams().id
+    const user = allUsers.find(n => n.id === id)
+    console.log(`HHAHAHA ${user.blogs}`)
+    if (!allUsers === null) {    return null  }
+    return (
+      <div>
+        <h2>{user.name}</h2>
+        <p>added blogs :{user.blogs.length}</p>
+        {user.blogs.map((blog) => (
+          <li key={blog.id}>{blog.title}</li>
+        ))}
+      </div>
     )
   }
 
@@ -244,6 +264,9 @@ const App = () => {
           <Notification />
         </div>
         <Switch>
+          <Route path="/users/:id">
+            <UserDetailed />
+          </Route>
           <Route path="/users">
             <Users />
           </Route>
