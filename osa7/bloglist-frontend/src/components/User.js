@@ -9,8 +9,8 @@ export const userListed = (user) => {
   )
 }
 
-export const userDetailed = () => {
-  const allUsers = useSelector((state) => state.user)
+export const UserDetailed = () => {
+  const allUsers = useSelector((state) => state.users)
 
   const id = useParams().id
   const user = allUsers.find(n => n.id === id)
@@ -33,6 +33,7 @@ const User = ({ user }) => {
     "flexDirection": "row",
   }
 
+  console.log(user)
   return (
     <div style={userStyle}>
       <Link to={`/users/${user.id}`}>{user.name}</Link>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { blogListed, BlogDetailed } from "./components/Blog"
-import { userListed, userDetailed } from "./components/User"
+import { userListed, UserDetailed } from "./components/User"
 import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/BlogForm"
 import Togglable from "./components/Toggable"
@@ -230,7 +230,7 @@ const App = () => {
         </div>
         <Switch>
           <Route path="/users/:id">
-            <userDetailed />
+            <UserDetailed />
           </Route>
           <Route path="/users">
             <Users />
