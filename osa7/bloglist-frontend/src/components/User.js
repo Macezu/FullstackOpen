@@ -1,5 +1,31 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
+import { useSelector } from "react-redux"
+
+
+export const userListed = (user) => {
+  return (
+    <User key={user.id} user={user} />
+  )
+}
+
+export const userDetailed = () => {
+  const allUsers = useSelector((state) => state.user)
+
+  const id = useParams().id
+  const user = allUsers.find(n => n.id === id)
+  if (!allUsers === null) {    return null  }
+  return (
+    <div>
+      <h2>{user.name}</h2>
+      <p>added blogs :{user.blogs.length}</p>
+      {user.blogs.map((blog) => (
+        <li key={blog.id}>{blog.title}</li>
+      ))}
+    </div>
+  )
+}
+
 
 const User = ({ user }) => {
   const userStyle = {
@@ -14,4 +40,8 @@ const User = ({ user }) => {
     </div>
   )
 }
+
+
+
+
 export default User

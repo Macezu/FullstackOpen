@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react"
-import Blog from "./components/Blog"
-import User from "./components/User"
+import React, { useState, useEffect } from "react"
+import { blogListed, BlogDetailed } from "./components/Blog"
+import { userListed, userDetailed } from "./components/User"
 import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/BlogForm"
 import Togglable from "./components/Toggable"
@@ -23,7 +23,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useParams
 } from "react-router-dom"
 
 const App = () => {
@@ -38,7 +37,6 @@ const App = () => {
   const allUsers = useSelector((state) => state.users)
   const user = useSelector((state) => state.user)
 
-  const blogRef = useRef()
 
   useEffect(() => {
     dispatch(getBlogs())
@@ -51,7 +49,6 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getAllUsers())
-    console.log(allUsers)
   }, [dispatch])
 
   const handleLogin = async (event) => {
@@ -68,9 +65,7 @@ const App = () => {
     }
   }
 
-  const handleUserClicked = (id) => {
-    console.log(`ID: ${id}`)
-  }
+
 
   const addLike = async (id) => {
     const foundObj = allBlogs.find((b) => b.id === id)
@@ -118,9 +113,8 @@ const App = () => {
     }
   }
 
-  const removeBlog = async (event) => {
-    event.preventDefault()
-    let likedObj = blogRef.current.getObj()
+  const removeBlog = async (id) => {
+    let likedObj = allBlogs.find((b) => b.id === id)
     let really = window.confirm(`Sure you want to delete ${likedObj.title}?`)
 
     if (really) {
@@ -177,23 +171,7 @@ const App = () => {
     </Togglable>
   )
 
-  const blogListed = (blog) => {
-    return (
-      <Blog
-        key={blog.id}
-        blog={blog}
-        handleLikeClicked={addLike}
-        handleRemoveClicked={removeBlog}
-        ref={blogRef}
-      />
-    )
-  }
 
-  const userListed = (user) => {
-    return (
-      <User key={user.id} user={user} handleUserClicked={handleUserClicked} />
-    )
-  }
 
   const Home = () => (
     <div>
@@ -215,6 +193,7 @@ const App = () => {
       )}
     </div>
   )
+
 
   const Users = () => {
     if (!user) {
@@ -240,21 +219,7 @@ const App = () => {
     )
   }
 
-  const UserDetailed = () => {
-    const id = useParams().id
-    const user = allUsers.find(n => n.id === id)
-    console.log(`HHAHAHA ${user.blogs}`)
-    if (!allUsers === null) {    return null  }
-    return (
-      <div>
-        <h2>{user.name}</h2>
-        <p>added blogs :{user.blogs.length}</p>
-        {user.blogs.map((blog) => (
-          <li key={blog.id}>{blog.title}</li>
-        ))}
-      </div>
-    )
-  }
+
 
   return (
     <div>
@@ -265,10 +230,13 @@ const App = () => {
         </div>
         <Switch>
           <Route path="/users/:id">
-            <UserDetailed />
+            <userDetailed />
           </Route>
           <Route path="/users">
             <Users />
+          </Route>
+          <Route path="/blogs/:id">
+            <BlogDetailed handleLikeClicked={addLike} handleRemoveClicked={removeBlog} />
           </Route>
           <Route path="/">
             <Home />

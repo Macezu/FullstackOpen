@@ -1,25 +1,20 @@
-import React, { useState, useImperativeHandle } from "react"
+import React from "react"
+import { useSelector } from "react-redux"
+import { Link , useParams } from "react-router-dom"
 
-const Blog = React.forwardRef((props, ref) => {
-  const [visible, setVisible] = useState(false)
 
-  const showWhenVisible = { display: visible ? "" : "none" }
+export const blogListed = (blog) => {
+  return (
+    <Blog
+      key={blog.id}
+      blog={blog}
+    />
+  )
+}
 
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
 
-  const getObj = () => {
-    return props.blog
-  }
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5
-  }
+export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked }) => {
+  const allBlogs = useSelector((state) => state.blog)
 
   const btnStyle = {
     borderRadius: 12,
@@ -32,43 +27,57 @@ const Blog = React.forwardRef((props, ref) => {
     backgroundColor: "#990f02"
   }
 
-  useImperativeHandle(ref, () => {
-    return { getObj }
-  })
+  const id = useParams().id
+  const blog = allBlogs.find((x) => x.id === id)
+  if (!allBlogs === null) {
+    return null
+  }
+  return (
+    <div>
+      {blog.url}
+      <br />
+      Likes: {blog.likes}{" "}
+      <button style={btnStyle} onClick={() => handleLikeClicked(id)}>
+        likes
+      </button>
+      <br />
+      {blog.user.name}
+      <br />
+      <button
+        className="removeBlog"
+        style={btnRStyle}
+        onClick={() => handleRemoveClicked(id)}
+      >
+        Remove
+      </button>
+    </div>
+  )
+}
+
+const Blog = ({ blog }) => {
+
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5
+  }
+
+  console.log(blog.id)
+
 
   return (
     <div className="blog" style={blogStyle}>
       <div>
-        {props.blog.title} {props.blog.author}{" "}
-        <button style={btnStyle} onClick={toggleVisibility}>
-          view
-        </button>
-      </div>
-      <div style={showWhenVisible} className="togglableContent">
-        {props.blog.url}
-        <br />
-        Likes: {props.blog.likes}{" "}
-        <button
-          style={btnStyle}
-          onClick={() => props.handleLikeClicked(props.blog.id)}
-        >
-          likes
-        </button>
-        <br />
-        {props.blog.user.name}
-        <br />
-        <button
-          className="removeBlog"
-          style={btnRStyle}
-          onClick={props.handleRemoveClicked}
-        >
-          Remove
-        </button>
+        <Link to={`blogs/${blog.id}`}>
+          {blog.title} {blog.author}
+        </Link>
       </div>
     </div>
   )
-})
+}
 
-Blog.displayName = "Blog"
+
 
 export default Blog
