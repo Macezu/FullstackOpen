@@ -34,7 +34,8 @@ export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked }) => {
   }
   return (
     <div>
-      {blog.url}
+      <h2>{blog.title} {blog.author}</h2>
+      <a href={blog.url}>{blog.url}</a>
       <br />
       Likes: {blog.likes}{" "}
       <button style={btnStyle} onClick={() => handleLikeClicked(id)}>

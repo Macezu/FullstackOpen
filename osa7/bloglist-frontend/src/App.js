@@ -19,11 +19,7 @@ import { getAllUsers } from "./reducers/allUsersReducer"
 import { initUser, logInUser, logOutUser } from "./reducers/userReducer"
 import storage from "./utils/localstrg"
 import { useSelector, useDispatch } from "react-redux"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 
 const App = () => {
   const [username, setUsername] = useState("")
@@ -37,6 +33,12 @@ const App = () => {
   const allUsers = useSelector((state) => state.users)
   const user = useSelector((state) => state.user)
 
+  const navBar = {
+    background: "grey",
+    display: "flex",
+    flexDirection: "row",
+    padding: 5
+  }
 
   useEffect(() => {
     dispatch(getBlogs())
@@ -64,8 +66,6 @@ const App = () => {
       }, 3000)
     }
   }
-
-
 
   const addLike = async (id) => {
     const foundObj = allBlogs.find((b) => b.id === id)
@@ -171,59 +171,43 @@ const App = () => {
     </Togglable>
   )
 
-
-
   const Home = () => (
     <div>
-      {user === null ? (
-        <div>{loginForm()}</div>
-      ) : (
-        <div>
-          <p>{user.name} logged in</p>
-          {logOut()}
-          <br></br>
-          <br></br>
-          {blogForm()}
-          {allBlogs
-            .sort((y, x) => x.likes > y.likes)
-            .map((blog) => (
-              <li key={blog.id}>{blogListed(blog)}</li>
-            ))}
-        </div>
-      )}
+      <br></br>
+      <br></br>
+      {blogForm()}
+      {allBlogs
+        .sort((y, x) => x.likes > y.likes)
+        .map((blog) => (
+          <li key={blog.id}>{blogListed(blog)}</li>
+        ))}
     </div>
   )
 
-
-  const Users = () => {
-    if (!user) {
-      return loginForm()
-    }
-    return (
-      <>
-        <div>
-          <p>{user.name} logged in</p>
-          {logOut()}
-          {allUsers === null ? (
-            <div>No Users Found</div>
-          ) : (
-            <div>
-              <h3>Users</h3> <h5 style={{ marginLeft: 100 }}>blogs created</h5>
-              {allUsers.map((user) => (
-                <li key={user.id}>{userListed(user)}</li>
-              ))}
-            </div>
-          )}
-        </div>
-      </>
-    )
-  }
-
-
+  const Users = () => (
+    <div>
+      <h3>Users</h3> <h5 style={{ marginLeft: 100 }}>blogs created</h5>
+      {allUsers.map((user) => (
+        <li key={user.id}>{userListed(user)}</li>
+      ))}
+    </div>
+  )
 
   return (
     <div>
       <Router>
+        <div style={navBar}>
+          <Link style={navBar} to="/blogs">blogs</Link>
+          <Link style={navBar} to="/users">users</Link>
+          {user === null ? (
+            <div>{loginForm()}</div>
+          ) : (
+            <div>
+              <p>{user.name} logged in</p>
+              {logOut()}
+            </div>
+          )}
+        </div>
         <div>
           <h2>Blogs</h2>
           <Notification />
@@ -236,7 +220,10 @@ const App = () => {
             <Users />
           </Route>
           <Route path="/blogs/:id">
-            <BlogDetailed handleLikeClicked={addLike} handleRemoveClicked={removeBlog} />
+            <BlogDetailed
+              handleLikeClicked={addLike}
+              handleRemoveClicked={removeBlog}
+            />
           </Route>
           <Route path="/">
             <Home />
