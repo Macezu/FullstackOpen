@@ -1,6 +1,9 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import { Link, useParams } from "react-router-dom"
+import  blogService  from "../services/blogs"
+
+let newcomment = ""
 
 export const blogListed = (blog) => {
   return <Blog key={blog.id} blog={blog} />
@@ -10,8 +13,26 @@ const commentsListed = (comment) => {
   return <Comment key={comment.id} comment={comment} />
 }
 
+
+const handleCommentSubmitted = (event) => {
+  event.preventDefault()
+  const nComment = { content : newcomment }
+  blogService.comment(nComment)
+
+}
+
+const commentForm = () => {
+  return (
+    <div>
+      <form onSubmit={() => handleCommentSubmitted()} >
+        <input id="Comment" value="" onChange={({ target }) => newcomment = target} />
+        <button id="comment-button" type="submit">add comment</button>
+      </form>
+    </div>
+  )
+}
+
 const Comment = ({ comment }) => {
-  console.log(comment)
   return <div>{comment.content}</div>
 }
 
@@ -59,6 +80,7 @@ export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked }) => {
       <div>
         <br /> <br />
         <h4>Comments</h4>
+        {commentForm()}
         {blog.comments === null ? (
           <br />
         ) : (

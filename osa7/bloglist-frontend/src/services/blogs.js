@@ -3,8 +3,6 @@ import storage from "../utils/localstrg"
 const baseUrl = "/api/blogs/"
 
 
-
-
 const setToken = () => {
   return {
     headers: { Authorization: `bearer ${storage.loadUser().token}` }
@@ -23,6 +21,11 @@ const create = async (newObject) => {
   return response.data
 }
 
+const comment = async (newObject) => {
+  const response = await axios.post(`${baseUrl}/${newObject.id}/comments`,newObject)
+  return response.data
+}
+
 const update = async (id, newObject) => {
   const response =  await axios.put(`${baseUrl}/${id}`, newObject, setToken())
   return response.data
@@ -33,4 +36,4 @@ const remove = async (id) => {
   return response.data
 }
 
-export default { getAll, create, update, setToken, remove }
+export default { getAll, create, update, setToken, remove, comment }
