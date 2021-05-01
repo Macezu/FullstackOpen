@@ -1,7 +1,11 @@
 const mongoose = require('mongoose')
 
 const commentSchema = mongoose.Schema({
-    content : String
+    content : String,
+    blog: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Blog'
+    },
 })
 
 commentSchema.set('toJSON',{
