@@ -3,6 +3,7 @@ import { blogListed, BlogDetailed } from "./components/Blog"
 import { userListed, UserDetailed } from "./components/User"
 import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/BlogForm"
+import CommentForm from "./components/CommentForm"
 import Togglable from "./components/Toggable"
 import Notification from "./components/Notification"
 import {
@@ -13,7 +14,8 @@ import {
   getBlogs,
   addNewBlog,
   updateBlog,
-  deleteBlog
+  deleteBlog,
+  addComment
 } from "./reducers/blogReducer"
 import { getAllUsers } from "./reducers/allUsersReducer"
 import { initUser, logInUser, logOutUser } from "./reducers/userReducer"
@@ -21,11 +23,13 @@ import storage from "./utils/localstrg"
 import { useSelector, useDispatch } from "react-redux"
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 
+
 const App = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
+  const [comment, setComment] = useState("")
   const [url, setUrl] = useState("")
 
   const dispatch = useDispatch()
@@ -42,7 +46,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getBlogs())
-  }, [dispatch])
+  }, [dispatch,comment])
 
   useEffect(() => {
     const user = storage.loadUser()
@@ -67,10 +71,16 @@ const App = () => {
     }
   }
 
+  const submitComment = (event,id) => {
+    event.preventDefault()
+    const nComment = { content: comment, id : id }
+    setComment("")
+    dispatch(addComment(nComment))
+  }
+
   const addLike = async (id) => {
     const foundObj = allBlogs.find((b) => b.id === id)
     foundObj.likes++
-
     try {
       dispatch(updateBlog(id, foundObj))
       dispatch(createNotification("Liked", "success"))
@@ -171,6 +181,15 @@ const App = () => {
     </Togglable>
   )
 
+  const commentForm = (id) => (
+    <CommentForm
+      comment={comment}
+      handleCommentChanged = {({ target }) => setComment(target.value)}
+      handleCommentSubmitted ={submitComment}
+      id = {id}
+    />
+  )
+
   const Home = () => (
     <div>
       <br></br>
@@ -193,12 +212,17 @@ const App = () => {
     </div>
   )
 
+
   return (
     <div>
       <Router>
         <div style={navBar}>
-          <Link style={navBar} to="/blogs">blogs</Link>
-          <Link style={navBar} to="/users">users</Link>
+          <Link style={navBar} to="/blogs">
+            blogs
+          </Link>
+          <Link style={navBar} to="/users">
+            users
+          </Link>
           {user === null ? (
             <div>{loginForm()}</div>
           ) : (
@@ -223,6 +247,7 @@ const App = () => {
             <BlogDetailed
               handleLikeClicked={addLike}
               handleRemoveClicked={removeBlog}
+              commentForm={commentForm}
             />
           </Route>
           <Route path="/">

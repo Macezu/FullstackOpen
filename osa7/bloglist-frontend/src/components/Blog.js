@@ -1,9 +1,8 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import { Link, useParams } from "react-router-dom"
-import  blogService  from "../services/blogs"
 
-let newcomment = ""
+
 
 export const blogListed = (blog) => {
   return <Blog key={blog.id} blog={blog} />
@@ -14,29 +13,13 @@ const commentsListed = (comment) => {
 }
 
 
-const handleCommentSubmitted = (event) => {
-  event.preventDefault()
-  const nComment = { content : newcomment }
-  blogService.comment(nComment)
-
-}
-
-const commentForm = () => {
-  return (
-    <div>
-      <form onSubmit={() => handleCommentSubmitted()} >
-        <input id="Comment" value="" onChange={({ target }) => newcomment = target} />
-        <button id="comment-button" type="submit">add comment</button>
-      </form>
-    </div>
-  )
-}
-
 const Comment = ({ comment }) => {
   return <div>{comment.content}</div>
 }
 
-export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked }) => {
+
+
+export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked, commentForm }) => {
   const allBlogs = useSelector((state) => state.blog)
 
   const btnStyle = {
@@ -52,10 +35,11 @@ export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked }) => {
 
   const id = useParams().id
   const blog = allBlogs.find((x) => x.id === id)
-  console.log(`Curr blog : ${blog.comments}`)
   if (!allBlogs === null) {
     return null
   }
+  if (!blog.comments === null) return null
+
   return (
     <div>
       <h2>
@@ -80,7 +64,7 @@ export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked }) => {
       <div>
         <br /> <br />
         <h4>Comments</h4>
-        {commentForm()}
+        {commentForm(id)}
         {blog.comments === null ? (
           <br />
         ) : (

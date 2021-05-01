@@ -88,13 +88,12 @@ blogsRouter.post("/:id/comments", async (req, res) => {
 
       const savedComment = await comment.save()
       blog.comments = blog.comments.concat(savedComment._id)
-      await blog.save()
+      const savedBlog = await blog.save()
 
-      res.json(savedComment.toJSON())
+      res.json(savedBlog.toJSON())
     }
 
   } catch (error) {
-    console.log(error)
     res.status(401).end()
   }
 })
