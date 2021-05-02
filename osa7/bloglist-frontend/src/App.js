@@ -15,8 +15,8 @@ import {
   addNewBlog,
   updateBlog,
   deleteBlog,
-  addComment
 } from "./reducers/blogReducer"
+import { getComments, addComment } from "./reducers/commentReducer"
 import { getAllUsers } from "./reducers/allUsersReducer"
 import { initUser, logInUser, logOutUser } from "./reducers/userReducer"
 import storage from "./utils/localstrg"
@@ -34,6 +34,7 @@ const App = () => {
 
   const dispatch = useDispatch()
   const allBlogs = useSelector((state) => state.blog)
+  const allComments = useSelector((state) => state.comments)
   const allUsers = useSelector((state) => state.users)
   const user = useSelector((state) => state.user)
 
@@ -46,7 +47,13 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getBlogs())
-  }, [dispatch,comment])
+  }, [dispatch])
+
+
+  useEffect(() => {
+    dispatch(getComments)
+    console.log(allComments)
+  }, [dispatch])
 
   useEffect(() => {
     const user = storage.loadUser()

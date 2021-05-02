@@ -17,8 +17,9 @@ const commentReducer = (state = [], action) => {
 export const getComments = () => {
     return async (dispatch) => {
       const response = await blogService.getComments()
+      console.log(`response ${response}`)
       dispatch({
-        type: "INIT",
+        type: "INITCOMMENTS",
         data: response
       })
     }

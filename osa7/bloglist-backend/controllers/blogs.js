@@ -102,6 +102,7 @@ blogsRouter.post("/:id/comments", async (req, res) => {
 
 blogsRouter.get("/comments", async (req,res)=> {
   const comments = await Comment.find({}).populate("blog",{title :1})
+  console.log(comments)
   res.json(comments.map((comment) => comment.toJSON()))
 })
 

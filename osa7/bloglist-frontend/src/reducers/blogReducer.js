@@ -15,12 +15,6 @@ const blogReducer = (state = [], action) => {
       const liked = action.data
       return state.map((a) => (a.id === liked.id ? liked : a))
     }
-    case "ADDCOMMENT":{
-      const commented = action.data
-      console.log(state)
-      console.log(state.map(blog => blog.id === commented.id ? commented : blog))
-      return state.map(blog => blog.id === commented.id ? commented : blog)
-    }
     default:
       return state
   }
@@ -67,15 +61,6 @@ export const deleteBlog = (id) => {
   }
 }
 
-export const addComment = (textObj) => {
-  return async (dispatch) => {
-    const response = await blogService.comment(textObj)
-    dispatch({
-      type : "ADDCOMMENT",
-      data : response
-    })
-  }
-}
 
 export const setToken = (token) => {
   blogService.setToken(token)

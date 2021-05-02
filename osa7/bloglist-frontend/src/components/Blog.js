@@ -21,6 +21,7 @@ const Comment = ({ comment }) => {
 
 export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked, commentForm }) => {
   const allBlogs = useSelector((state) => state.blog)
+  const allComments = useSelector((state) => state.comments)
 
   const btnStyle = {
     borderRadius: 12,
@@ -35,10 +36,12 @@ export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked, commentFo
 
   const id = useParams().id
   const blog = allBlogs.find((x) => x.id === id)
+  const comments = allComments.filter((x) => x.blog === blog.id)
+  console.log(allComments)
+  console.log(comments)
   if (!allBlogs === null) {
     return null
   }
-  if (!blog.comments === null) return null
 
   return (
     <div>
@@ -65,10 +68,10 @@ export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked, commentFo
         <br /> <br />
         <h4>Comments</h4>
         {commentForm(id)}
-        {blog.comments === null ? (
+        {comments === null ? (
           <br />
         ) : (
-          blog.comments.map((comment) => (
+          comments.map((comment) => (
             <li key={comment.id}>{commentsListed(comment)}</li>
           ))
         )}
