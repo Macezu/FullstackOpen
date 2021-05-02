@@ -8,12 +8,12 @@ const logger = require("../utils/logger")
 const userExtractor = require("../utils/middleware").userExtractor
 const blog = require("../models/blog")
 
-blogsRouter.get("/", async (request, response) => {
+blogsRouter.get("/all", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 }).populate("comments",{content:1})
   response.json(blogs.map((blog) => blog.toJSON()))
 })
 
-blogsRouter.get("/:id", async (request, response) => {
+blogsRouter.get("/all/:id", async (request, response) => {
   const blog = await Blog.findById(request.params.id)
   if (blog) {
     response.json(blog.toJSON())
@@ -83,7 +83,9 @@ blogsRouter.post("/:id/comments", async (req, res) => {
 
     if (body.content !== undefined) {
       const comment = new Comment({
-        content: body.content
+        content: body.content,
+        blog : body.id
+
       })
 
       const savedComment = await comment.save()
@@ -96,6 +98,11 @@ blogsRouter.post("/:id/comments", async (req, res) => {
   } catch (error) {
     res.status(401).end()
   }
+})
+
+blogsRouter.get("/comments", async (req,res)=> {
+  const comments = await Comment.find({}).populate("blog",{title :1})
+  res.json(comments.map((comment) => comment.toJSON()))
 })
 
 module.exports = blogsRouter
