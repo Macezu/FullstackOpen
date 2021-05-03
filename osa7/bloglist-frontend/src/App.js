@@ -35,12 +35,7 @@ const App = () => {
   const allUsers = useSelector((state) => state.users)
   const user = useSelector((state) => state.user)
 
-  const navBar = {
-    background: "grey",
-    display: "flex",
-    flexDirection: "row",
-    padding: 5
-  }
+
 
   useEffect(() => {
     dispatch(getBlogs())
@@ -93,6 +88,15 @@ const App = () => {
 
   const addBlog = async (event) => {
     event.preventDefault()
+
+    if (user === null) {
+      dispatch(createNotification("Must be logged in to add a blog", "failure"))
+      setTimeout(() => {
+        dispatch(clearNotification())
+      }, 3000)
+      return
+    }
+
     try {
       const newBlog = {
         title,
@@ -191,7 +195,6 @@ const App = () => {
     <div>
       <br></br>
       <br></br>
-      {blogForm()}
       {allBlogs
         .sort((y, x) => x.likes > y.likes)
         .map((blog) => (
@@ -210,13 +213,13 @@ const App = () => {
   )
 
   return (
-    <div>
+    <div className="body">
       <Router>
-        <div style={navBar}>
-          <Link style={navBar} to="/blogs">
+        <div className="navBar">
+          <Link className="navBarItem" to="/blogs">
             blogs
           </Link>
-          <Link style={navBar} to="/users">
+          <Link className="navBarItem" to="/users">
             users
           </Link>
           {user === null ? (
@@ -230,6 +233,8 @@ const App = () => {
         </div>
         <div>
           <h2>Blogs</h2>
+          {blogForm()}
+          <hr className="solid"></hr>
           <Notification />
         </div>
         <Switch>

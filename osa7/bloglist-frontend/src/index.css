@@ -1,10 +1,52 @@
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, monospace;
 }
 
-.success{
-  color: green;
+body {
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: #f7fff7;
+}
+
+p,
+a {
+  font-family: source-code-pro, Menlo;
+  color: #1a535c;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5{
+  font-family: sans-serif;
+  color: #ff6b6b;
+}
+
+li{
+  list-style: none;
+}
+
+.genericBtn{
+  border-radius: 12px;
+  border-color: #ff6b6b;
+}
+
+.navBar {
+  display: flex;
+  flex-direction: row;
+}
+
+.navBarItem {
+  margin: 1%;
+}
+
+.success {
+  text-align: center;
+  color: #589405;
   text-decoration: dashed;
   background: lightgrey;
   font-size: 20px;
@@ -12,11 +54,22 @@ code {
   border-radius: 5px;
 }
 
-.failure{
+.failure {
+  text-align: center;
   color: red;
   text-decoration: dashed;
   background: lightgrey;
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
+}
+
+.toggable {
+  color: #4ecdc4;
+  border-style: double;
+  border-radius: 1px;
+}
+
+hr.solid {
+  border-top: 2px dotted #1a535c;
 }

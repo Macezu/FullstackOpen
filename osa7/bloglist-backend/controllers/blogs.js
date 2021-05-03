@@ -43,7 +43,6 @@ blogsRouter.post("/", userExtractor, async (request, response) => {
     const user = request.user
     if (body.title || body.url !== undefined) {
       const blog = new Blog({
-        comments : [],
         title: body.title,
         author: body.author,
         url: body.url,

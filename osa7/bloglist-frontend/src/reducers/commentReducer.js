@@ -14,7 +14,6 @@ const commentReducer = (state = [], action) => {
 }
 
 export const InitComments = (data) => {
-  console.log(data)
   return {
     type: "INITCOMMENTS",
     data : data

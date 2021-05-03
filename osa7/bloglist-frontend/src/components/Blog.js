@@ -55,13 +55,11 @@ export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked, commentFo
       </h2>
       <a href={blog.url}>{blog.url}</a>
       <br />
-      Likes: {blog.likes}{" "}
+      Likes: {blog.likes}
       <button style={btnStyle} onClick={() => handleLikeClicked(id)}>
-        likes
+        like
       </button>
-      <br />
-      {blog.user.name}
-      <br />
+      <p>{blog.user.name}</p>
       <button
         className="removeBlog"
         style={btnRStyle}
