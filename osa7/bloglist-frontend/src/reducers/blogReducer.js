@@ -15,6 +15,10 @@ const blogReducer = (state = [], action) => {
       const liked = action.data
       return state.map((a) => (a.id === liked.id ? liked : a))
     }
+    case "COMMENTED":{
+      console.log("HERE")
+      return state
+    }
     default:
       return state
   }
@@ -56,6 +60,16 @@ export const deleteBlog = (id) => {
     dispatch({
       type: "DELETEBLOG",
       id: id,
+      data: response
+    })
+  }
+}
+
+export const commentedBlog = () => {
+  return async (dispatch) => {
+    const response = await blogService.getAll()
+    dispatch({
+      type: "INIT",
       data: response
     })
   }

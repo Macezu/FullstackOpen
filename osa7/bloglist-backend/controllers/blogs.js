@@ -8,12 +8,12 @@ const logger = require("../utils/logger")
 const userExtractor = require("../utils/middleware").userExtractor
 const blog = require("../models/blog")
 
-blogsRouter.get("/all", async (request, response) => {
+blogsRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 }).populate("comments",{content:1})
   response.json(blogs.map((blog) => blog.toJSON()))
 })
 
-blogsRouter.get("/all/:id", async (request, response) => {
+blogsRouter.get("/:id", async (request, response) => {
   const blog = await Blog.findById(request.params.id)
   if (blog) {
     response.json(blog.toJSON())
@@ -43,6 +43,7 @@ blogsRouter.post("/", userExtractor, async (request, response) => {
     const user = request.user
     if (body.title || body.url !== undefined) {
       const blog = new Blog({
+        comments : [],
         title: body.title,
         author: body.author,
         url: body.url,
@@ -76,6 +77,12 @@ blogsRouter.delete("/:id", userExtractor, async (req, res) => {
   }
 })
 
+blogsRouter.get("/comments", async (request, response) => {
+  const comments = await Comment.find({}).populate("blog",{"title" : 1})
+  console.log(comments)
+  response.json(comments.map((blog) => blog.toJSON()))
+})
+
 blogsRouter.post("/:id/comments", async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id)
@@ -92,7 +99,7 @@ blogsRouter.post("/:id/comments", async (req, res) => {
       blog.comments = blog.comments.concat(savedComment._id)
       const savedBlog = await blog.save()
 
-      res.json(savedBlog.toJSON())
+      res.json(savedComment.toJSON())
     }
 
   } catch (error) {
@@ -100,10 +107,6 @@ blogsRouter.post("/:id/comments", async (req, res) => {
   }
 })
 
-blogsRouter.get("/comments", async (req,res)=> {
-  const comments = await Comment.find({}).populate("blog",{title :1})
-  console.log(comments)
-  res.json(comments.map((comment) => comment.toJSON()))
-})
+
 
 module.exports = blogsRouter

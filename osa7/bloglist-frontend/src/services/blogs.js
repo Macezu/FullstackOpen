@@ -9,7 +9,7 @@ const setToken = () => {
 }
 
 const getAll = () => {
-  const request = axios.get(`${baseUrl}/all`)
+  const request = axios.get(baseUrl)
   return request
     .then((response) => response.data)
     .catch((error) => console.log(error))
@@ -20,13 +20,6 @@ const create = async (newObject) => {
   return response.data
 }
 
-const getComments = () => {
-  const request = axios.get(`${baseUrl}/comments`)
-  return request.then((response) => {
-    console.log(`Response : ${response}`)
-    response.data
-  })
-}
 
 const comment = async (newObject) => {
   const response = await axios.post(
@@ -35,6 +28,7 @@ const comment = async (newObject) => {
   )
   return response.data
 }
+
 
 const update = async (id, newObject) => {
   const response = await axios.put(`${baseUrl}/${id}`, newObject, setToken())
@@ -48,7 +42,6 @@ const remove = async (id) => {
 
 export default {
   getAll,
-  getComments,
   create,
   update,
   setToken,

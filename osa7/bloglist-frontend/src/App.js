@@ -14,15 +14,14 @@ import {
   getBlogs,
   addNewBlog,
   updateBlog,
-  deleteBlog,
+  deleteBlog
 } from "./reducers/blogReducer"
-import { getComments, addComment } from "./reducers/commentReducer"
+import { addComment } from "./reducers/commentReducer"
 import { getAllUsers } from "./reducers/allUsersReducer"
 import { initUser, logInUser, logOutUser } from "./reducers/userReducer"
 import storage from "./utils/localstrg"
 import { useSelector, useDispatch } from "react-redux"
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
-
 
 const App = () => {
   const [username, setUsername] = useState("")
@@ -31,10 +30,8 @@ const App = () => {
   const [author, setAuthor] = useState("")
   const [comment, setComment] = useState("")
   const [url, setUrl] = useState("")
-
   const dispatch = useDispatch()
   const allBlogs = useSelector((state) => state.blog)
-  const allComments = useSelector((state) => state.comments)
   const allUsers = useSelector((state) => state.users)
   const user = useSelector((state) => state.user)
 
@@ -47,12 +44,6 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getBlogs())
-  }, [dispatch])
-
-
-  useEffect(() => {
-    dispatch(getComments)
-    console.log(allComments)
   }, [dispatch])
 
   useEffect(() => {
@@ -78,9 +69,9 @@ const App = () => {
     }
   }
 
-  const submitComment = (event,id) => {
+  const submitComment = (event, id) => {
     event.preventDefault()
-    const nComment = { content: comment, id : id }
+    const nComment = { content: comment, id: id }
     setComment("")
     dispatch(addComment(nComment))
   }
@@ -102,7 +93,6 @@ const App = () => {
 
   const addBlog = async (event) => {
     event.preventDefault()
-
     try {
       const newBlog = {
         title,
@@ -191,9 +181,9 @@ const App = () => {
   const commentForm = (id) => (
     <CommentForm
       comment={comment}
-      handleCommentChanged = {({ target }) => setComment(target.value)}
-      handleCommentSubmitted ={submitComment}
-      id = {id}
+      handleCommentChanged={({ target }) => setComment(target.value)}
+      handleCommentSubmitted={submitComment}
+      id={id}
     />
   )
 
@@ -218,7 +208,6 @@ const App = () => {
       ))}
     </div>
   )
-
 
   return (
     <div>

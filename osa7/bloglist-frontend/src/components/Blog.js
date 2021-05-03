@@ -1,6 +1,7 @@
-import React from "react"
-import { useSelector } from "react-redux"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import { Link, useParams } from "react-router-dom"
+import { InitComments } from "../reducers/commentReducer"
 
 
 
@@ -20,8 +21,16 @@ const Comment = ({ comment }) => {
 
 
 export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked, commentForm }) => {
-  const allBlogs = useSelector((state) => state.blog)
   const allComments = useSelector((state) => state.comments)
+  const allBlogs = useSelector((state) => state.blog)
+  const id = useParams().id
+  const blog = allBlogs.find((x) => x.id === id)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(InitComments(blog.comments))
+  }, [dispatch])
+
 
   const btnStyle = {
     borderRadius: 12,
@@ -34,11 +43,7 @@ export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked, commentFo
     backgroundColor: "#990f02"
   }
 
-  const id = useParams().id
-  const blog = allBlogs.find((x) => x.id === id)
-  const comments = allComments.filter((x) => x.blog === blog.id)
-  console.log(allComments)
-  console.log(comments)
+
   if (!allBlogs === null) {
     return null
   }
@@ -68,10 +73,10 @@ export const BlogDetailed = ({ handleLikeClicked, handleRemoveClicked, commentFo
         <br /> <br />
         <h4>Comments</h4>
         {commentForm(id)}
-        {comments === null ? (
+        {allComments === null ? (
           <br />
         ) : (
-          comments.map((comment) => (
+          allComments.map((comment) => (
             <li key={comment.id}>{commentsListed(comment)}</li>
           ))
         )}
