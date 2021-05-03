@@ -1,0 +1,20 @@
+{
+  "name": "librarybackend",
+  "version": "1.0.0",
+  "description": "Simple Library backend using GraphQL",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "npm test"
+  },
+  "keywords": [
+    "GraphQL",
+    "Apollo"
+  ],
+  "author": "Marco Peciola",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.24.0",
+    "graphql": "^15.5.0"
+  }
+}
