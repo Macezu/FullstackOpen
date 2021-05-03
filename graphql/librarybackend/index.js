@@ -1,5 +1,5 @@
-const { ApolloServer, UserInputError, gql } = require('apollo-server')
-const { v1: uuid } = require('uuid')
+const { ApolloServer, UserInputError, gql } = require("apollo-server")
+const { v1: uuid } = require("uuid")
 
 let authors = [
   {
@@ -85,35 +85,40 @@ let books = [
 ]
 
 const typeDefs = gql`
-    type Author {
-        name : String!,
-        born : Int,
-        id : ID!,
-        bookCount : Int,
-    }
+  type Author {
+    name: String!
+    born: Int
+    id: ID!
+    bookCount: Int
+  }
 
-    type Book{
-        title : String!,
-        published : Int!,
-        author : String!,
-        id : ID!,
-        genres : [String!]!
-    }
-    type Query {
-        authorCount : Int!,
-        bookCount : Int!,
-        allBooks : [Book!]! ,
-        allAuthors : [Author!]!,
-    }
+  type Book {
+    title: String!
+    published: Int!
+    author: String!
+    id: ID!
+    genres: [String!]!
+  }
+  type Query {
+    authorCount: Int!
+    bookCount: Int!
+    allBooks(author: String): [Book!]!
+    allAuthors: [Author!]!
+  }
 `
 
 const resolvers = {
   Query: {
-      authorCount : () => authors.length,
-      bookCount : () => books.length,
-      allBooks : () => books,
-      allAuthors : () => authors,
+    authorCount: () => authors.length,
+    bookCount: () => books.length,
+    allBooks: (root, args) => (
+       !args ? books : books.filter((a) => a.author === args.author)
+    ),
+    allAuthors: () => authors
   },
+  Author: {
+    bookCount: (root) => books.filter((x) => x.author === root.name).length
+  }
 }
 
 const server = new ApolloServer({
