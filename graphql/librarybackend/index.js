@@ -1,12 +1,12 @@
 const { ApolloServer, UserInputError, gql } = require("apollo-server")
-const config = require('../utils/config')
+const config = require('./utils/config')
 const mongoose = require('mongoose')
-const Book = require('../models/Book')
-const Author = require('../models/Author')
+const Book = require('./models/Book')
+const Author = require('./models/Author')
 const { v1: uuid } = require("uuid")
 
 
-console.log('connecting to', MONGODB_URI)
+console.log('connecting to', config.MONGODB_URI)
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(() => {
