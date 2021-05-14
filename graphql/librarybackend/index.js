@@ -66,17 +66,15 @@ const resolvers = {
       if (Object.keys(args).includes("genre"))
         return Book.find({ genres: { $in: [args.genre] } })
       //books.filter((a) => a.genres.includes(args.genre))
-      else {
-        let books = Book.find({})
-        return books
-      }
+      return Book.find({})
     },
     allAuthors: () => Author.find({})
   },
   Book: {
-    author: (root) => {
-      const author = Author.findById({ name: root.author })
+    author: async (root) => {
+      const author =  await Author.findById(root.author)
       console.log(author)
+      console.log(author.name)
       return {
         name: author.name,
         born: author.born
@@ -91,8 +89,7 @@ const resolvers = {
       const book = new Book({ ...args })
       let nAuthor = await Author.findOne({ name: args.author })
       if (!nAuthor) {
-        nAuthor = new Author({ name: args.author })
-        console.log(nAuthor)
+        nAuthor = new Author({ name: args.author, born: args.born || null })
         try {
           await nAuthor.save()
         } catch (error) {
@@ -104,6 +101,7 @@ const resolvers = {
       }
       try {
         book.author = nAuthor._id
+        console.log(book)
         await book.save()
       } catch (error) {
         throw new UserInputError(error.message, {
