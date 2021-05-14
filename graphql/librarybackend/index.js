@@ -82,7 +82,7 @@ const resolvers = {
     }
   },
   Author: {
-    bookCount: (root) => Book.find({ author: root.name }).countDocuments() //books.filter((x) => x.author === root.name).length
+    bookCount: (root) => Book.find({ author: root._id }).countDocuments() || 0 //books.filter((x) => x.author === root.name).length
   },
   Mutation: {
     addBook: async (root, args) => {
