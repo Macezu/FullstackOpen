@@ -10,8 +10,8 @@ import { ALL_AUTHORS, ALL_BOOKS } from "./components/queries"
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
-  const authors = useQuery(ALL_AUTHORS,{pollInterval: 2000})
-  const books = useQuery(ALL_BOOKS,{pollInterval: 2000})
+  const authors = useQuery(ALL_AUTHORS,{pollInterval: 7000})
+  const books = useQuery(ALL_BOOKS,{pollInterval: 7000})
   const client = useApolloClient()
 
   if (authors.loading || books.loading){
