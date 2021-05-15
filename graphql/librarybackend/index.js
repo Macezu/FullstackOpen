@@ -1,4 +1,4 @@
-const { ApolloServer, UserInputError, gql } = require("apollo-server")
+const { ApolloServer, UserInputError, AuthenticationError, gql } = require("apollo-server")
 const config = require("./utils/config")
 const mongoose = require("mongoose")
 const Book = require("./models/Book")
@@ -183,7 +183,7 @@ const resolvers = {
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
-
+      console.log(`USER ${user}`)
       if (!user || args.password !== "secret") {
         throw new UserInputError("wrong credentials")
       }
