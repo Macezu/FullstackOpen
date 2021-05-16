@@ -1,25 +1,42 @@
 import React, { useState, useEffect } from "react"
-//import { useLazyQuery } from "@apollo/client"
-//import { ALL_BOOKS } from "./queries"
+import { useLazyQuery } from "@apollo/client"
+import { FILTERED_BOOKS } from "./queries"
 
-const Genre = ({ genre }) => {
-  return <button onClick={"// Tänne uus queryhaku"}>genre</button>
+const Genres = ({ genres, setFilter }) => {
+  const buttonGenres = []
+  for (let value of genres.values()) {
+    buttonGenres.push(
+      <button key={value} onClick={() => setFilter(value)}>
+        {value}
+      </button>
+    )
+  }
+  return buttonGenres
 }
 
 const Books = ({ show, books }) => {
-  const [filter, setFilter] = useState(null)
+  const [book, setBooks] = useState(books)
+  const [getFiltered, result] = useLazyQuery(FILTERED_BOOKS)
+
+  const setFilter = (genre) => {
+    getFiltered({ variables: { genrefilter: genre } })
+  }
 
   useEffect(() => {
-    console.log(filter)
-  }, [setFilter]) // eslint-disable-line
+    if (result.data) {
+      setBooks(result.data.allBooks)
+    }
+  }, [result])
 
   if (!show) {
     return null
   }
 
-  const genres = new Set(books.map((b) => b.genres).flat())
+  if (getFiltered.loading){
+    return <div>filtering...</div>
+  }
 
-  console.log(genres)
+  const genres = new Set(books.map((b) => b.genres).flat())
 
   return (
     <div>
@@ -32,7 +49,7 @@ const Books = ({ show, books }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
+          {book.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -41,12 +58,9 @@ const Books = ({ show, books }) => {
           ))}
         </tbody>
       </table>
-      <ul>
-      {genres.forEach(a =>
-        <li key={TÄMÄ}><Genre genre={a}/></li>
-      )}
-        
-      </ul>
+      <div>
+        <Genres genres={genres} setFilter={setFilter} />
+      </div>
     </div>
   )
 }

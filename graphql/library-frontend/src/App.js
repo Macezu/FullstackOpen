@@ -4,7 +4,8 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from "./components/Login"
-import { ALL_AUTHORS, ALL_BOOKS } from "./components/queries"
+import Preferred from "./components/Preferred"
+import { ALL_AUTHORS, ALL_BOOKS, ME } from "./components/queries"
 
 
 const App = () => {
@@ -12,10 +13,11 @@ const App = () => {
   const [token, setToken] = useState(null)
   const authors = useQuery(ALL_AUTHORS,{pollInterval: 7000})
   const books = useQuery(ALL_BOOKS,{pollInterval: 7000})
+  const user = useQuery(ME)
   const client = useApolloClient()
 
-  if (authors.loading || books.loading){
-    return <div>loading...</div>
+  if (authors.loading || books.loading || user.loading){
+    return <div>loading site...</div>
   }
 
   const logout = () =>{
@@ -60,6 +62,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => setPage('preferred')}>preferred</button>
         <button onClick={() => logout()}>log out</button>
       </div>
 
@@ -75,6 +78,11 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+      />
+
+      <Preferred
+        show={page === 'preferred'}
+        user = {user}
       />
     </div>
   )
