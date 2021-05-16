@@ -1,10 +1,17 @@
-const { ApolloServer, UserInputError, AuthenticationError, gql } = require("apollo-server")
+const {
+  ApolloServer,
+  UserInputError,
+  AuthenticationError,
+  gql
+  PubSub
+} = require("apollo-server")
 const config = require("./utils/config")
 const mongoose = require("mongoose")
 const Book = require("./models/Book")
 const Author = require("./models/Author")
 const User = require("./models/User")
 const jwt = require("jsonwebtoken")
+const pubsub = new PubSub()
 
 const JWT_SECRET = "NEED_HERE_A_SECRET_KEY"
 
@@ -59,6 +66,10 @@ const typeDefs = gql`
     me: User
   }
 
+  type Subscription {
+    bookAdded: Book!
+  }
+
   type Mutation {
     addBook(
       title: String!
@@ -105,11 +116,12 @@ const resolvers = {
   Author: {
     bookCount: (root) => Book.find({ author: root._id }).countDocuments() || 0 //books.filter((x) => x.author === root.name).length
   },
+
   Mutation: {
     addBook: async (root, args, context) => {
       const currentUser = context.currentUser
-      if (!currentUser) {      
-        throw new AuthenticationError("not authenticated")    
+      if (!currentUser) {
+        throw new AuthenticationError("not authenticated")
       }
 
       const book = new Book({ ...args })
@@ -132,14 +144,16 @@ const resolvers = {
           invalidArgs: args
         })
       }
+
+      pubsub.publish('BOOK_ADDED', { bookAdded: book })
       return book
     },
     editAuthor: async (root, args, context) => {
       const currentUser = context.currentUser
-      if (!currentUser) {     
-       throw new AuthenticationError("not authenticated")    
+      if (!currentUser) {
+        throw new AuthenticationError("not authenticated")
       }
-      
+
       const author = await Author.findOne({ name: args.name })
       if (!author) {
         return null
@@ -154,6 +168,7 @@ const resolvers = {
       }
       return author
     },
+
     addAuthor: async (root, args) => {
       let author = await Author.findOne({ author: args.name })
       if (!author) {
@@ -169,6 +184,7 @@ const resolvers = {
       }
       return author
     },
+
     createUser: (root, args) => {
       const user = new User({
         username: args.username,
@@ -181,6 +197,7 @@ const resolvers = {
         })
       })
     },
+
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
       console.log(`USER ${user}`)
@@ -194,7 +211,13 @@ const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, JWT_SECRET) }
-    }
+    },
+    
+    Subscription: {    
+      bookAdded: {      
+        subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])    
+      },  
+    },
   }
 }
 
