@@ -2,7 +2,7 @@ const {
   ApolloServer,
   UserInputError,
   AuthenticationError,
-  gql
+  gql,
   PubSub
 } = require("apollo-server")
 const config = require("./utils/config")
@@ -116,6 +116,11 @@ const resolvers = {
   Author: {
     bookCount: (root) => Book.find({ author: root._id }).countDocuments() || 0 //books.filter((x) => x.author === root.name).length
   },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(["BOOK_ADDED"])
+    }
+  },
 
   Mutation: {
     addBook: async (root, args, context) => {
@@ -145,9 +150,10 @@ const resolvers = {
         })
       }
 
-      pubsub.publish('BOOK_ADDED', { bookAdded: book })
+      pubsub.publish("BOOK_ADDED", { bookAdded: book })
       return book
     },
+    
     editAuthor: async (root, args, context) => {
       const currentUser = context.currentUser
       if (!currentUser) {
@@ -211,13 +217,7 @@ const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, JWT_SECRET) }
-    },
-    
-    Subscription: {    
-      bookAdded: {      
-        subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])    
-      },  
-    },
+    }
   }
 }
 
@@ -234,6 +234,7 @@ const server = new ApolloServer({
   }
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })

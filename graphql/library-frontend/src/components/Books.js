@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useLazyQuery } from "@apollo/client"
-import { FILTERED_BOOKS, ALL_BOOKS } from "./queries"
+import { FILTERED_BOOKS } from "./queries"
 
 const Genres = ({ genres, setFilter }) => {
   const buttonGenres = []
