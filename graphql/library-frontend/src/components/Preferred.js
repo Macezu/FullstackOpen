@@ -2,7 +2,7 @@ import { useLazyQuery } from "@apollo/client"
 import { FILTERED_BOOKS } from "./queries"
 import React, { useState, useEffect } from "react"
 
-const Preferred = ({ user }) => {
+const Preferred = ({ show, user }) => {
   const [getPref, result] = useLazyQuery(FILTERED_BOOKS)
   const [books, setBooks] = useState(null)
 
@@ -23,8 +23,13 @@ const Preferred = ({ user }) => {
     }
   }, [result]) // eslint-disable-line
 
+  if (!show) {
+    return null
+  }
+
   if (!books) return <div>loading user profile...</div>
-  if (!user.data.me.favoriteGenre) return <div>You have not set a favorite genre</div>
+  if (!user.data.me.favoriteGenre)
+    return <div>You have not set a favorite genre</div>
 
   return (
     <div>

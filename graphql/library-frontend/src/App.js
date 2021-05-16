@@ -11,8 +11,8 @@ import { ALL_AUTHORS, ALL_BOOKS, ME } from "./components/queries"
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
-  const authors = useQuery(ALL_AUTHORS,{pollInterval: 7000})
-  const books = useQuery(ALL_BOOKS,{pollInterval: 7000})
+  const authors = useQuery(ALL_AUTHORS,{pollInterval: 5000})
+  const books = useQuery(ALL_BOOKS,{pollInterval: 5000})
   const user = useQuery(ME)
   const client = useApolloClient()
 
