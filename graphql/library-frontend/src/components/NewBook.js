@@ -12,7 +12,6 @@ const NewBook = ({show, updateCacheWith}) => {
   const [createBook] = useMutation(CREATE_BOOK, {
     onError: (error) => {
       console.log(error)
-      alert(`createbookError: ${error.message}`)
     },
     update: (store, response) => {
       updateCacheWith(response.data.addPerson)    }

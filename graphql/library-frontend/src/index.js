@@ -17,12 +17,13 @@ import { getMainDefinition } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    console.log('graphQLErrors', graphQLErrors);
-  }
-  if (networkError) {
-    console.log('networkError', networkError);
-  }
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -39,7 +40,8 @@ const httpLink = new HttpLink({ uri: 'http://localhost:4000/' })
 
 const wsLink = new WebSocketLink({  
   uri: 'ws://localhost:4000/graphql',  
-  options: {    reconnect: true  
+  options: {    
+    reconnect: true  
   }
 })
 
@@ -58,7 +60,7 @@ const splitLink = split(
 const link = ApolloLink.from([errorLink, splitLink]);
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({}),
   link
 })
 
