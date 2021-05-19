@@ -1,0 +1,16 @@
+{
+  "name": "bmicalc",
+  "version": "1.0.0",
+  "description": "Bmi Calculator using TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "Bmi",
+    "TS",
+    "typescript"
+  ],
+  "author": "Marco Peciola",
+  "license": "ISC"
+}
