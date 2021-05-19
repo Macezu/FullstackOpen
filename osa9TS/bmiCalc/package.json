@@ -4,6 +4,8 @@
   "description": "Bmi Calculator using TypeScript",
   "main": "index.js",
   "scripts": {
+    "ts-node": "ts-node",
+    "start": "npm run ts-node -- bmiCalculator.ts",
     "test": "npm test"
   },
   "keywords": [
@@ -12,5 +14,9 @@
     "typescript"
   ],
   "author": "Marco Peciola",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  }
 }
