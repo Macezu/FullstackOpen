@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "ts-node": "ts-node",
-    "start": "npm run ts-node -- bmiCalculator.ts",
-    "test": "npm test"
+    "bmi": "ts-node -- bmiCalculator.ts",
+    "exercise": "ts-node -- exerciseCalculator.ts"
   },
   "keywords": [
     "Bmi",
@@ -16,6 +16,7 @@
   "author": "Marco Peciola",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^15.3.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
   }
