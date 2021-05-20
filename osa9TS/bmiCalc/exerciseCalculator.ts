@@ -11,24 +11,26 @@ interface Result {
 const calculateExercises = (arr: Array<number>, target: number): Result => {
 
     let avg = arr.reduce((a, b) => a + b) / arr.length
-    console.log(avg)
 
     const metric = (target - avg)
-    console.log(metric)
     let rating: number
+    let desc : string;
+
     if (metric >= 5) { rating = 1 }
     else if (metric <= 0) { rating = 3 }
     else { rating = 2 }
 
-    let desc : string;
-    switch (metric) {
+    
+    switch (rating) {
         case 1:
             desc = "Terrible job, im dissapointed";
             break;
         case 2:
-            desc = "not too bad, but next week we can do better!"
+            desc = "not too bad, but next week we can do better!";
+            break;
         case 3:
-            desc = "you are the ultimate fitness god"
+            desc = "you are the ultimate fitness god";
+            break;
         default:
             desc = "what is dis"
             break;
@@ -50,8 +52,7 @@ const calculateExercises = (arr: Array<number>, target: number): Result => {
 }
 
 try {
-    calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2)
-    //TODO(h, w);
+    console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
 } catch (e) {
     console.log('Error, something bad happened, message: ', e.message);
 }
