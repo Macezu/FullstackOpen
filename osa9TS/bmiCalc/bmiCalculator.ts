@@ -1,7 +1,26 @@
+interface MassValues {
+    value1: number;
+    value2: number;
+  }
+
+
+const parseArguments = (args: Array<string>): MassValues => {
+    if (args.length < 4) throw new Error('Not enough arguments');
+    if (args.length > 4) throw new Error('Too many arguments');
+  
+    if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+      return {
+        value1: Number(args[2]),
+        value2: Number(args[3])
+      }
+    } else {
+      throw new Error('Provided values were not numbers!');
+    }
+  }
+
 
 const calculateBmi = (h: number, w: number): string => {
     const bmi: number = w / ((h / 100) * (h / 100))
-    console.log(bmi)
     if (bmi >= 40) { return "Obese Class III (Very severely obese)" }
     else if (bmi >= 35) { return "Obese Class II (Severely obese)" }
     else if (bmi >= 30) { return "Obese Class I (Moderately obese)" }
@@ -16,7 +35,8 @@ const calculateBmi = (h: number, w: number): string => {
 
 
 try {
-    console.log(calculateBmi(180, 74));
+    const { value1, value2 } = parseArguments(process.argv);
+    console.log(calculateBmi(value1, value2));
 } catch (e) {
     console.log('Error, something bad happened, message: ', e.message);
 }
