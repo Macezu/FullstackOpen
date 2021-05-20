@@ -15,10 +15,9 @@ interface argsArray{
 }
 
 const handleArguments = (args: Array<string>): argsArray => {
-    if (args.length < 3) throw new Error('Not enough arguments');
-    const newArgs : Array<string> = args.slice(0,-1)
-    const targetn = Number(args[args.length-1])
-    console.log(newArgs.every(x => (Number(x))))
+    if (args.length < 5) throw new Error('Not enough arguments');
+    const newArgs : Array<string> = args.slice(3)
+    const targetn = Number(args[2])
     if (newArgs.every(x => (!isNaN(Number(x)))) && !isNaN(Number(targetn))) {
         return {
             arr : newArgs.map(x => Number(x)),
