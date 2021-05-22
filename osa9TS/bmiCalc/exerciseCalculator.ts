@@ -28,7 +28,7 @@ const handleArguments = (args: Array<string>): argsArray => {
     }
 }
 
-const calculateExercises = (arr: Array<number>, target: number): Result => {
+const calculateExercises = (arr: Array<number>, target: number): Result | string => {
     let rating: number
     let desc: string;
 
@@ -67,7 +67,7 @@ const calculateExercises = (arr: Array<number>, target: number): Result => {
         return result
 
     } catch (error) {
-
+        return (error.message)
     }
 
 }
