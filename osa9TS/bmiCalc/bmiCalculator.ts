@@ -1,3 +1,5 @@
+
+
 interface MassValues {
     value1: number;
     value2: number;
@@ -19,7 +21,7 @@ const parseArguments = (args: Array<string>): MassValues => {
   }
 
 
-const calculateBmi = (h: number, w: number): string => {
+export const calculateBmi = (h: number, w: number): string => {
     const bmi: number = w / ((h / 100) * (h / 100))
     if (bmi >= 40) { return "Obese Class III (Very severely obese)" }
     else if (bmi >= 35) { return "Obese Class II (Severely obese)" }
