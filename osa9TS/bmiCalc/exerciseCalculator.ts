@@ -16,28 +16,28 @@ interface argsArray{
 
 const handleArguments = (args: Array<string>): argsArray => {
     if (args.length < 5) throw new Error('Not enough arguments');
-    const newArgs : Array<string> = args.slice(3)
-    const targetn = Number(args[2])
+    const newArgs : Array<string> = args.slice(3);
+    const targetn = Number(args[2]);
     if (newArgs.every(x => (!isNaN(Number(x)))) && !isNaN(Number(targetn))) {
         return {
             arr : newArgs.map(x => Number(x)),
             target : targetn
-        }
+        };
     } else {
         throw new Error('Provided values were not numbers!');
     }
-}
+};
 
-const calculateExercises = (arr: Array<number>, target: number): Result | string => {
-    let rating: number
+export const calculateExercises = (arr: Array<number>, target: number): Result  | unknown => {
+    let rating: number;
     let desc: string;
 
     try {
-        let avg = arr.reduce((a, b) => a + b) / arr.length
-        const metric = (arr[arr.length] - avg)
-        if (metric >= 5) { rating = 1 }
-        else if (metric <= 0) { rating = 3 }
-        else { rating = 2 }
+        const avg = arr.reduce((a, b) => a + b) / arr.length;
+        const metric = (arr[arr.length] - avg);
+        if (metric >= 5) { rating = 1; }
+        else if (metric <= 0) { rating = 3; }
+        else { rating = 2; }
 
         switch (rating) {
             case 1:
@@ -50,11 +50,11 @@ const calculateExercises = (arr: Array<number>, target: number): Result | string
                 desc = "you are the ultimate fitness god";
                 break;
             default:
-                desc = "what is dis"
+                desc = "what is dis";
                 break;
         }
 
-        let result: Result = {
+        const result: Result = {
             "periodLength": arr.length,
             "trainingDays": arr.filter(v => v > 0).length,
             "success": (avg >= target),
@@ -62,19 +62,19 @@ const calculateExercises = (arr: Array<number>, target: number): Result | string
             "ratingDescription": desc,
             "target": target,
             "average": avg,
-        }
+        };
 
-        return result
+        return result;
 
     } catch (error) {
-        return (error.message)
+        return (error);
     }
 
-}
+};
 
 try {
-    const { arr, target } = handleArguments(process.argv)
-    console.log(calculateExercises(arr, target))
+    const { arr, target } = handleArguments(process.argv);
+    console.log(calculateExercises(arr, target));
 } catch (e) {
-    console.log('Error, something bad happened, message: ', e.message);
+    console.log('Error, something bad happened, message: ', e);
 }

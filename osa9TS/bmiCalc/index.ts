@@ -1,6 +1,12 @@
-import express from "express"
-import { calculateBmi } from "./bmiCalculator"
+import express from "express";
+import { calculateBmi } from "./bmiCalculator";
+import { calculateExercises } from "./exerciseCalculator";
 const app = express();
+app.use(express.json());
+
+app.get('/', (_req, res) => {
+    res.send('Welcome Stranger!');
+});
 
 
 app.get('/hello', (_req, res) => {
@@ -13,9 +19,9 @@ app.get('/bmi', (req, res) => {
         const values = {
             height: Number(req.query.height),
             weight: Number(req.query.weight)
-        }
+        };
 
-        const desc: string = calculateBmi(values.height, values.weight)
+        const desc: string = calculateBmi(values.height, values.weight);
 
         res.json({
             ...values,
@@ -24,6 +30,19 @@ app.get('/bmi', (req, res) => {
 
     } else {
         res.json({ error: "malformatted parameters" });
+    }
+
+});
+
+app.post('/exercises', (req, res) => {
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (req.body.daily_exercises && req.body.target){
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const { daily_exercises, target } = req.body;
+        res.json(calculateExercises(daily_exercises, target));
+    } else {
+        res.json({ error: "parameters missing" });
     }
 
 });
