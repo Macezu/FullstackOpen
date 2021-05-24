@@ -6,3 +6,5 @@ export interface PatientEntry{
     "gender": string;
     "occupation": string;
 }
+
+export type NSPatientEntry = Omit<PatientEntry, 'ssn'>;
