@@ -13,4 +13,10 @@ router.post('/', (_req, res) => {
   res.send(patientorService.getDiagnoses());
 });
 
+router.get("/:id", (req,res) =>{
+    console.log(`Looking for ID: ${req.params.id}`)
+    const diagnose = patientorService.getDiagnoseWithCode(req.params.id);
+    return (diagnose) ? res.send(diagnose) : res.status(404); 
+})
+
 export default router;
