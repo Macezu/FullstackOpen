@@ -1,13 +1,17 @@
 import { Gender, NewPatientEntry } from "../types/PatientEntry";
 
-const handleEntry = (object: unknown): NewPatientEntry => {
-    const newPatient = ({
-        "name": parseName(object.name),
-        "dateOfBirth": object.dateOfBirth,
-        "ssn": object.ssn,
-        "gender": object.gender,
-        "occupation": object.occupation
-    })
+type Fields = { name : unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
+
+
+const handleEntry = ({name,dateOfBirth,ssn,gender,occupation} : Fields): NewPatientEntry => {
+    const newPatient : NewPatientEntry = {
+        name: parseString(name),
+        dateOfBirth: parseString(dateOfBirth),
+        ssn: parseString(ssn),
+        gender: parseEnum(gender),
+        occupation: parseString(occupation)
+    };
+    
     console.log('Saving a patient, no pun intended!');
     return newPatient
 }
@@ -23,7 +27,7 @@ const isGender = (param: any): param is Gender => {
 };
 
 
-const parseName = (name: unknown): string => {
+const parseString = (name: unknown): string => {
     if (!name || !isString(name)) {
         throw new Error('Incorrect or missing name');
     }
@@ -32,7 +36,7 @@ const parseName = (name: unknown): string => {
 
 const parseEnum = (gender: unknown): Gender => {
     if (!gender || !isGender(gender)) {
-        throw new Error('Incorrect or missing name');
+        throw new Error('Incorrect gender');
     }
     return gender;
 }

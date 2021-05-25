@@ -1,5 +1,5 @@
 import handleNewPatient from "../utilities/handleNewEntry"
-import { NewPatientEntry, PatientEntry } from "../types/PatientEntry"
+import { PatientEntry } from "../types/PatientEntry"
 
 const data =[
     {
@@ -44,7 +44,7 @@ const data =[
     }
 ]
 
-const diaryEntries: NewPatientEntry [] = data.map(obj => {
+const diaryEntries: PatientEntry [] = data.map(obj => {
     const object = handleNewPatient(obj) as PatientEntry;
     object.id = obj.id;
     return object;

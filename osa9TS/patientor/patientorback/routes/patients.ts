@@ -11,8 +11,8 @@ router.get('/', (_req, res) => {
 router.post('/', (req, res) => {
     try {
         const newPatient = handleEntry(req.body)
-        patientorService.addPatient(newPatient)
-        res.json(newPatient)
+        const addedPatient = patientorService.addPatient(newPatient)
+        res.json(addedPatient)
     } catch (error) {
         res.status(404).send(error.message)
     }
