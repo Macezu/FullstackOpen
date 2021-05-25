@@ -1,4 +1,7 @@
-[
+import handleNewPatient from "../utilities/handleNewEntry"
+import { NewPatientEntry, PatientEntry } from "../types/PatientEntry"
+
+const data =[
     {
         "id": "d2773336-f723-11e9-8f0b-362b9e155667",
         "name": "John McClane",
@@ -40,3 +43,11 @@
         "occupation": "Digital evangelist"
     }
 ]
+
+const diaryEntries: NewPatientEntry [] = data.map(obj => {
+    const object = handleNewPatient(obj) as PatientEntry;
+    object.id = obj.id;
+    return object;
+  });
+  
+  export default diaryEntries;

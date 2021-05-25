@@ -1,8 +1,8 @@
 import diagnoseData from "../data/diagnoses.json";
-import patientsData from "../data/patients.json";
+import patientsData from "../data/patients";
 import { generateId } from "../utilities/idGenerator"
 import { DiagnoseEntry } from "../types/DiagnoseEntry";
-import { NSPatientEntry, PatientEntry, NewPatientEntry } from "../types/PatientEntry";
+import { NSPatientEntry,  NewPatientEntry } from "../types/PatientEntry";
 
 const diagnoses: Array<DiagnoseEntry> = diagnoseData as Array<DiagnoseEntry>;
 

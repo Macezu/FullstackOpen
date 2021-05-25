@@ -3,8 +3,14 @@ export interface PatientEntry{
     "name": string;
     "dateOfBirth": string;
     "ssn": string;
-    "gender": string;
+    "gender": Gender;
     "occupation": string;
+}
+
+export enum Gender{
+    Male = "male",
+    Female = "female",
+    Unknown = "unknown"
 }
 
 export type NSPatientEntry = Omit<PatientEntry, 'ssn'>;

@@ -1,5 +1,6 @@
 import express from 'express';
 import patientorService from '../services/patientorService';
+import handleEntry from '../utilities/handleNewEntry';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
@@ -8,21 +9,12 @@ router.get('/', (_req, res) => {
 });
 
 router.post('/', (req, res) => {
-    
     try {
-        const { name, dateOfBirth, ssn, gender, occupation } = req.body;
-        const newPatient = patientorService.addPatient({
-            name,
-            dateOfBirth,
-            ssn,
-            gender,
-            occupation
-        })
-        console.log('Saving a patient, no pun intended!');
-        res.send(newPatient)
-
+        const newPatient = handleEntry(req.body)
+        patientorService.addPatient(newPatient)
+        res.json(newPatient)
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(404).send(error.message)
     }
 
 });
