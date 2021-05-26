@@ -1,4 +1,5 @@
 import React from "react"
+import { Part } from "./part"
 
 interface Exercises{
     name : string,
