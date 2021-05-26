@@ -4,11 +4,11 @@ interface Parts{
     exerciseCount : number
 }
 
-const Footer = ({courseParts} : Array<Parts>) => {
+const Footer = ({courseParts} : {courseParts : Array<Parts>}) => {
   return (
     <div>
       <p>
-        Number of exercises
+        Number of exercises{" "}
         {courseParts.reduce((carry, part) => carry + part.exerciseCount, 0)}
       </p>
     </div>
