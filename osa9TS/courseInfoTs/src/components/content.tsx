@@ -1,12 +1,9 @@
 import React from "react"
 import { Part } from "./part"
 
-interface Exercises{
-    name : string,
-    exerciseCount : number
-}
 
-const Content = ({courseParts}: {courseParts: Array<Exercises>}) => {
+
+const Content = ({courseParts}: {courseParts: Array<Part>}) => {
   return (
     <div>
       <p>
