@@ -13,11 +13,13 @@ export const Part = ({ courseParts} : {courseParts: Array<CoursePart>} ) => {
     {courseParts.map(part => {
       switch (part.type) {
         case "normal":
-          return <p key={part.name} >{part.name}, {part.exerciseCount}, {part.description}</p> 
+          return <p key={part.name} >{part.name}, {part.exerciseCount}. {part.description}</p> 
         case "groupProject":
-          return  <p key={part.name} >{part.name}, {part.exerciseCount}, {part.groupProjectCount}</p>
+          return  <p key={part.name} >{part.name}, {part.exerciseCount}. {part.groupProjectCount}</p>
         case "submission":
-          return <p key={part.name} >{part.name}, {part.exerciseCount}, {part.description}, {part.exerciseSubmissionLink}</p>
+          return <p key={part.name} >{part.name}, {part.exerciseCount}. <i>{part.description}</i>. Submit to: {part.exerciseSubmissionLink}</p>
+        case "special":
+          return <p key={part.name}>{part.name} {part.exerciseCount} {part.description}. required skills: {part.requirements.join(", ")}</p>
         default:
           return assertNever(part) ;
       }
