@@ -27,7 +27,11 @@ const getPatients = (): NSPatientEntry[] => {
 };
 
 const getPatientWithId = (_id: string) : NSPatientEntry | undefined => {
-    return patientsSFW.find(x => x.id = _id);
+    const patient = patientsSFW.find(x => x.id = _id);
+    if (patient !== undefined){
+        patient.entries = []
+    }
+    return patient
 }
 
 const addPatient = ( patient : NewPatientEntry) : NSPatientEntry | undefined => {
