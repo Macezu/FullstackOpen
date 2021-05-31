@@ -1,12 +1,14 @@
 import React from "react";
 import axios from "axios";
 import { Container, Table, Button } from "semantic-ui-react";
-import DetailedPatient from "./detailed";
+
+import HealthRatingBar from "../components/HealthRatingBar";
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
+import { Link } from "react-router-dom";
 
 const PatientListPage = () => {
   const [{ patients }, dispatch] = useStateValue();
@@ -49,7 +51,19 @@ const PatientListPage = () => {
             <Table.HeaderCell>Health Rating</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-        <DetailedPatient patients={patients}/>
+          {Object.values(patients).map((patient: Patient) => (
+            <Table.Row key={patient.id}>
+              <Table.Cell>
+                <Link to={`/patients/${patient.id}`}>{patient.name}</Link>
+              </Table.Cell>
+
+              <Table.Cell>{patient.gender}</Table.Cell>
+              <Table.Cell>{patient.occupation}</Table.Cell>
+              <Table.Cell>
+                <HealthRatingBar showText={false} rating={1} />
+              </Table.Cell>
+            </Table.Row>
+          ))}
       </Table>
       <AddPatientModal
         modalOpen={modalOpen}
