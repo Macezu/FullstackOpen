@@ -19,6 +19,8 @@ export enum Gender{
     Unknown = "unknown"
 }
 
+export type FullPatientEntry = PatientEntry
+
 export type NSPatientEntry = Omit<PatientEntry, 'ssn'>;
 
 export type NewPatientEntry = Omit<PatientEntry, 'id' | "entries">;

@@ -1,14 +1,28 @@
 import React from "react";
-import { Patient } from "../types";
-import HealthRatingBar from "../components/HealthRatingBar";
-import { Table } from "semantic-ui-react";
+import { useParams } from "react-router-dom";
+import { Icon } from "semantic-ui-react";
+import { useStateValue } from "../state";
 
-const DetailedPatient : React.FC<Patient> = (patient : Patient) => {
-    return (
-      <div>
-        
-      </div>
-    );
+const DetailedPatient = () => {
+  const [{ patients }] = useStateValue();
+  const { id } = useParams<{ id: string }>();
+  const patient = Object.values(patients).find((p) => p.id === id);
+
+
+  return (
+    <div>
+      <h2>{patient?.name} {patient?.gender === "male" ? (
+              <Icon size="small" name="mars" />
+            ) : patient?.gender === "female" ? (
+              <Icon size="small" name="venus" />
+            ) : (
+              <Icon size="small" name="genderless" />
+            )}</h2>
+      
+      <p>ssn: {patient?.ssn}</p>
+      <p>occupation: {patient?.occupation}</p>
+    </div>
+  );
 };
 
 export default DetailedPatient;

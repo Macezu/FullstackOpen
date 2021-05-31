@@ -2,11 +2,13 @@ import diagnoseData from "../data/diagnoses.json";
 import patientsData from "../data/patients";
 import { generateId } from "../utilities/idGenerator"
 import { DiagnoseEntry } from "../types/DiagnoseEntry";
-import { NSPatientEntry,  NewPatientEntry } from "../types/PatientEntry";
+import { NSPatientEntry,  NewPatientEntry, PatientEntry, FullPatientEntry } from "../types/PatientEntry";
 
 const diagnoses: Array<DiagnoseEntry> = diagnoseData as Array<DiagnoseEntry>;
 
 let patientsSFW: NSPatientEntry[] = patientsData as NSPatientEntry[];
+
+let patients: PatientEntry[] = patientsData as PatientEntry[];
 
 const getDiagnoses = (): Array<DiagnoseEntry> => {
     return diagnoses;
@@ -26,11 +28,12 @@ const getPatients = (): NSPatientEntry[] => {
     }));
 };
 
-const getPatientWithId = (_id: string) : NSPatientEntry | undefined => {
-    const patient = patientsSFW.find(x => x.id = _id);
+const getPatientWithId = (_id: string) : FullPatientEntry | undefined => {
+    const patient = patients.find(x => x.id = _id);
     if (patient !== undefined){
         patient.entries = []
     }
+    console.log(patient)
     return patient
 }
 
