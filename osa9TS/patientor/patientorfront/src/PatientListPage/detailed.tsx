@@ -7,7 +7,7 @@ const DetailedPatient = () => {
   const [{ patients }] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const patient = Object.values(patients).find((p) => p.id === id);
-
+  console.log(patient);
 
   return (
     <div>

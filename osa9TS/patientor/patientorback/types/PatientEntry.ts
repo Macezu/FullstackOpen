@@ -7,7 +7,7 @@ export interface PatientEntry{
     "id": string;
     "name": string;
     "dateOfBirth": string;
-    "ssn": string;
+    "ssn"?: string;
     "gender": Gender;
     "occupation": string;
     "entries"? : Entry[];
@@ -16,10 +16,10 @@ export interface PatientEntry{
 export enum Gender{
     Male = "male",
     Female = "female",
-    Unknown = "unknown"
+    Other = "other"
 }
 
-export type FullPatientEntry = PatientEntry
+
 
 export type NSPatientEntry = Omit<PatientEntry, 'ssn'>;
 

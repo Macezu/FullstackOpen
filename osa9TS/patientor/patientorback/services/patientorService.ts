@@ -2,7 +2,7 @@ import diagnoseData from "../data/diagnoses.json";
 import patientsData from "../data/patients";
 import { generateId } from "../utilities/idGenerator"
 import { DiagnoseEntry } from "../types/DiagnoseEntry";
-import { NSPatientEntry,  NewPatientEntry, PatientEntry, FullPatientEntry } from "../types/PatientEntry";
+import { NSPatientEntry,  NewPatientEntry, PatientEntry} from "../types/PatientEntry";
 
 const diagnoses: Array<DiagnoseEntry> = diagnoseData as Array<DiagnoseEntry>;
 
@@ -22,13 +22,15 @@ const addDiagnose = (diagnose: string) => {
     console.log(`TODO: ${diagnose} added`)
 }
 
-const getPatients = (): NSPatientEntry[] => {
-    return patientsSFW.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-        id, name, dateOfBirth, gender, occupation
+const getPatients = (): PatientEntry[] => {
+    return patients.map(({ id, name, dateOfBirth,ssn, gender, occupation }) => ({
+        id, name, dateOfBirth,ssn, gender, occupation
     }));
 };
 
-const getPatientWithId = (_id: string) : FullPatientEntry | undefined => {
+
+
+const getPatientWithId = (_id: string) : PatientEntry | undefined => {
     const patient = patients.find(x => x.id = _id);
     if (patient !== undefined){
         patient.entries = []
