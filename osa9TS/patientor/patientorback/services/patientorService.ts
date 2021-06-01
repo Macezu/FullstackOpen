@@ -32,9 +32,6 @@ const getPatients = (): PatientEntry[] => {
 
 const getPatientWithId = (_id: string) : PatientEntry | undefined => {
     const patient = patients.find(x => x.id = _id);
-    if (patient !== undefined){
-        patient.entries = []
-    }
     console.log(patient)
     return patient
 }
