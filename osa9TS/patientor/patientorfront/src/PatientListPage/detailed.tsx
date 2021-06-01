@@ -2,12 +2,13 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
 import { useStateValue } from "../state";
+import { Patient } from "../types";
 
 const DetailedPatient = () => {
-  const [{ patients }] = useStateValue();
+  const [{ patients } ] = useStateValue();
   const { id } = useParams<{ id: string }>();
-  const patient = Object.values(patients).find((p) => p.id === id);
-  console.log(patient);
+  const patient = Object.values(patients).find((p : Patient) : boolean => p.id === id);
+  
 
   return (
     <div>

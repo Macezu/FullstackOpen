@@ -29,7 +29,7 @@ export interface PatientEntry {
     "ssn"?: string;
     "gender": Gender;
     "occupation": string;
-    "entries"?: Array<Entry>;
+    "entries": Array<Entry>;
 };
 
 interface SickLeave {

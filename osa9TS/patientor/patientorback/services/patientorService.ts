@@ -23,8 +23,8 @@ const addDiagnose = (diagnose: string) => {
 }
 
 const getPatients = (): PatientEntry[] => {
-    return patients.map(({ id, name, dateOfBirth,ssn, gender, occupation }) => ({
-        id, name, dateOfBirth,ssn, gender, occupation
+    return patients.map(({ id, name, dateOfBirth,ssn, gender, occupation, entries }) => ({
+        id, name, dateOfBirth,ssn, gender, occupation, entries
     }));
 };
 
