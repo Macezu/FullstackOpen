@@ -25,7 +25,7 @@ export interface BaseEntry {
 export interface PatientEntry {
     "id": string;
     "name": string;
-    "dateOfBirth": string;
+    "dateOfBirth"?: string;
     "ssn"?: string;
     "gender": Gender;
     "occupation": string;

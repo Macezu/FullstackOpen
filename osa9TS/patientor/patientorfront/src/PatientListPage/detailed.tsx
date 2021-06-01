@@ -21,6 +21,8 @@ const DetailedPatient = () => {
       
       <p>ssn: {patient?.ssn}</p>
       <p>occupation: {patient?.occupation}</p>
+      <h5>entries</h5>
+      
     </div>
   );
 };
