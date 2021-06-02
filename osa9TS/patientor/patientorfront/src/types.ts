@@ -77,5 +77,5 @@ export type FullPatientEntry = Patient;
 
 export type NSPatientEntry = Omit<Patient, 'ssn'>;
 
-export type NewPatientEntry = Omit<Patient, 'id' | "entries">;
+export type NewPatientEntry = Omit<Patient, 'id'>;
 

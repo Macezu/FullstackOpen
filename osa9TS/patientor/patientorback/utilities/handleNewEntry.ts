@@ -9,7 +9,8 @@ const handleEntry = ({name,dateOfBirth,ssn,gender,occupation} : Fields): NewPati
         dateOfBirth: parseString(dateOfBirth),
         ssn: parseString(ssn),
         gender: parseEnum(gender),
-        occupation: parseString(occupation)
+        occupation: parseString(occupation),
+        entries : []
     };
     
     console.log('Saving a patient, no pun intended!');

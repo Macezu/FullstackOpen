@@ -43,7 +43,7 @@ const addPatient = ( patient : NewPatientEntry) : NSPatientEntry | undefined => 
         ...patient
     }
     newPatient.id = id;
-
+    
     patientsSFW.push(newPatient);
     return newPatient;
 }
