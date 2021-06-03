@@ -15,11 +15,16 @@ const DetailedPatient = () => {
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
 
 
-  const GetDiagnoses = ({ diagnoses } : { diagnoses : string[] | undefined} ) : ReactElement => {
+  const GetDiagnoses = ({ patientEntries } : { patientEntries : string[] | undefined} ) : ReactElement => {
 
-    console.log(diagnoses);
-
-    return <ul></ul>;
+    if (patientEntries !== undefined && diagnoses !== undefined){
+      const found = diagnoses.filter(x => patientEntries.includes(x.code));
+      const listed = found.map(x => <li key={x.name}>{x.code} {x.name} {x.latin}</li>);
+      console.log(listed);
+      return <ul>{listed}</ul>;
+    }
+    
+    return <ul>No Entries</ul>;
   };
 
   React.useEffect(() => {
@@ -54,7 +59,7 @@ const DetailedPatient = () => {
       <p>ssn: {patient?.ssn}</p>
       <p>occupation: {patient?.occupation}</p>
       <h5>entries</h5>
-      <GetDiagnoses diagnoses={entries?.diagnosisCodes} />
+      <GetDiagnoses patientEntries={entries?.diagnosisCodes} />
     </div>
   );
 };
