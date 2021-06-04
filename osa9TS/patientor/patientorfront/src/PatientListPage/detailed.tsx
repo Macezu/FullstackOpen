@@ -1,19 +1,14 @@
-
 import React from "react";
-import { ReactElement } from "react";
 import { useParams } from "react-router-dom";
 import {
   Container,
   Icon,
   Divider,
-  List,
-  Segment,
-  Header,
 } from "semantic-ui-react";
-import HealthCheckSegment from "../components/HealthCheckSegment";
-import HospitalSegment from "../components/HospitalSegment";
+
 import { useStateValue } from "../state";
-import { Patient, Entry } from "../types";
+import { Patient } from "../types";
+import EntryMapped from "./entrymapped";
 
 
 
@@ -25,42 +20,8 @@ const DetailedPatient = () => {
   );
   const entries = patient?.entries;
 
-  const EntryMapped = ({entries}: {entries: Array<Entry> | undefined;}): ReactElement => {
-    console.log(entries);
-    if (entries && entries.length > 0) {
-      const mapped = entries.map((entry) => {
-        switch (entry.type) {
-          case "HealthCheck":
-            return HealthCheckSegment(entry);
-          case "Hospital":
-            return HospitalSegment(entry);
-          case "OccupationalHealthcare":
-            return (
-              <Segment raised>
-                <List.Item
-                  content={[
-                    entry.date,
-                    entry.description,
-                    entry.specialist,
-                    entry.employerName,
-                    entry.sickLeave?.startDate,
-                    entry.sickLeave?.startDate
-                  ]}
-                />
-              </Segment>
-            );
-          default:
-            return assertNever(entry);
-        }
-      });
-
-      return <div>{mapped}</div>;
-    }
-    else {return <Header as="h3" textAlign="center">No Entries</Header>;}
-  };
-
-
-
+  
+ if (patient){
   return (
     <div>
       <h2>
@@ -78,17 +39,16 @@ const DetailedPatient = () => {
       <p>occupation: {patient?.occupation}</p>
       <Container fluid textAlign="left">
         <Divider horizontal>Entries</Divider>
-        <EntryMapped entries={entries} />
+        <EntryMapped key={patient.id} entries={entries} />
       </Container>
     </div>
   );
+ }
+ return <></>;
+
 };
 
-const assertNever = (value: never): never => {
-  throw new Error(
-    `Unhandled discriminated union member: ${JSON.stringify(value)}`
-  );
-};
+
 
 export default DetailedPatient;
 

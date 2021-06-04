@@ -5,9 +5,9 @@ import { Entry, HealthCheckRating } from "../types";
 const healthCheckIcon = ({healthCheckRating}: {healthCheckRating: HealthCheckRating; }): ReactElement => {
   switch (healthCheckRating) {
     case HealthCheckRating.Healthy:
-      return <Icon size="big" name="heart" />;
+      return <Icon size="big" name="heart" color="red"/>;
     case HealthCheckRating.LowRisk:
-      return <Icon size="large" name="band aid" />;
+      return <Icon size="large" name="band aid" color="yellow"/>;
     case HealthCheckRating.HighRisk:
       return <Icon size="huge" name="alarm" />;
     case HealthCheckRating.CriticalRisk:

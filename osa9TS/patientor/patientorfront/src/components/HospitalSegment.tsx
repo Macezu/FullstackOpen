@@ -8,7 +8,7 @@ const HospitalSegment = (entry: Entry) => {
     return (
       <Segment.Group horizontal>
         <Segment.Group raised>
-          <Segment><Icon size="big" name="heart"/>{entry.date}</Segment>
+          <Segment><Icon size="big" name="folder open"/>{entry.date}</Segment>
           <Segment>{entry.description}</Segment>
         </Segment.Group>
         <Segment.Group>
