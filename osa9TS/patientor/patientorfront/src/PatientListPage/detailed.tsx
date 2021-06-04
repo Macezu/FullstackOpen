@@ -5,9 +5,23 @@ import { useParams } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
 import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
-import { Diagnosis, Patient, Entry } from "../types";
+import { List } from 'semantic-ui-react';
+import { Diagnosis, Patient, Entry , HealthCheckRating } from "../types";
 
-
+const healthCheckIcon = ( { healthCheckRating} : { healthCheckRating : HealthCheckRating}  ) : ReactElement =>{
+  switch (healthCheckRating) {
+    case HealthCheckRating.LowRisk:      
+      return <Icon size="large" name="heart" />;
+    case HealthCheckRating.Healthy:
+      return <Icon size="big" name="accessible" />;
+    case HealthCheckRating.HighRisk:
+      return <Icon size="huge" name="alarm" />;
+    case HealthCheckRating.CriticalRisk:
+      return <Icon size="big" name="deaf" />;
+    default:
+      return <li></li>;
+  }
+};
 
 
 
@@ -20,26 +34,27 @@ const DetailedPatient = () => {
   );
   const entries = patient?.entries;
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
-
+  console.log(diagnoses);
 
   const EntryMapped = ({entries} : {entries : Array<Entry> | undefined}) :ReactElement => {
     if (entries) {
+      console.log(entries);
       
-      const mapped = entries.forEach(entry => {
+      const mapped = entries.map(entry => {
         switch (entry.type) {
           case "HealthCheck":
-            return entry.healthCheckRating;
+            return <List.Item 
+                      content={[entry.date, entry.description , entry.specialist]} icon={healthCheckIcon(entry)}/>;
           case "Hospital":
-            return entry.specialist;
+            return <li>{entry.date}{entry.description}{entry.specialist}{entry.discharge}</li>;
           case "OccupationalHealthcare":
-            return entry.employerName;
+            return <li>{entry.date}{entry.description}{entry.specialist}{entry.employerName}{entry.sickLeave}</li>;
           default:
             return assertNever(entry);
         }
       });
-  
-      console.log(mapped);
-      return <ul></ul>;  
+
+      return <List>{mapped}</List>;  
     }
     return <ul></ul>;
   };
