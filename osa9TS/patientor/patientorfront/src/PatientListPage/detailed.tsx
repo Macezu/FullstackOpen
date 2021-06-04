@@ -1,5 +1,5 @@
-import axios from "axios";
-import React, { useState } from "react";
+
+import React from "react";
 import { ReactElement } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -8,30 +8,14 @@ import {
   Divider,
   List,
   Segment,
-  Header
+  Header,
 } from "semantic-ui-react";
-import { apiBaseUrl } from "../constants";
+import HealthCheckSegment from "../components/HealthCheckSegment";
+import HospitalSegment from "../components/HospitalSegment";
 import { useStateValue } from "../state";
-import { Diagnosis, Patient, Entry, HealthCheckRating } from "../types";
+import { Patient, Entry } from "../types";
 
-const healthCheckIcon = ({
-  healthCheckRating
-}: {
-  healthCheckRating: HealthCheckRating;
-}): ReactElement => {
-  switch (healthCheckRating) {
-    case HealthCheckRating.Healthy:
-      return <Icon size="big" name="heart" />;
-    case HealthCheckRating.LowRisk:
-      return <Icon size="large" name="band aid" />;
-    case HealthCheckRating.HighRisk:
-      return <Icon size="huge" name="alarm" />;
-    case HealthCheckRating.CriticalRisk:
-      return <Icon size="big" name="frown" />;
-    default:
-      return <li></li>;
-  }
-};
+
 
 const DetailedPatient = () => {
   const [{ patients }] = useStateValue();
@@ -40,47 +24,16 @@ const DetailedPatient = () => {
     (p: Patient): boolean => p.id === id
   );
   const entries = patient?.entries;
-  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
-  console.log(diagnoses);
 
   const EntryMapped = ({entries}: {entries: Array<Entry> | undefined;}): ReactElement => {
-    if (entries) {
-
+    console.log(entries);
+    if (entries && entries.length > 0) {
       const mapped = entries.map((entry) => {
         switch (entry.type) {
           case "HealthCheck":
-            return (
-              <Segment.Group horizontal>
-                <Segment.Group raised>
-                  <Segment>{healthCheckIcon(entry)} {entry.date}</Segment>
-                  <Segment>{entry.description}</Segment>
-                </Segment.Group>
-                <Segment.Group>
-                  <Segment>
-                    <Header as="h4">Specialist: </Header>
-                  </Segment>
-                  <Segment textAlign="center"><i>{entry.specialist}</i></Segment>
-                </Segment.Group>
-                <Segment.Group >
-                  <Segment color="green"><Header as="h5" icon><Icon size="huge" name="clipboard" />{entry.type}</Header></Segment>
-                </Segment.Group>
-              </Segment.Group>
-            );
+            return HealthCheckSegment(entry);
           case "Hospital":
-            return (
-              <Segment raised>
-                <List.Item
-                  content={[
-                    entry.date,
-                    entry.description,
-                    entry.specialist,
-                    entry.discharge.date,
-                    entry.discharge.criteria
-                  ]}
-                />
-                ;
-              </Segment>
-            );
+            return HospitalSegment(entry);
           case "OccupationalHealthcare":
             return (
               <Segment raised>
@@ -101,24 +54,12 @@ const DetailedPatient = () => {
         }
       });
 
-      return <List>{mapped}</List>;
+      return <div>{mapped}</div>;
     }
-    return <ul></ul>;
+    else {return <Header as="h3" textAlign="center">No Entries</Header>;}
   };
 
-  React.useEffect(() => {
-    const fetchDiagnoseList = async () => {
-      try {
-        const { data: diagnoseListFromApi } = await axios.get<Diagnosis[]>(
-          `${apiBaseUrl}/diagnoses`
-        );
-        setDiagnoses(diagnoseListFromApi);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    void fetchDiagnoseList();
-  }, []);
+
 
   return (
     <div>
@@ -150,3 +91,5 @@ const assertNever = (value: never): never => {
 };
 
 export default DetailedPatient;
+
+
