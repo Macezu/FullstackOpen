@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ReactElement } from "react";
 import { useParams } from "react-router-dom";
-import { Icon } from "semantic-ui-react";
+import { Container,  Icon ,Divider } from "semantic-ui-react";
 import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
 import { List } from 'semantic-ui-react';
@@ -46,7 +46,8 @@ const DetailedPatient = () => {
             return <List.Item 
                       content={[entry.date, entry.description , entry.specialist]} icon={healthCheckIcon(entry)}/>;
           case "Hospital":
-            return <li>{entry.date}{entry.description}{entry.specialist}{entry.discharge}</li>;
+            return <List.Item
+              content={[entry.date, entry.description ,entry.specialist ,entry.discharge]}/>;
           case "OccupationalHealthcare":
             return <li>{entry.date}{entry.description}{entry.specialist}{entry.employerName}{entry.sickLeave}</li>;
           default:
@@ -89,8 +90,10 @@ const DetailedPatient = () => {
 
       <p>ssn: {patient?.ssn}</p>
       <p>occupation: {patient?.occupation}</p>
-      <h5>entries</h5>
+      <Container fluid textAlign="left">
+      <Divider horizontal>Entries</Divider>
       <EntryMapped entries={entries} />
+      </Container>
     </div>
   );
 };
