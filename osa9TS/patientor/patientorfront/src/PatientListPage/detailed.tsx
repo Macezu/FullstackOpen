@@ -2,29 +2,36 @@ import axios from "axios";
 import React, { useState } from "react";
 import { ReactElement } from "react";
 import { useParams } from "react-router-dom";
-import { Container,  Icon ,Divider } from "semantic-ui-react";
+import {
+  Container,
+  Icon,
+  Divider,
+  List,
+  Segment,
+  Header
+} from "semantic-ui-react";
 import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
-import { List } from 'semantic-ui-react';
-import { Diagnosis, Patient, Entry , HealthCheckRating } from "../types";
+import { Diagnosis, Patient, Entry, HealthCheckRating } from "../types";
 
-const healthCheckIcon = ( { healthCheckRating} : { healthCheckRating : HealthCheckRating}  ) : ReactElement =>{
+const healthCheckIcon = ({
+  healthCheckRating
+}: {
+  healthCheckRating: HealthCheckRating;
+}): ReactElement => {
   switch (healthCheckRating) {
-    case HealthCheckRating.LowRisk:      
-      return <Icon size="large" name="heart" />;
     case HealthCheckRating.Healthy:
-      return <Icon size="big" name="accessible" />;
+      return <Icon size="big" name="heart" />;
+    case HealthCheckRating.LowRisk:
+      return <Icon size="large" name="band aid" />;
     case HealthCheckRating.HighRisk:
       return <Icon size="huge" name="alarm" />;
     case HealthCheckRating.CriticalRisk:
-      return <Icon size="big" name="deaf" />;
+      return <Icon size="big" name="frown" />;
     default:
       return <li></li>;
   }
 };
-
-
-
 
 const DetailedPatient = () => {
   const [{ patients }] = useStateValue();
@@ -36,30 +43,68 @@ const DetailedPatient = () => {
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
   console.log(diagnoses);
 
-  const EntryMapped = ({entries} : {entries : Array<Entry> | undefined}) :ReactElement => {
+  const EntryMapped = ({entries}: {entries: Array<Entry> | undefined;}): ReactElement => {
     if (entries) {
-      console.log(entries);
-      
-      const mapped = entries.map(entry => {
+
+      const mapped = entries.map((entry) => {
         switch (entry.type) {
           case "HealthCheck":
-            return <List.Item 
-                      content={[entry.date, entry.description , entry.specialist]} icon={healthCheckIcon(entry)}/>;
+            return (
+              <Segment.Group horizontal>
+                <Segment.Group raised>
+                  <Segment>{healthCheckIcon(entry)} {entry.date}</Segment>
+                  <Segment>{entry.description}</Segment>
+                </Segment.Group>
+                <Segment.Group>
+                  <Segment>
+                    <Header as="h4">Specialist: </Header>
+                  </Segment>
+                  <Segment textAlign="center"><i>{entry.specialist}</i></Segment>
+                </Segment.Group>
+                <Segment.Group >
+                  <Segment color="green"><Header as="h5" icon><Icon size="huge" name="clipboard" />{entry.type}</Header></Segment>
+                </Segment.Group>
+              </Segment.Group>
+            );
           case "Hospital":
-            return <List.Item
-              content={[entry.date, entry.description ,entry.specialist ,entry.discharge]}/>;
+            return (
+              <Segment raised>
+                <List.Item
+                  content={[
+                    entry.date,
+                    entry.description,
+                    entry.specialist,
+                    entry.discharge.date,
+                    entry.discharge.criteria
+                  ]}
+                />
+                ;
+              </Segment>
+            );
           case "OccupationalHealthcare":
-            return <li>{entry.date}{entry.description}{entry.specialist}{entry.employerName}{entry.sickLeave}</li>;
+            return (
+              <Segment raised>
+                <List.Item
+                  content={[
+                    entry.date,
+                    entry.description,
+                    entry.specialist,
+                    entry.employerName,
+                    entry.sickLeave?.startDate,
+                    entry.sickLeave?.startDate
+                  ]}
+                />
+              </Segment>
+            );
           default:
             return assertNever(entry);
         }
       });
 
-      return <List>{mapped}</List>;  
+      return <List>{mapped}</List>;
     }
     return <ul></ul>;
   };
-  
 
   React.useEffect(() => {
     const fetchDiagnoseList = async () => {
@@ -91,8 +136,8 @@ const DetailedPatient = () => {
       <p>ssn: {patient?.ssn}</p>
       <p>occupation: {patient?.occupation}</p>
       <Container fluid textAlign="left">
-      <Divider horizontal>Entries</Divider>
-      <EntryMapped entries={entries} />
+        <Divider horizontal>Entries</Divider>
+        <EntryMapped entries={entries} />
       </Container>
     </div>
   );
