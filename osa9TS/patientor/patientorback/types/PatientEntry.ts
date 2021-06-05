@@ -72,3 +72,5 @@ export type EntryWithoutId = UnionOmit<Entry, 'id'>;
 export type NSPatientEntry = Omit<PatientEntry, 'ssn'>;
 
 export type NewPatientEntry = Omit<PatientEntry, 'id'>;
+
+export type NewEntryEntry = Omit<Entry, 'id'>;

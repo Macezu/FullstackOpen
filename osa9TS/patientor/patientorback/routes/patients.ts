@@ -1,6 +1,7 @@
 import express from 'express';
 import patientorService from '../services/patientorService';
 import handleEntry from '../utilities/handleNewEntry';
+import handleAddEntry from '../utilities/handleAddEntry';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
@@ -24,5 +25,18 @@ router.get("/:id", (req, res) => {
     const patient = patientorService.getPatientWithId(req.params.id)
     return (patient) ? res.send(patient) : res.status(404)
 })
+
+router.get("/:id/entries",(req,res) => {
+    console.log("Setting Entry to patient")
+    const patient = patientorService.getPatientWithId(req.params.id)
+    const newEntry = handleAddEntry(req.body)
+    patient?.entries.concat(newEntry)
+    updatedPatient = patientorService.updatePatient(patient)
+    console.log(updatedPatient)
+    res.send(updatedPatient)
+
+    return (patient) = res.send(patient) : res.status(404);
+    )
+}
 
 export default router;
