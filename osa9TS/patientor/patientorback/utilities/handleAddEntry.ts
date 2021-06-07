@@ -1,7 +1,8 @@
-import { NewEntryEntry } from "../types/PatientEntry"
-import { DiagnoseEntry } from "../types/DiagnoseEntry"
+import { NewEntryEntry, EntryType, EntryWithoutId, BaseEntry, NewHospitalEntry, NewOccupationalEntry, NewHealthCheckEntry } from "../types/PatientEntry"
 
-type Fields = { date: unknown, description: unknown, specialist: unknown, diagnosisCodes: unknown, type: unknown, healthCheckRating : unknown, employerName : unknown, sickLeave : unknown, discharge : unknown  };
+
+type Fields = { date: unknown, description: unknown, specialist: unknown, diagnosisCodes?: unknown, type: unknown, healthCheckRating? : unknown, employerName? : unknown, sickLeave? : unknown, discharge? : unknown  };
+
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
@@ -15,11 +16,22 @@ const isNumber = (num : unknown): num is number => {
     return typeof num === "number" || num instanceof Number
 }
 
+const isEntryType = (param: any): param is EntryType => {
+    return Object.values(EntryType).includes(param);
+};
+
 const isStringArray = (value : unknown) :string[] => {
     if (!value ||!isArray(value) || isString(value[0])){
         throw new Error('Incorrect or missing codes');
     }
     return value;
+}
+
+const parseType = (type : unknown) : EntryType => {
+    if (!type ||!isEntryType(type)) {
+        throw new Error("Incorrect type");
+    }
+    return type
 }
 
 
@@ -31,32 +43,59 @@ const parseString = (name: unknown): string => {
 }
 
 const parseNumber = (numb : unknown) : number =>{
-    if (!numb || isNumber(numb)) {
+    if (!numb || !isNumber(numb)) {
         throw new Error("Incorrect or mising HealthCheck")
     }
     return numb
 }
 
+const whatEntry = (entry : EntryWithoutId) : EntryWithoutId => {
+    parseType(entry.type)
+    switch (entry.type) {
+        case "HealthCheck":
+            handleAddEntry(entry)
+            return entry;
+        case "OccupationalHealthcare":
+            entry = {
+                ...entry,
 
-const handleAddEntry = ({ date, description, specialist, diagnosisCodes, type, healthCheckRating, employerName, sickLeave, discharge } : Fields) : NewEntryEntry => {
-    const entry: NewEntryEntry = {
+            }
+            return entry;
+        case "Hospital":
+            return entry;
+        default:
+            return undefined;
+    }
+} 
+
+
+const handleAddEntry = ({ date, description, specialist, diagnosisCodes, type, healthCheckRating, employerName, sickLeave, discharge } : Fields) : EntryWithoutId => {
+    //jos otetaankin entry ja unkonwn check
+    let entry = {
         date: parseString(date),
         description : parseString(description),
         specialist : parseString(specialist),
         diagnosisCodes : isStringArray(diagnosisCodes),
-        healthCheckRating : parseNumber(healthCheckRating)
+        type : parseType(type)
 
     }
     switch (type) {
         case "HealthCheck":
-            
-            break;
+            entry = {
+                ...entry,
+                healthCheckRating : parseNumber(healthCheckRating)
+            }
+            return entry;
         case "OccupationalHealthcare":
-            break;
+            entry = {
+                ...entry,
+
+            }
+            return entry;
         case "Hospital":
-            break;
+            return entry;
         default:
-            break;
+            return undefined;
     }
 
 }
