@@ -28,7 +28,7 @@ const isDischargeType = (param: any): param is Discharge => {
 }
 
 const isStringArray = (value: unknown): string[] => {
-    if (!value || !isArray(value) || isString(value[0])) {
+    if (!value || !isArray(value)) {
         throw new Error('Incorrect or missing codes');
     }
     return value;
@@ -48,8 +48,8 @@ const parseSickLeave = (leave: unknown): SickLeave => {
     return leave
 }
 
-const parseDischarge = (discharge : unknown) : Discharge => {
-    if (!discharge ||!isDischargeType(discharge)){
+const parseDischarge = (discharge: unknown): Discharge => {
+    if (!discharge || !isDischargeType(discharge)) {
         throw new Error("No discharge")
     }
     return discharge
@@ -64,7 +64,7 @@ const parseString = (name: unknown): string => {
 }
 
 const parseNumber = (numb: unknown): number => {
-    if (!numb || !isNumber(numb)) {
+    if (numb === undefined || !isNumber(numb)) {
         throw new Error("Incorrect or mising HealthCheck")
     }
     return numb
@@ -97,17 +97,19 @@ const handleAddEntry = ({ date, description, specialist, diagnosisCodes, type, h
                     employerName: parseString(employerName),
                     sickLeave: parseSickLeave(sickLeave)
                 }
-                   
+
             }
-            return {
-                ...baseEntry,
-                employerName: parseString(employerName),
-            }
-        case "Hospital":
+            else {
                 return {
                     ...baseEntry,
-                    discharge: parseDischarge(discharge)
+                    employerName: parseString(employerName),
                 }
+            }
+        case "Hospital":
+            return {
+                ...baseEntry,
+                discharge: parseDischarge(discharge)
+            }
         default:
             return undefined;
     }

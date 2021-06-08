@@ -55,7 +55,7 @@ const updatePatient = ( entry : EntryWithoutId , pId : string) : NSPatientEntry 
     }
     const targetPatient = patients.find(x => x.id === pId)
     if (targetPatient){
-        targetPatient.entries.concat(newEntry)
+        targetPatient.entries.push(newEntry)
         patients = patients.map( x => x.id !== targetPatient.id ? x : targetPatient)
     }
     return targetPatient
