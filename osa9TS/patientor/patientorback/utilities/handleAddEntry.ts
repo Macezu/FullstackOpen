@@ -1,4 +1,4 @@
-import { Discharge, EntryType, EntryWithoutId, SickLeave } from "../types/PatientEntry"
+import { Discharge, EntryWithoutId, EntryType, SickLeave } from "../types/PatientEntry"
 
 
 type BaseFields = { date: unknown, description: unknown, specialist: unknown, diagnosisCodes?: unknown, type: unknown, healthCheckRating?: unknown, employerName?: unknown, sickLeave?: unknown, discharge?: unknown };
@@ -19,12 +19,12 @@ const isEntryType = (param: any): param is EntryType => {
     return Object.values(EntryType).includes(param);
 };
 
-const isEntrySickLeave = (param: any): param is SickLeaveType => {
-    return Object.values(SickLeaveType).includes(param)
+const isEntrySickLeave = (param: any): param is SickLeave => {
+    return (param as SickLeave).startDate !== undefined
 }
 
-const isDischargeType = (param: any): param is DischargeType => {
-    return Object.values(EntryType).includes(param)
+const isDischargeType = (param: any): param is Discharge => {
+    return (param as Discharge).date !== undefined
 }
 
 const isStringArray = (value: unknown): string[] => {
@@ -91,12 +91,13 @@ const handleAddEntry = ({ date, description, specialist, diagnosisCodes, type, h
                 healthCheckRating: parseNumber(healthCheckRating)
             }
         case "OccupationalHealthcare":
-            if (sickLeave) {
+            if (sickLeave !== undefined) {
                 return {
                     ...baseEntry,
                     employerName: parseString(employerName),
                     sickLeave: parseSickLeave(sickLeave)
                 }
+                   
             }
             return {
                 ...baseEntry,

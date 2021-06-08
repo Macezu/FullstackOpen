@@ -2,7 +2,7 @@ import diagnoseData from "../data/diagnoses.json";
 import patientsData from "../data/patients";
 import { generateId } from "../utilities/idGenerator"
 import { DiagnoseEntry } from "../types/DiagnoseEntry";
-import { NSPatientEntry,  NewPatientEntry, PatientEntry} from "../types/PatientEntry";
+import { NSPatientEntry,  NewPatientEntry, PatientEntry, EntryWithoutId} from "../types/PatientEntry";
 
 const diagnoses: Array<DiagnoseEntry> = diagnoseData as Array<DiagnoseEntry>;
 
@@ -42,10 +42,25 @@ const addPatient = ( patient : NewPatientEntry) : NSPatientEntry | undefined => 
         id,
         ...patient
     }
-    newPatient.id = id;
     
     patientsSFW.push(newPatient);
     return newPatient;
+}
+
+const updatePatient = ( entry : EntryWithoutId , pId : string) : NSPatientEntry | undefined => {
+    const id = generateId();
+    const newEntry = {
+        id,
+        ...entry
+    }
+    const targetPatient = patients.find(x => x.id === pId)
+    if (targetPatient){
+        targetPatient.entries.concat(newEntry)
+        patients = patients.map( x => x.id !== targetPatient.id ? x : targetPatient)
+    }
+    return targetPatient
+   
+
 }
 
 export default {
@@ -54,5 +69,6 @@ export default {
     getDiagnoseWithCode,
     getPatients,
     getPatientWithId,
-    addPatient
+    addPatient,
+    updatePatient
 }
