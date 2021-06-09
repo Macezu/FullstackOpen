@@ -1,24 +1,48 @@
+import axios from "axios";
 import React from "react";
 import { useParams } from "react-router-dom";
 import {
   Container,
   Icon,
   Divider,
+  Button,
 } from "semantic-ui-react";
-
-import { useStateValue } from "../state";
-import { Patient } from "../types";
+import { EntryFormValues } from "../AddEntryModal/AddEntryForm";
+import AddEntryModal from "../AddEntryModal/entryindex";
+import { apiBaseUrl } from "../constants";
+import { addEntry, useStateValue } from "../state";
+import { BaseEntry, Patient } from "../types";
 import EntryMapped from "./entrymapped";
 
 
 
 const DetailedPatient = () => {
-  const [{ patients }] = useStateValue();
+  const [{ patients }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const patient = Object.values(patients).find(
     (p: Patient): boolean => p.id === id
   );
   const entries = patient?.entries;
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+  };
+
+
+  const submitNewEntry = async (values: EntryFormValues) => {
+    try {
+      const { data: newEntry } = await axios.post<BaseEntry>(
+        `${apiBaseUrl}/patients`,
+        values
+      );
+      dispatch(addEntry(newEntry));
+      closeModal();
+    } catch (e : any) {
+      console.log(e.response?.data || 'Unknown Error');
+    }
+  };
 
   
  if (patient){
@@ -34,9 +58,14 @@ const DetailedPatient = () => {
           <Icon size="small" name="genderless" />
         )}
       </h2>
-
       <p>ssn: {patient?.ssn}</p>
       <p>occupation: {patient?.occupation}</p>
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        onClose={closeModal}
+      />
+      <Button onClick={() => openModal()}>Add New Entry</Button>
       <Container fluid textAlign="left">
         <Divider horizontal>Entries</Divider>
         <EntryMapped key={patient.id} entries={entries} />

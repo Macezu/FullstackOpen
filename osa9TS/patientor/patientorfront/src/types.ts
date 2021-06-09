@@ -17,13 +17,19 @@ export enum Gender {
     Other = "other"
 }
 
+export enum EntryType {
+    HealthCheckEntry = "HealthCheck",
+    OccupationalHealthcareEntry = "OccupationalHealthcare",
+    HospitalEntry = "Hospital"
+}
+
 
 export interface BaseEntry {
-    id: string;
-    date: string;
-    description: string;
-    specialist: string;
-    diagnosisCodes?: Array<Diagnosis["code"]>
+    "id": string;
+    "date": string;
+    "description": string;
+    "specialist": string;
+    "diagnosisCodes"?: Array<Diagnosis["code"]>
 }
 
 export interface Patient {
