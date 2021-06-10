@@ -71,7 +71,6 @@ const PatientListPage = () => {
       <AddPatientModal
         modalOpen={modalOpen}
         onSubmit={submitNewPatient}
-        error={error}
         onClose={closeModal}
       />
       <Button onClick={() => openModal()}>Add New Patient</Button>

@@ -6,6 +6,7 @@ import { SelectEntryField } from "../AddEntryModal/EntryFormField";
 import React from "react";
 import { EntryType } from "../types";
 import { Entry } from "../types";
+import { useStateValue } from "../state";
 
 export type EntryFormValues = Omit<Entry, "id">;
 
@@ -25,6 +26,7 @@ const typeOptions: TypeOption[] = [
 ];
 
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
+  const [{ diagnoses }] = useStateValue()
   return (
     <Formik
       initialValues={{
@@ -53,7 +55,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         return errors;
       }}
     >
-      {({ isValid, dirty }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
             <Field
@@ -74,12 +76,11 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               name="specialist"
               component={TextField}
             />
-            <Field
-              label="DiagnosisCodes"
-              placeholder="DiagnosisCodes"
-              name="diagnosisCodes"
-              component={DiagnosisSelection}
-            />
+            <DiagnosisSelection            
+              setFieldValue={setFieldValue}            
+              setFieldTouched={setFieldTouched}            
+              diagnoses={Object.values(diagnoses)}          
+            />    
             <SelectEntryField label="EntryType" name="entryType" options={typeOptions} />
             <Grid>
               <Grid.Column floated="left" width={5}>
