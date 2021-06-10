@@ -11,7 +11,7 @@ import { EntryFormValues } from "../AddEntryModal/AddEntryForm";
 import AddEntryModal from "../AddEntryModal/entryindex";
 import { apiBaseUrl } from "../constants";
 import { addEntry, useStateValue } from "../state";
-import { BaseEntry, Patient } from "../types";
+import {  Patient } from "../types";
 import EntryMapped from "./entrymapped";
 
 
@@ -32,14 +32,16 @@ const DetailedPatient = () => {
 
 
   const submitNewEntry = async (values: EntryFormValues) => {
+    // get current patient and then post
     try {
-      const { data: newEntry } = await axios.post<BaseEntry>(
+      const { data: newEntry } = await axios.put<Patient>(
+        //TODO Check where entrie posts go, patients /id/entries?
         `${apiBaseUrl}/patients`,
         values
       );
       dispatch(addEntry(newEntry));
       closeModal();
-    } catch (e : any) {
+    } catch (e) {
       console.log(e.response?.data || 'Unknown Error');
     }
   };

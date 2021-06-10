@@ -14,7 +14,7 @@ const PatientListPage = () => {
   const [{ patients }, dispatch] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string | undefined>();
+  const [error, setError] = React.useState<string>();
 
   const openModal = (): void => setModalOpen(true);
 
@@ -31,7 +31,7 @@ const PatientListPage = () => {
       );
       dispatch(addPatient(newPatient));
       closeModal();
-    } catch (e : any) {
+    } catch (e) {
       console.error(e.response?.data || 'Unknown Error');
       setError(e.response?.data?.error || 'Unknown error');
     }
@@ -71,6 +71,7 @@ const PatientListPage = () => {
       <AddPatientModal
         modalOpen={modalOpen}
         onSubmit={submitNewPatient}
+        error={error}
         onClose={closeModal}
       />
       <Button onClick={() => openModal()}>Add New Patient</Button>
