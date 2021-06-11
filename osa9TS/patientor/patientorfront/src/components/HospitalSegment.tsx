@@ -4,7 +4,6 @@ import { Entry } from "../types";
 
 const HospitalSegment = (entry: Entry) => {
   if (entry.type === "Hospital") {
-      console.log(entry.discharge.criteria);
     return (
       <Segment.Group horizontal>
         <Segment.Group raised>

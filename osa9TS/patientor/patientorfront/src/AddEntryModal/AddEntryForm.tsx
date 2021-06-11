@@ -26,7 +26,7 @@ const typeOptions: TypeOption[] = [
 ];
 
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
-  const [{ diagnoses }] = useStateValue()
+  const [{ diagnoses }] = useStateValue();
   return (
     <Formik
       initialValues={{
