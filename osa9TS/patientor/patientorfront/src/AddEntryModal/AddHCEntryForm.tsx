@@ -1,14 +1,12 @@
 import { Formik, Field } from "formik";
 import { Form, Grid, Button } from "semantic-ui-react";
-import { TypeOption } from "../AddEntryModal/EntryFormField";
-import { TextField, DiagnosisSelection } from "../AddPatientModal/FormField";
-import { SelectEntryField } from "../AddEntryModal/EntryFormField";
+import { TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField";
 import React from "react";
-import { EntryType } from "../types";
-import { Entry } from "../types";
+import {  HealthCheckRating, HealthEntrynId } from "../types";
+
 import { useStateValue } from "../state";
 
-export type EntryFormValues = Omit<Entry, "id">;
+export type EntryFormValues = HealthEntrynId;
 
 
 interface Props {
@@ -16,14 +14,7 @@ interface Props {
   onCancel: () => void;
 }
 
-const typeOptions: TypeOption[] = [
-  { value: EntryType.HealthCheckEntry, label: "HealthCheck" },
-  { value: EntryType.HospitalEntry, label: "Hospital" },
-  {
-    value: EntryType.OccupationalHealthcareEntry,
-    label: "OccupationalHealthcare"
-  }
-];
+
 
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
@@ -31,31 +22,17 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
     <Formik
       initialValues={{
         date: "",
+        healthCheckRating: HealthCheckRating.LowRisk,
         description: "",
         specialist: "",
         diagnosisCodes:[],
-        type: EntryType.HealthCheckEntry
       }}
       onSubmit={onSubmit}
-      validate={(values) => {
-        const requiredError = "Field is required";
-        const errors: { [field: string]: string } = {};
-        if (!values.date) {
-          errors.date = requiredError;
-        }
-        if (!values.description) {
-          errors.description = requiredError;
-        }
-        if (!values.specialist) {
-          errors.specialist = requiredError;
-        }
-        if (!values.type) {
-          errors.type = requiredError;
-        }
-        return errors;
-      }}
+      
+
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
+        console.log(isValid);
         return (
           <Form className="form ui">
             <Field
@@ -76,12 +53,18 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               name="specialist"
               component={TextField}
             />
+            <Field
+              label="healthCheckRating"
+              name="healthCheckRating"
+              component={NumberField}
+              min={0}
+              max={3}
+            />
             <DiagnosisSelection            
               setFieldValue={setFieldValue}            
               setFieldTouched={setFieldTouched}            
               diagnoses={Object.values(diagnoses)}          
             />    
-            <SelectEntryField label="EntryType" name="entryType" options={typeOptions} />
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">

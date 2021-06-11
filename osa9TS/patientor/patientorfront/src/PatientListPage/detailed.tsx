@@ -7,8 +7,8 @@ import {
   Divider,
   Button,
 } from "semantic-ui-react";
-import { EntryFormValues } from "../AddEntryModal/AddEntryForm";
-import AddEntryModal from "../AddEntryModal/entryindex";
+import { EntryFormValues } from "../AddEntryModal/AddHCEntryForm";
+import AddHCEntryModal from "../AddEntryModal/entryindex";
 import { apiBaseUrl } from "../constants";
 import { addEntry, useStateValue } from "../state";
 import { Patient } from "../types";
@@ -24,15 +24,17 @@ const DetailedPatient = () => {
   );
   const entries = patient?.entries;
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string>();
   const openModal = (): void => setModalOpen(true);
 
   const closeModal = (): void => {
     setModalOpen(false);
+    setError(undefined);
+    
   };
 
 
   const submitNewEntry = async (values: EntryFormValues) => {
-    // get current patient and then post
     console.log("here");
     try {
       const { data: newEntry } = await axios.post<Patient>(
@@ -63,10 +65,11 @@ const DetailedPatient = () => {
       </h2>
       <p>ssn: {patient?.ssn}</p>
       <p>occupation: {patient?.occupation}</p>
-      <AddEntryModal
+      <AddHCEntryModal
         modalOpen={modalOpen}
         onSubmit={submitNewEntry}
         onClose={closeModal}
+        error={error}
       />
       <Button onClick={() => openModal()}>Add New Entry</Button>
       <Container fluid textAlign="left">
