@@ -21,17 +21,17 @@ const EntryMapped = ({
     const mapped = entries.map((entry) => {
       switch (entry.type) {
         case "HealthCheck":
-          return HealthCheckSegment(entry);
+          return <div key={entry.id}>{HealthCheckSegment(entry)}</div>;
         case "Hospital":
-          return HospitalSegment(entry);
+          return <div key={entry.id}>{HospitalSegment(entry)}</div>;
         case "OccupationalHealthcare":
-          return OccupationalHCSegment(entry);
+          return <div key={entry.id}>{OccupationalHCSegment(entry)}</div>;
         default:
           return assertNever(entry);
       }
     });
 
-    return <div>{mapped}</div>;
+    return <div key={mapped.toString()}>{mapped}</div>;
   } else {
     return (
       <Header as="h3" textAlign="center">

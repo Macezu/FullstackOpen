@@ -17,7 +17,7 @@ const healthCheckIcon = ({healthCheckRating}: {healthCheckRating: HealthCheckRat
   }
 };
 
-const HealthCheckSegment = (entry : Entry) => {
+const HealthCheckSegment = (entry : Entry ) => {
   if (entry.type == "HealthCheck"){
     return (
       <Segment.Group horizontal>

@@ -1,10 +1,10 @@
 import React from "react";
 import { Field } from "formik";
 import { Form } from "semantic-ui-react";
-import { EntryType } from "../types";
+import { EntryType, HealthCheckRating } from "../types";
 
-export type TypeOption = {
-  value: EntryType;
+export type HealthCheckOption = {
+  value: HealthCheckRating;
   label: string;
 };
 
@@ -12,7 +12,7 @@ export type TypeOption = {
 type SelectEntryFieldProps = {
   name: string;
   label: string;
-  options: TypeOption[];
+  options: HealthCheckOption[];
 };
 
 export const SelectEntryField = ({
