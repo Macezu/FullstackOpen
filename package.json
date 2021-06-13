@@ -4,6 +4,7 @@
     "cypress": "^7.0.0"
   },
   "dependencies": {
+    "expo-cli": "^4.5.2",
     "react-redux": "^7.2.3",
     "redux": "^4.0.5"
   }
