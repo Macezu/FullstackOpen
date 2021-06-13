@@ -1,22 +1,25 @@
 import { Formik, Field } from "formik";
 import { Form, Grid, Button } from "semantic-ui-react";
-import { TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField";
+import {
+  TextField,
+  DiagnosisSelection,
+  NumberField
+} from "../AddPatientModal/FormField";
 import React from "react";
-import {  HealthCheckRating, HealthEntrynId } from "../types";
+import { HealthCheckRating, HealthEntrynId } from "../types";
 
 import { useStateValue } from "../state";
 
 export type EntryFormValues = HealthEntrynId;
-
 
 interface Props {
   onSubmit: (values: EntryFormValues) => void;
   onCancel: () => void;
 }
 
-
-
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
+
+
   const [{ diagnoses }] = useStateValue();
   return (
     <Formik
@@ -25,14 +28,29 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         healthCheckRating: HealthCheckRating.LowRisk,
         description: "",
         specialist: "",
-        diagnosisCodes:[],
+        diagnosisCodes: []
       }}
       onSubmit={onSubmit}
-      
+      validate={values => {
+        const requiredError = "Field is required";
+        const errors: { [field: string]: string } = {};
+        if (!values.date) {
+          errors.date = requiredError;
+        }
+        if (!values.description) {
+          errors.description = requiredError;
+        }
+        if (!values.specialist) {
+          errors.specialist = requiredError;
+        }
 
+        return errors;
+      }}
+      
     >
-      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
-        console.log(isValid);
+      {({ isValid,isValidating,isSubmitting, dirty, setFieldValue, setFieldTouched }) => {
+        console.log(isSubmitting);
+        console.log(isValidating);
         return (
           <Form className="form ui">
             <Field
@@ -60,11 +78,11 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               min={0}
               max={3}
             />
-            <DiagnosisSelection            
-              setFieldValue={setFieldValue}            
-              setFieldTouched={setFieldTouched}            
-              diagnoses={Object.values(diagnoses)}          
-            />    
+            <DiagnosisSelection
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              diagnoses={Object.values(diagnoses)}
+            />
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">
@@ -77,6 +95,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
                   floated="right"
                   color="green"
                   disabled={!dirty || !isValid}
+                  onClick={() => test}
                 >
                   Add
                 </Button>

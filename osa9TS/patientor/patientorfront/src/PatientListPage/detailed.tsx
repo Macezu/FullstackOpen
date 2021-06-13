@@ -7,8 +7,8 @@ import {
   Divider,
   Button,
 } from "semantic-ui-react";
-import { EntryFormValues } from "../AddEntryModal/AddHCEntryForm";
-import AddHCEntryModal from "../AddEntryModal/entryindex";
+import { EntryFormValues } from "../AddHCEntryModal/AddHCEntryForm";
+import AddHCEntryModal from "../AddHCEntryModal/entryindex";
 import { apiBaseUrl } from "../constants";
 import { addEntry, useStateValue } from "../state";
 import { Patient } from "../types";
@@ -35,6 +35,7 @@ const DetailedPatient = () => {
 
 
   const submitNewEntry = async (values: EntryFormValues) => {
+    console.log(values);
     console.log("here");
     try {
       const { data: newEntry } = await axios.post<Patient>(
