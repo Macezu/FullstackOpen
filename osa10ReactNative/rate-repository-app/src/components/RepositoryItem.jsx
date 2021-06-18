@@ -1,13 +1,19 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React from "react";
+import { View, Text } from "react-native";
 
-const RepositoryItem = () => {
-    return (
-        <View>
-            <Text>Kissa</Text>
-        </View>
-    );
+const RepositoryItem = ({ item }) => {
+  return (
+    <View>
+      <Text>Name : {item.fullName}</Text>
+      <Text>description : {item.description}</Text>
+      <Text>language : {item.language}</Text>
+      <Text>Forks: {item.forksCount}</Text>
+      <Text>Stars: {item.stargazersCount}</Text>
+      <Text>Ratings: {item.ratingAverage}</Text>
+      <Text>Rewviews: {item.reviewCount}</Text>
+      <Text>Avatar Url: {item.ownerAvatarUrl}</Text>
+    </View>
+  );
 };
-
 
 export default RepositoryItem;
