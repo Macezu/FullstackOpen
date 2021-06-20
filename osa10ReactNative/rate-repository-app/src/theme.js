@@ -3,7 +3,8 @@ const theme = {
     textPrimary: "#24292e",
     textSecondary: "#586069",
     primary: "#0366d6",
-    appbarBG: "#f39bfc20"
+    appbarBG: "#f39bfc20",
+    blue: "#0000FF"
   },
   fontSizes: {
     body: 14,
@@ -12,6 +13,16 @@ const theme = {
   },
   fonts: {
     main: "System"
+  },
+  fontDecor: {
+    padL: 5,
+    location: 'right',
+    yPosition :  "center",
+    xposition: "center"
+  },
+  fontPad: {
+    margin: 10,
+    padding: 5
   },
   fontWeights: {
     normal: "400",

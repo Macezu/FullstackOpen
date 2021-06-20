@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
   colorPrimary: {
     color: theme.colors.primary
   },
+  colorBlue: {
+    backgroundColor: theme.colors.blue
+  },
   fontSizeSubheading: {
     fontSize: theme.fontSizes.subheading
   },
@@ -27,18 +30,34 @@ const styles = StyleSheet.create({
   },
   fontWeightXtraBold: {
     fontWeight: theme.fontWeights.xtrabold
+  },
+  fontDecors:{
+    textAlign: theme.fontDecor.location,
+    alignSelf: theme.fontDecor.yPosition,
+    paddingLeft: theme.fontDecor.padL
+  },
+  fontPads : {
+    margin: theme.fontPad.margin,
+    padding: theme.fontPad.padding
+  },
+  center : {
+    justifySelf: theme.fontDecor.xposition
   }
 });
 
-const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
+const Text = ({ color, fontSize, fontWeight, decorative, pads, center, style, ...props }) => {
   const textStyle = [
     styles.text,
     color === "textSecondary" && styles.colorTextSecondary,
     color === "primary" && styles.colorPrimary,
+    color === "blue" && styles.colorBlue,
     fontSize === "subheading" && styles.fontSizeSubheading,
     fontSize === "header" && styles.fontSizeHeader,
     fontWeight === "bold" && styles.fontWeightBold,
     fontWeight === "xtrabold" && styles.fontWeightXtraBold,
+    decorative === "toRight" && styles.fontDecors,
+    pads === "yes" && styles.fontPads,
+    center === "yes" && styles.center,
     style
   ];
 
