@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     padding: theme.fontPad.padding
   },
   center : {
-    justifySelf: theme.fontDecor.xposition
+    justifyContent: theme.fontDecor.xposition
   }
 });
 

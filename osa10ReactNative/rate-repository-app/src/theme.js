@@ -27,7 +27,7 @@ const theme = {
   fontWeights: {
     normal: "400",
     bold: "700",
-    xtrabold: "1000"
+    xtrabold: "900"
   },
   images: {
     thumbnail: {
