@@ -1,6 +1,6 @@
 import React from "react";
 import FormikTextInput from "./FormikTextInput";
-import { Text, Pressable, View } from "react-native";
+import { Text, Pressable, View,Button } from "react-native";
 import { Formik } from "formik";
 
 const initialValues = {
@@ -9,8 +9,8 @@ const initialValues = {
 };
 
 
-const logSubmit = (values) => {
-  console.log(values);
+const logSubmit = (username,password) => {
+  console.log(username , password);
 };
 
 const LoginForm = ({ onSubmit }) => {
@@ -23,7 +23,7 @@ const LoginForm = ({ onSubmit }) => {
         placeholder="Password"
       />
       <Pressable onPress={onSubmit}>
-        <Text>Calculate</Text>
+        <Button title="Send"></Button>
       </Pressable>
     </View>
   );
@@ -31,12 +31,10 @@ const LoginForm = ({ onSubmit }) => {
 
 const LoginView = () => {
   const onSubmit = (values) => {
-    const username = toString(values.username);
-    const password = toString(values.password);
-
-    if (isNaN(username) && isNaN(password) && password !== 0) {
-      logSubmit(username, password);
-    }
+    
+    const username = values.username;
+    const password = values.password;
+    logSubmit(username,password);
   };
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
