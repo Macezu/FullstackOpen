@@ -22,9 +22,7 @@ const LoginForm = ({ onSubmit }) => {
         name="password"
         placeholder="Password"
       />
-      <Pressable onPress={onSubmit}>
-        <Button title="Send"></Button>
-      </Pressable>
+        <Button onPress={onSubmit} title="Send"></Button> 
     </View>
   );
 };
