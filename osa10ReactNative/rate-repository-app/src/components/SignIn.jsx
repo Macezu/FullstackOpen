@@ -23,9 +23,11 @@ const initialValues = {
 
 const validationSchema = yup.object().shape({
   username: yup
-    .required("Weight is required"),
+    .string()
+    .required("Username is required"),
   password: yup
-    .required("Height is required")
+    .string()
+    .required("Password is required")
 });
 
 const logSubmit = (username, password) => {
