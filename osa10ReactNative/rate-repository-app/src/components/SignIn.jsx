@@ -1,7 +1,20 @@
 import React from "react";
 import FormikTextInput from "./FormikTextInput";
-import { Text, Pressable, View,Button } from "react-native";
+import { StyleSheet, View,Button } from "react-native";
 import { Formik } from "formik";
+import theme from "../theme";
+
+const styles = StyleSheet.create({
+  containerCol: {
+    flexDirection: "column",
+    alignItems: "center",
+    padding: 10,
+    margin: 15,
+    borderWidth: 2,
+    backgroundColor: theme.colors.secondary,
+    
+  }
+});
 
 const initialValues = {
   username: "",
@@ -15,7 +28,7 @@ const logSubmit = (username,password) => {
 
 const LoginForm = ({ onSubmit }) => {
   return (
-    <View>
+    <View style={styles.containerCol}>
       <FormikTextInput name="username" placeholder="Username" />
       <FormikTextInput
         secureTextEntry={true}

@@ -3,6 +3,7 @@ const theme = {
     textPrimary: "#24292e",
     textSecondary: "#586069",
     primary: "#0366d6",
+    secondary: "#D4B895",
     appbarBG: "#f39bfc20",
     blue: "#0000FF"
   },

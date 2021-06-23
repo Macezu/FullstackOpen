@@ -49,7 +49,7 @@ const RepositoryItem = ({ item }) => {
           onPress={() => console.log("kissa")}
           title={item.language}
           color="#841584"
-          accessibilityLabel="Learn more about this purple button"
+          accessibilityLabel="Learn more about this"
         />
       </View>
       <View style={styles.containerRow}>
