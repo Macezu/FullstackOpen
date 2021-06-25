@@ -5,22 +5,19 @@ import {GET_REPOSITORIES} from "../graphql/queries";
 const useRepositories = async () => {
   const [repositories, setRepositories] = useState();
 
-  const {loading, error, data} = useQuery(GET_REPOSITORIES, {
+  const data = useQuery(GET_REPOSITORIES, {
     fetchPolicy: "cache-and-network"
     // Other options
   });
-  console.log(loading);
-  console.log(error);
-  console.log(data);
 
-  const json = await data.json();
+  console.log("kissa",data);
 
-  
+
+
+
   useEffect(() => {
-    setRepositories(json);
+    setRepositories(data.repositories);
   }, [data]);
-
-  return repositories;
 };
 
 export default useRepositories;
