@@ -1,14 +1,21 @@
 import { gql } from '@apollo/client';
 
-export const CORE_COMMENT_FIELDS = gql`
-  fragment CoreCommentFields on Comment {
-    id
-    postedBy {
-      username
-      displayName
+export const CORE_REPOSITORY_FIELDS = gql`
+  fragment CoreRepository on Repository {
+    repositories {
+      edges {
+        node {
+          ownerAvatarUrl
+          ownerName
+          name
+          description
+          language
+          forksCount
+          stargazersCount
+          ratingAverage
+          reviewCount
+        }
+      }
     }
-    createdAt
-    content
-  }
 `;
 
