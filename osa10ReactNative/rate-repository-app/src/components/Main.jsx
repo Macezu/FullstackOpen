@@ -1,6 +1,6 @@
 import React from "react";
 import RepositoryList from "./RepositoryList";
-import SignIn from "./SignIn";
+import SignIn from "./logInComponents/SignIn";
 import { StyleSheet, View } from "react-native";
 import { Route, Switch, Redirect } from "react-router-native";
 import AppBar from "./AppBar";

@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
 });
 
 const TextInput = ({ style, error, ...props }) => {
-  console.log(`error : ${error != false}`);
   const textInputStyle = [
     error && styles.borders,
     style
