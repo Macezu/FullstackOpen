@@ -1,21 +1,17 @@
 import { gql } from '@apollo/client';
 
-export const CORE_REPOSITORY_FIELDS = gql`
-  fragment CoreRepository on Repository {
-    repositories {
-      edges {
-        node {
-          ownerAvatarUrl
-          ownerName
-          name
-          description
-          language
-          forksCount
-          stargazersCount
-          ratingAverage
-          reviewCount
-        }
-      }
-    }
+export const REPOSITORY_CORE = gql`
+  fragment RepositoryDetails on Repository {
+    id
+    ownerAvatarUrl
+    fullName
+    description
+    language
+    stargazersCount
+    forksCount
+    reviewCount
+    ratingAverage
+    url
+  }
 `;
 
