@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const REPOSITORY_CORE = gql`
   fragment RepositoryDetails on Repository {
@@ -15,3 +15,11 @@ export const REPOSITORY_CORE = gql`
   }
 `;
 
+export const USER_CORE = gql`
+  fragment UserDetails on User {
+    id
+    username
+    createdAt
+    reviewCount
+  }
+`;
