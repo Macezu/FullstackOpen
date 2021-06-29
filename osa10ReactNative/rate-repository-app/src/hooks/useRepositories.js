@@ -7,7 +7,7 @@ const useRepositories = () => {
   const [repositories, setRepositories] = useState();
   const { data, loading, error, refetch } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: "cache-and-network",
-    pollInterval: 1000
+    pollInterval: 4000
   });
 
   useEffect(() => {

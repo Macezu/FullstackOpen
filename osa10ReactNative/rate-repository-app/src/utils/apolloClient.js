@@ -3,7 +3,6 @@ import Constants from "expo-constants";
 import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
-  // Replace the IP address part with your own IP address!
   uri: Constants.manifest.extra.url
 });
 
@@ -11,6 +10,7 @@ const createApolloClient = (authStorage) => {
   const authLink = setContext(async (_, { headers }) => {
     try {
       const accessToken = await authStorage.getAccessToken();
+      console.log(accessToken ? `Bearer ${accessToken}` : "");
       return {
         headers: {
           ...headers,
