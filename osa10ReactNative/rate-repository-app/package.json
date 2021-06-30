@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern"
+    "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern",
+    "test": "jest"
   },
   "dependencies": {
     "@apollo/client": "^3.3.20",
@@ -31,5 +32,14 @@
     "eslint": "^7.28.0",
     "eslint-plugin-react": "^7.24.0"
   },
-  "private": true
+  "private": true,
+  "jest": {    
+    "preset": "jest-expo",    
+    "transform": {      
+      "^.+\\.jsx?$": "babel-jest"    
+    },    
+      "transformIgnorePatterns": [      
+        "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*|react-router-native)"    
+        ]  
+      }
 }
