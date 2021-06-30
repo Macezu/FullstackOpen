@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import AppBarTab from "./AppBarTab";
-import theme from "../theme";
-import { GET_AUTHORIZATION } from "../graphql/queries";
+import theme from "../../theme";
+import { GET_AUTHORIZATION } from "../../graphql/queries";
 import { useQuery } from "@apollo/client";
-import useSignOut from "../hooks/useSignOut";
+import useSignOut from "../../hooks/useSignOut";
 
 
 const styles = StyleSheet.create({
@@ -45,7 +45,7 @@ const AppBar = () => {
         </Pressable>
         {data.authorizedUser ? (
           <Pressable onPress={() => signOut()}>
-            <AppBarTab title={" Sign Out "} />
+            <AppBarTab testID="signOut" title={" Sign Out "} />
           </Pressable>
         ) : (
           <Pressable onPress={() => alert("toinen")}>
