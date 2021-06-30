@@ -31,14 +31,22 @@ export const GET_REPOSITORIES = gql`
     }
   }
   ${REPOSITORY_CORE}
-  
 `;
 
 export const GET_AUTHORIZATION = gql`
- query AuthorizedUser{
-  authorizedUser {
-    id
-    username
+  query AuthorizedUser {
+    authorizedUser {
+      id
+      username
+    }
   }
- }
+`;
+
+export const GET_SINGLE_REPO = gql`
+  query Repository($id: String) {
+    repository(id: $id) {
+      ...repositoryDetails
+    }
+  }
+  ${REPOSITORY_CORE}
 `;
