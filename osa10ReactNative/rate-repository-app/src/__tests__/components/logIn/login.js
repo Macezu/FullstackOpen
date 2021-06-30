@@ -1,57 +1,27 @@
-import React, { useState } from 'react';
-import { Text, TextInput, Pressable, View } from 'react-native';
-import { render, fireEvent } from '@testing-library/react-native';
+import React from "react";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import ContainerSignIn from "../../../components/logInComponents/ContainerSignIn"
 
-const Form = ({ onSubmit }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+describe("SignIn", () => {
+  describe("SignInContainer", () => {
+    it("calls onSubmit function with correct arguments when a valid form is submitted", async () => {
+      const onSubmit = jest.fn();
+      const { getByTestId } = render(<ContainerSignIn onSubmit={onSubmit} />);
 
-  const handleSubmit = () => {
-    onSubmit({ username, password });
-  };
+      const username = getByTestId("user");
+      const password = getByTestId("pass");
+      
+      fireEvent.changeText(username, "matti");
+      fireEvent.changeText(password, "password");
+      fireEvent.press(getByTestId("signIn"));
 
-  return (
-    <View>
-      <View>
-        <TextInput
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-          placeholder="Username"
-          testID="usernameField"
-        />
-      </View>
-      <View>
-        <TextInput
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          placeholder="Password"
-          testID="passwordField"
-        />
-      </View>
-      <View>
-        <Pressable onPress={handleSubmit} testID="submitButton">
-          <Text>Submit</Text>
-        </Pressable>
-      </View>
-    </View>
-  );
-};
-
-describe('Form', () => {
-  it('calls function provided by onSubmit prop after pressing the submit button', () => {
-    const onSubmit = jest.fn();
-    const { getByTestId } = render(<Form onSubmit={onSubmit} />);
-
-    fireEvent.changeText(getByTestId('usernameField'), 'kalle');
-    fireEvent.changeText(getByTestId('passwordField'), 'password');
-    fireEvent.press(getByTestId('submitButton'));
-
-    expect(onSubmit).toHaveBeenCalledTimes(1);
-
-    // onSubmit.mock.calls[0][0] contains the first argument of the first call
-    expect(onSubmit.mock.calls[0][0]).toEqual({
-      username: 'kalle',
-      password: 'password',
+      await waitFor(() => {
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+        expect(onSubmit.mock.calls[0][0]).toEqual({
+          username: "matti",
+          password: "password",
+        });
+      });
     });
   });
 });
