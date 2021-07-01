@@ -4,6 +4,7 @@ import theme from "../../theme";
 import Text from "../Text";
 import Formatter from "../../utils/formatter";
 import { Link } from "react-router-native";
+import * as Linking from "expo-linking";
 
 const styles = StyleSheet.create({
   containerRow: {
@@ -21,14 +22,16 @@ const styles = StyleSheet.create({
   medium: theme.images.medium
 });
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, ghUrl }) => {
   return (
     <View>
       <View style={styles.containerRow}>
         <Image style={styles.tinyLogo} source={{ uri: item.ownerAvatarUrl }} />
         <Pressable>
           <Link to={`/${item.id}`} underlayColor="#f0f4f7" content={item}>
-            <Text fontWeight="bold" decorative="toRight">{item.fullName}</Text>
+            <Text fontWeight="bold" decorative="toRight">
+              {item.fullName}
+            </Text>
           </Link>
         </Pressable>
       </View>
@@ -37,8 +40,8 @@ const RepositoryItem = ({ item }) => {
         <Button
           onPress={() => console.log("kissa")}
           title={item.language}
-          color="#841584"
-          accessibilityLabel="Learn more about this"
+          color={theme.colors.primary}
+          accessibilityLabel="Learn more about this language"
         />
       </View>
       <View style={styles.containerRow}>
@@ -66,6 +69,16 @@ const RepositoryItem = ({ item }) => {
             ? Formatter(item.reviewCount)
             : item.reviewCount}
         </Text>
+      </View>
+      <View style={styles.containerCol}>
+        {ghUrl && (
+          <Button
+            onPress={() => Linking.openURL(ghUrl)}
+            title="Open in Github"
+            accessibilityLabel="Open repo in github"
+            color={theme.colors.primary}
+          />
+        )}
       </View>
     </View>
   );

@@ -3,13 +3,13 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_SINGLE_REPO } from "../graphql/queries";
 
-const useRepository = ({id}) => {
+const useRepository = (id) => {
+  console.log(id);
   const [repository, setRepo] = useState();
   const { data, loading, error } = useQuery(GET_SINGLE_REPO, {
     fetchPolicy: "cache-and-network",
     variables: { id },
   });
-  console.log(data);
 
   useEffect(() => {
     if (loading === false && data) {

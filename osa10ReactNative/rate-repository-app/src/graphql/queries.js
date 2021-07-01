@@ -43,9 +43,9 @@ export const GET_AUTHORIZATION = gql`
 `;
 
 export const GET_SINGLE_REPO = gql`
-  query Repository($id: String) {
+  query Repository($id: ID!) {
     repository(id: $id) {
-      ...repositoryDetails
+      ...RepositoryDetails
     }
   }
   ${REPOSITORY_CORE}

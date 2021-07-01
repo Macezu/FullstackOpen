@@ -6,10 +6,9 @@ import RepositoryItem from "./RepositoryItem";
 export const RepositoryDetailed = () => {
   let { id } = useParams();
   const { repository } = useRepository(id);
-  console.log(repository);
-
+  console.log(repository)
   if (repository) {
-    return <RepositoryItem item={repository} />;
+    return <RepositoryItem ghUrl={repository.url} item={repository} />;
   } else {
     return <div>Loading..</div>;
   }
