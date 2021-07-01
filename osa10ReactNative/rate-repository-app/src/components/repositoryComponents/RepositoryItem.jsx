@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
   medium: theme.images.medium
 });
 
-const RepositoryItem = ({ item, ghUrl }) => {
+const RepositoryItem = ({ item, detailed }) => {
   return (
     <View>
       <View style={styles.containerRow}>
         <Image style={styles.tinyLogo} source={{ uri: item.ownerAvatarUrl }} />
         <Pressable>
-          <Link to={`/${item.id}`} underlayColor="#f0f4f7" content={item}>
+          <Link to={`/${item.id}`} underlayColor="#f0f4f7">
             <Text fontWeight="bold" decorative="toRight">
               {item.fullName}
             </Text>
@@ -71,9 +71,9 @@ const RepositoryItem = ({ item, ghUrl }) => {
         </Text>
       </View>
       <View style={styles.containerCol}>
-        {ghUrl && (
+        {detailed && (
           <Button
-            onPress={() => Linking.openURL(ghUrl)}
+            onPress={() => Linking.openURL(item.url)}
             title="Open in Github"
             accessibilityLabel="Open repo in github"
             color={theme.colors.primary}

@@ -6,6 +6,19 @@ export const REPOSITORY_CORE = gql`
     ownerAvatarUrl
     fullName
     description
+    reviews {
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          user {
+            username
+          }
+        }
+      }
+    }
     language
     stargazersCount
     forksCount
@@ -21,5 +34,20 @@ export const USER_CORE = gql`
     username
     createdAt
     reviewCount
+  }
+`;
+
+export const REVIEW_CORE = gql`
+  fragment ReviewDetails on Repository {
+    reviews {
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+        }
+      }
+    }
   }
 `;
