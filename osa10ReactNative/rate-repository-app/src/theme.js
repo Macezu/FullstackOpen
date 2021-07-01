@@ -22,6 +22,9 @@ const theme = {
       default: 'System',
     }),
   },
+  fontstyles: {
+    italicText: 'italic'
+  },
   fontDecor: {
     padL: 5,
     location: 'right',

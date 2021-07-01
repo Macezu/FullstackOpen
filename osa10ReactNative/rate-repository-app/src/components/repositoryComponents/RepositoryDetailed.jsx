@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-native";
 import useRepository from "../../hooks/useRepository";
 import RepositoryItem from "./RepositoryItem";
+import ReviewItem from "./ReviewItem";
 import { FlatList, StyleSheet, View, Text } from "react-native";
 
 const styles = StyleSheet.create({
   separator: {
-    height: 10
+    height: 5,
+    backgroundColor: "rgb(240, 240, 240)",
   }
 });
 
@@ -20,11 +22,6 @@ export const RepositoryInfo = ({ repository }) => {
   }
 };
 
-const ReviewItem = ({ review }) => {
-  console.log(review)
-  // Create ReviewItem Comp
-  return <View><Text>{review.rating}{review.text}</Text></View>
-};
 
 const SingleRepository = () => {
   let { id } = useParams();

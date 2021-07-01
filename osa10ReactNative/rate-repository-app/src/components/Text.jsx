@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   text: {
     color: theme.colors.textPrimary,
     fontSize: theme.fontSizes.body,
-    fontFamily: theme.fonts.main,
+    fontFamily: theme.fonts.default,
     fontWeight: theme.fontWeights.normal
   },
   colorTextSecondary: {
@@ -42,10 +42,13 @@ const styles = StyleSheet.create({
   },
   center : {
     justifyContent: theme.fontDecor.xposition
+  },
+  fontStyles : {
+    fontWeight: theme.fontstyles.italicText
   }
 });
 
-const Text = ({ color, fontSize, fontWeight, decorative, pads, center, style, ...props }) => {
+const Text = ({ color, fontSize,fontStyle, fontWeight, decorative, pads, center, style, ...props }) => {
   const textStyle = [
     styles.text,
     color === "textSecondary" && styles.colorTextSecondary,
@@ -56,6 +59,7 @@ const Text = ({ color, fontSize, fontWeight, decorative, pads, center, style, ..
     fontWeight === "bold" && styles.fontWeightBold,
     fontWeight === "xtrabold" && styles.fontWeightXtraBold,
     decorative === "toRight" && styles.fontDecors,
+    fontStyle === "italic" && styles.fontStyles,
     pads === "yes" && styles.fontPads,
     center === "yes" && styles.center,
     style
