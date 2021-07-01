@@ -1,5 +1,5 @@
 import React from "react";
-import { format, formatDistance, formatRelative, subDays } from 'date-fns'
+import { format, formatDistance, formatRelative, subDays } from "date-fns";
 import { View, Button, StyleSheet } from "react-native";
 import Text from "../Text";
 import theme from "../../theme";
@@ -15,6 +15,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     backgroundColor: "black"
+  },
+  container: {
+    width: 10,
+    height: 10,
+    borderWidth: 5,
+    borderRadius: 5/2
   }
 });
 
@@ -27,12 +33,14 @@ const ReviewItem = ({ review }) => {
         color={theme.colors.primary}
         accessibilityLabel="Im just a button"
       /> */}
-      <Text fontWeight="xtrabold">{ review.rating}</Text>
+      <View>
+      <Text fontWeight="xtrabold">{review.rating}</Text>
+      </View>
       <Text fontWeight="bold" fontSize="subheading">
         {review.user.username}
       </Text>
       <Text fontStyle="italic">
-        {review.createdAt}
+        {format(review.createdAt, "DD.MM.YYYY")}
         {"\n"}
         {"\n"}
         {review.text}
