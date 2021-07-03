@@ -2,8 +2,8 @@ import React from "react";
 import { useParams } from "react-router-native";
 import useRepository from "../../hooks/useRepository";
 import RepositoryItem from "./RepositoryItem";
-import ReviewItem from "./ReviewItem";
-import { FlatList, StyleSheet, View, Text } from "react-native";
+import ReviewItem from "../reviewComponents/ReviewItem";
+import { FlatList, StyleSheet, View } from "react-native";
 
 const styles = StyleSheet.create({
   separator: {

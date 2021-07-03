@@ -14,7 +14,6 @@ import { GET_AUTHORIZATION } from "../../graphql/queries";
 import { useQuery } from "@apollo/client";
 import useSignOut from "../../hooks/useSignOut";
 
-
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
@@ -44,9 +43,14 @@ const AppBar = () => {
           </Link>
         </Pressable>
         {data.authorizedUser ? (
-          <Pressable onPress={() => signOut()}>
-            <AppBarTab testID="signOut" title={" Sign Out "} />
-          </Pressable>
+           <ScrollView horizontal={true}>
+            <Link to="/review">
+              <AppBarTab title={" Create a review "} />
+            </Link>
+            <Pressable onPress={() => signOut()}>
+              <AppBarTab testID="signOut" title={" Sign Out "} />
+            </Pressable>
+           </ScrollView>
         ) : (
           <Pressable onPress={() => alert("toinen")}>
             <Link to="/signin">

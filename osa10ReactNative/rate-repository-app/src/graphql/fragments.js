@@ -51,3 +51,15 @@ export const REVIEW_CORE = gql`
     }
   }
 `;
+
+export const REVIEW_POST_FRAGMENT = gql`
+fragment ReviewCore on Review {
+  id
+  user
+  userId
+  repositoryId
+  rating
+  createdAt
+  text
+}
+`;

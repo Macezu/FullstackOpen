@@ -1,6 +1,6 @@
 import React from "react";
-import { format, formatDistance, formatRelative, subDays } from "date-fns";
-import { View, Button, StyleSheet } from "react-native";
+import { format} from "date-fns";
+import { View, StyleSheet } from "react-native";
 import Text from "../Text";
 import theme from "../../theme";
 

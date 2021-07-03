@@ -5,6 +5,7 @@ import { StyleSheet, View } from "react-native";
 import { Route, Switch, Redirect } from "react-router-native";
 import AppBar from "./AppBarComponents/AppBar";
 import SingleRepository from "./repositoryComponents/RepositoryDetailed";
+import ReviewForm from "./reviewComponents/ReviewForm";
 
 const styles = StyleSheet.create({
   container: {
@@ -20,6 +21,9 @@ const Main = () => {
       <Switch>
         <Route path="/signin" exact>
           <SignIn />
+        </Route>
+        <Route path="/review" exact>
+          <ReviewForm />
         </Route>
         <Route path="/:id" >
           <SingleRepository/>
