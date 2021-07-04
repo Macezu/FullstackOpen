@@ -22,7 +22,7 @@ const ReviewForm = ({ onSubmit }) => {
   return (
     <View style={styles.containerCol}>
       <FormikTextInput
-        name="ownersUsername"
+        name="owner"
         placeholder="Owner's GitHub username"
       />
       <FormikTextInput name="repoName" placeholder="Repository's name" />
