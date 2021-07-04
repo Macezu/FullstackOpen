@@ -1,10 +1,41 @@
+import FormikTextInput from "../FormikTextInput";
 import React from "react";
-import {
-    View
-  } from "react-native";
+import { StyleSheet, View, Button } from "react-native";
+import theme from "../../theme";
 
-export const ReviewForm = () => {
-    return <View>Lolz</View>
-}
+const styles = StyleSheet.create({
+  containerCol: {
+    flexDirection: "column",
+    alignItems: "center",
+    padding: 10,
+    margin: 15,
+    borderWidth: 2,
+    backgroundColor: theme.colors.secondary
+  },
+  multiline: {
+    borderColor : theme.colors.error,
+    borderWidth: 2,
+  }
+});
+
+const ReviewForm = ({ onSubmit }) => {
+  return (
+    <View style={styles.containerCol}>
+      <FormikTextInput
+        name="ownersUsername"
+        placeholder="Owner's GitHub username"
+      />
+      <FormikTextInput name="repoName" placeholder="Repository's name" />
+      <FormikTextInput name="rating" placeholder="Numeric rating" />
+      <FormikTextInput
+        highlight = {true}
+        multiline={true}
+        name="textualReview"
+        placeholder="Review (optional)"
+      />
+      <Button onPress={onSubmit} title="Send"></Button>
+    </View>
+  );
+};
 
 export default ReviewForm;

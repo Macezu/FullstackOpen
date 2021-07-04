@@ -7,10 +7,17 @@ const styles = StyleSheet.create({
     borderColor : theme.colors.error,
     borderWidth: 2,
   },
+  highlight:{
+    borderWidth: 2,
+    textAlign: "center",
+    borderColor : theme.colors.primary
+  },
 });
 
 const TextInput = ({ style, error, ...props }) => {
+  console.log(props.highlight,"kissa")
   const textInputStyle = [
+    props.highlight === true && styles.highlight,
     error && styles.borders,
     style
   ];

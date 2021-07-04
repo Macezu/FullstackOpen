@@ -5,17 +5,6 @@ import Text from "../Text";
 import theme from "../../theme";
 
 const styles = StyleSheet.create({
-  button: {
-    color: "red",
-    aspectRatio: 4,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: "black"
-  },
   ratingCont: {
     width: 40,
     borderWidth: 2,
@@ -32,12 +21,6 @@ const styles = StyleSheet.create({
 const ReviewItem = ({ review }) => {
   return (
     <View>
-      {/* <Button
-        style={styles.button}
-        title={review.rating}
-        color={theme.colors.primary}
-        accessibilityLabel="Im just a button"
-      /> */}
       <View style={styles.ratingCont}>
         <Text style={styles.centeredTxt} fontWeight="xtrabold">
           {review.rating}

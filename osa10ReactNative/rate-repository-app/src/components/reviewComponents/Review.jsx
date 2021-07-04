@@ -1,11 +1,11 @@
 import React from "react";
 import { useHistory } from "react-router-native";
 import useSignIn from "../../hooks/useSignIn";
-import ContainerSignIn from "./ContainerSignIn";
+import ReviewContainer from "./ReviewContainer"
 
 
 
-const SignIn = () => {
+const Review = () => {
   const [signIn] = useSignIn();
   const history = useHistory();
   
@@ -22,10 +22,10 @@ const SignIn = () => {
     }
   };
 
-  return <ContainerSignIn onSubmit={onSubmit} />;
+  return <ReviewContainer onSubmit={onSubmit} />;
 };
 
-export default SignIn;
+export default Review;
 
 
 
