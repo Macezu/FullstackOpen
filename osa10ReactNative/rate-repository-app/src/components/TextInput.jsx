@@ -10,12 +10,11 @@ const styles = StyleSheet.create({
   highlight:{
     borderWidth: 2,
     textAlign: "center",
-    borderColor : theme.colors.primary
+    borderColor : theme.colors.highlight
   },
 });
 
 const TextInput = ({ style, error, ...props }) => {
-  console.log(props.highlight,"kissa")
   const textInputStyle = [
     props.highlight === true && styles.highlight,
     error && styles.borders,

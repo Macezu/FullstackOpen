@@ -5,13 +5,16 @@ import ReviewForm from "./ReviewForm";
 
 
 const initialValues = {
-  username: "",
-  password: ""
+    owner: "",
+    repoName: "",
+    rating: 0,
+    textualReview: ""
 };
 
 const validationSchema = yup.object().shape({
-  username: yup.string().required("Username is required"),
-  password: yup.string().required("Password is required")
+    owner: yup.string().required("Owner of repository is required"),
+    repoName: yup.string().required("Repository name is required"),
+    rating: yup.number().required("Rating required").min(0).max(100).integer(),
 });
 
 const LoginView = ({onSubmit}) => {
