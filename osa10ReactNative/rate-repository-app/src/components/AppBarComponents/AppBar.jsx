@@ -8,6 +8,7 @@ import {
   TouchableHighlight
 } from "react-native";
 import Constants from "expo-constants";
+import Text from "../Text";
 import AppBarTab from "./AppBarTab";
 import theme from "../../theme";
 import { GET_AUTHORIZATION } from "../../graphql/queries";
@@ -34,29 +35,38 @@ const AppBar = () => {
   if (loading) return <div>loading...</div>;
   if (error) return <div>error</div>;
 
+  console.log(data.authorizedUser)
   return (
     <View style={styles.container}>
       <ScrollView horizontal={true}>
+        {data.authorizedUser && <Text fontSize="header">Welcome Back {data.authorizedUser.username}.</Text>}
         <Pressable onPress={() => alert("ksa")}>
           <Link to="/">
             <AppBarTab title={" Repositories "} />
           </Link>
         </Pressable>
         {data.authorizedUser ? (
-           <ScrollView horizontal={true}>
+          <ScrollView horizontal={true}>
             <Link to="/review">
               <AppBarTab title={" Create a review "} />
             </Link>
             <Pressable onPress={() => signOut()}>
               <AppBarTab testID="signOut" title={" Sign Out "} />
             </Pressable>
-           </ScrollView>
+          </ScrollView>
         ) : (
-          <Pressable onPress={() => alert("toinen")}>
-            <Link to="/signin">
-              <AppBarTab title={" Sign In "} />
-            </Link>
-          </Pressable>
+          <ScrollView horizontal={true}>
+            <Pressable onPress={() => alert("toinen")}>
+              <Link to="/signin">
+                <AppBarTab title={" Sign In "} />
+              </Link>
+            </Pressable>
+            <Pressable>
+              <Link to="/signup">
+                <AppBarTab title={" Sign Up "} />
+              </Link>
+            </Pressable>
+          </ScrollView>
         )}
       </ScrollView>
     </View>

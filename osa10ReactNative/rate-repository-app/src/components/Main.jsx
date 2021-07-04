@@ -1,6 +1,7 @@
 import React from "react";
 import RepositoryList from "./repositoryComponents/RepositoryList";
 import SignIn from "./logInComponents/SignIn";
+import SignUp from "./signUpComponents/SignUp";
 import { StyleSheet, View } from "react-native";
 import { Route, Switch, Redirect } from "react-router-native";
 import AppBar from "./AppBarComponents/AppBar";
@@ -21,6 +22,9 @@ const Main = () => {
       <Switch>
         <Route path="/signin" exact>
           <SignIn />
+        </Route>
+        <Route path="/signup" exact>
+          <SignUp />
         </Route>
         <Route path="/review" exact>
           <Review />

@@ -1,12 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router-native";
+import useSignUp from "../../hooks/useSignUp";
 import useSignIn from "../../hooks/useSignIn";
-import ContainerSignIn from "./ContainerSignIn";
+import SignUpContainer from "./SignUpContainer"
 
 
-
-const SignIn = () => {
+const SignUp = () => {
   const [signIn] = useSignIn();
+  const [signUp] = useSignUp();
   const history = useHistory();
   
 
@@ -14,18 +15,20 @@ const SignIn = () => {
     const { username, password } = values;
 
     try {
+      const newUser = await signUp({ username, password });
+      console.log(newUser)
       const data = await signIn({ username, password });
-      console.log(data)
+      console.log("data: ",data)
       history.push("/");
     } catch (e) {
       console.log(e);
     }
   };
 
-  return <ContainerSignIn onSubmit={onSubmit} />;
+  return <SignUpContainer onSubmit={onSubmit} />;
 };
 
-export default SignIn;
+export default SignUp;
 
 
 
