@@ -22,15 +22,15 @@ const ReviewForm = ({ onSubmit }) => {
   return (
     <View style={styles.containerCol}>
       <FormikTextInput
-        name="owner"
+        name="ownerName"
         placeholder="Owner's GitHub username"
       />
-      <FormikTextInput name="repoName" placeholder="Repository's name" />
+      <FormikTextInput name="repositoryName" placeholder="Repository's name" />
       <FormikTextInput name="rating" placeholder="Numeric rating" />
       <FormikTextInput
         highlight = {true}
         multiline={true}
-        name="textualReview"
+        name="text"
         placeholder="Review (optional)"
       />
       <Button onPress={onSubmit} title="Send"></Button>

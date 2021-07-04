@@ -1,21 +1,21 @@
 import React from "react";
 import { useHistory } from "react-router-native";
-import useSignIn from "../../hooks/useSignIn";
+import useReview from "../../hooks/useReview"
 import ReviewContainer from "./ReviewContainer"
 
 
 
 const Review = () => {
-  const [signIn] = useSignIn();
+  const [review] = useReview();
   const history = useHistory();
   
 
   const onSubmit = async (values) => {
-    const { username, password } = values;
+    const { ownerName, repositoryName, rating ,text } = values;
 
     try {
-      const data = await signIn({ username, password });
-      data;
+      const data = await review({ ownerName, repositoryName,rating, text });
+      console.log(data);
       history.push("/");
     } catch (e) {
       console.log(e);
