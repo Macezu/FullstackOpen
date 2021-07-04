@@ -1,23 +1,24 @@
 import React from "react";
 import { useHistory } from "react-router-native";
-import useReview from "../../hooks/useReview"
-import ReviewContainer from "./ReviewContainer"
-
-
+import useReview from "../../hooks/useReview";
+import useRepositories from "../../hooks/useRepositories";
+import ReviewContainer from "./ReviewContainer";
 
 const Review = () => {
   const [review] = useReview();
   const history = useHistory();
-  
 
   const onSubmit = async (values) => {
-    const { ownerName, repositoryName, rating ,text } = values;
+    const { repositoryName, ownerName, text } = values;
+    const rating = Number(values.rating);
 
     try {
-      const data = await review({ ownerName, repositoryName,rating, text });
+      const data = await review({ repositoryName, ownerName, rating, text });
       console.log(data);
-      history.push("/");
+      console.log(data.createReview.repositoryId)
+      history.push(`/${data.createReview.repositoryId}`);
     } catch (e) {
+      alert(e.message);
       console.log(e);
     }
   };
@@ -26,9 +27,3 @@ const Review = () => {
 };
 
 export default Review;
-
-
-
-
-
-

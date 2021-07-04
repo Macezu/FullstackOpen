@@ -5,6 +5,7 @@ export const REPOSITORY_CORE = gql`
     id
     ownerAvatarUrl
     fullName
+    name
     description
     reviews {
       edges {
