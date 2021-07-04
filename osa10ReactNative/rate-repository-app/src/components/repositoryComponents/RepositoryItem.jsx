@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 15
   },
+  
   tinyLogo: theme.images.thumbnail,
   medium: theme.images.medium
 });

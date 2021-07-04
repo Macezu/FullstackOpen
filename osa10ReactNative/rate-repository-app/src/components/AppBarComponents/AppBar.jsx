@@ -35,7 +35,6 @@ const AppBar = () => {
   if (loading) return <div>loading...</div>;
   if (error) return <div>error</div>;
 
-  console.log(data.authorizedUser)
   return (
     <View style={styles.container}>
       <ScrollView horizontal={true}>
