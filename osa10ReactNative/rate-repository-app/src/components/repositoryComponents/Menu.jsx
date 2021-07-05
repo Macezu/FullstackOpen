@@ -1,11 +1,11 @@
 import React from "react";
 import { Picker } from "@react-native-picker/picker";
 
-const Menu = ({ setOrderBy, orderBy, orderChange }) => {
+const Menu = ({ setOrderBy, orderBy }) => {
   return (
     <Picker
       selectedValue={orderBy}
-      onValueChange={(itemValue) => orderChange(itemValue)}
+      onValueChange={(itemValue) => setOrderBy(itemValue)}
     >
       <Picker.Item label="Latest repositories" value="Latest" />
       <Picker.Item label="Highest rated repositories" value="Highest" />
