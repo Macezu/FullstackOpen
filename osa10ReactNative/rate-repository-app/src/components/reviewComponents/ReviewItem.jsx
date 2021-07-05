@@ -1,5 +1,5 @@
 import React from "react";
-import { format } from "date-fns";
+import { parseISO,format } from "date-fns";
 import { View, StyleSheet } from "react-native";
 import Text from "../Text";
 import theme from "../../theme";
@@ -30,7 +30,7 @@ const ReviewItem = ({ review }) => {
         {review.user.username}
       </Text>
       <Text fontStyle="italic">
-        {format(review.createdAt, "DD.MM.YYYY")}
+        {format(parseISO(review.createdAt), "dd.MM.yyyy")}
         {"\n"}
         {"\n"}
         {review.text}
