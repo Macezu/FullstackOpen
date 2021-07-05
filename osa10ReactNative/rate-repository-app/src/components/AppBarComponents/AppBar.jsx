@@ -32,8 +32,8 @@ const AppBar = () => {
     fetchPolicy: "cache-and-network"
   });
 
-  if (loading) return <div>loading...</div>;
-  if (error) return <div>error</div>;
+  if (loading) return <Text>loading...</Text>;
+  if (error) return <Text>error</Text>;
 
   return (
     <View style={styles.container}>

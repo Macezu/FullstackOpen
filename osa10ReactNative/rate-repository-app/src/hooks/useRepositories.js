@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_REPOSITORIES } from "../graphql/queries";
 
-const useRepositories = ( arg ) => {
+const useRepositories = (arg) => {
   const [repositories, setRepositories] = useState();
   const { data, loading, error, refetch } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: "cache-and-network",
@@ -17,11 +17,7 @@ const useRepositories = ( arg ) => {
     }
   }, [data, loading]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return `Error! ${error}`;
-  else {
-    return { repositories, loading, refetch: () => refetch() };
-  }
+  return { repositories, loading, refetch: () => refetch() };
 };
 
 export default useRepositories;

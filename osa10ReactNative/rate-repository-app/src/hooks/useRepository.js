@@ -7,7 +7,7 @@ const useRepository = (id) => {
   const [repository, setRepo] = useState();
   const { data, loading, error } = useQuery(GET_SINGLE_REPO, {
     fetchPolicy: "cache-and-network",
-    variables: { id },
+    variables: { id }
   });
 
   useEffect(() => {
@@ -16,11 +16,7 @@ const useRepository = (id) => {
     }
   }, [data, loading]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return `Error! ${error}`;
-  else {
-    return { repository, loading };
-  }
+  return { repository, loading };
 };
 
 export default useRepository;

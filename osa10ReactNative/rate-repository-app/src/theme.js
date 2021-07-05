@@ -23,7 +23,7 @@ const theme = {
     }),
   },
   fontstyles: {
-    italicText: 'italic'
+    italicText: '100'
   },
   fontDecor: {
     padL: 5,

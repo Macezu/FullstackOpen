@@ -1,5 +1,5 @@
 import React from "react";
-import { format} from "date-fns";
+import { format } from "date-fns";
 import { View, StyleSheet } from "react-native";
 import Text from "../Text";
 import theme from "../../theme";

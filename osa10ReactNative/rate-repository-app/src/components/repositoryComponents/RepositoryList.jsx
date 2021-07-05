@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator} />;
 
 
-export const RepositoryListContainer = ({ repositories, handleOrderChange }) => {
+export const RepositoryListContainer = ({ repositories, orderChange }) => {
   // Get the nodes from the edges array
   const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
@@ -34,7 +34,7 @@ export const RepositoryListContainer = ({ repositories, handleOrderChange }) => 
       ItemSeparatorComponent={ItemSeparator}
       renderItem = {renderItem}
       keyExtractor={(item) => item.id}
-      ListHeaderComponent={() => <Menu handleOrderChange={handleOrderChange}/>}
+      ListHeaderComponent={() => <Menu orderChange={orderChange}/>}
     />
   );
 };
@@ -44,15 +44,16 @@ const RepositoryList = () => {
   const [filter, setFilter] = useState("");
   const { repositories } = useRepositories();
 
-  console.log(repositories)
 
-  const handleOrderChange = (arg) => {
+  const orderChange = (arg) => {
     console.log('HERE')
     setFilter(arg)
-    repositories  = useRepositories(filter);
+    console.log(filter)
   }
+
+
   
-  return <RepositoryListContainer repositories={repositories} handleOrderChange={handleOrderChange} />;
+  return <RepositoryListContainer repositories={repositories} orderChange={orderChange} />;
   
 };
 
