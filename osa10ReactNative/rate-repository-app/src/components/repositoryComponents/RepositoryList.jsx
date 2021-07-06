@@ -45,7 +45,7 @@ export const RepositoryListContainer = ({
           <Menu setOrderBy={setOrderBy} orderBy={orderBy} />
         )}
         onEndReached={onEndReach}
-        onEndReachedThreshold={0.2}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );
@@ -84,7 +84,6 @@ const RepositoryList = () => {
   );
 
   const onEndReach = () => {
-    console.log("Here");
     fetchMore();
   };
 

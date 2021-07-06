@@ -30,7 +30,6 @@ const SingleRepository = () => {
   });
 
   const onEndReach = () => {
-    console.log("Here");
     fetchMore();
   };
 
@@ -47,7 +46,7 @@ const SingleRepository = () => {
         keyExtractor={({ id }) => id}
         ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
         onEndReached={onEndReach}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );
