@@ -11,10 +11,11 @@ const useRepository = (variables) => {
   const handleFetchMore = () => {
     const canFetchMore = !loading && data?.repository.reviews.pageInfo.hasNextPage;
 
+   
     if (!canFetchMore) {
       return;
     }
-
+    console.log('Why not here')
     fetchMore({
       variables: {
         after: data.repository.reviews.pageInfo.endCursor,

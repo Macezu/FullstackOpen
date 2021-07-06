@@ -30,7 +30,7 @@ export const RepositoryListContainer = ({
   const renderItem = ({ item }) => <RepositoryItem item={item} />;
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
       <Searchbar
         placeholder="Search"
         onChangeText={onChangeSearch}
@@ -47,7 +47,7 @@ export const RepositoryListContainer = ({
         onEndReached={onEndReach}
         onEndReachedThreshold={0.5}
       />
-    </View>
+    </>
   );
 };
 
@@ -62,7 +62,7 @@ const RepositoryList = () => {
       orderBy: "CREATED_AT",
       orderDirection: "DESC",
       searchKeyword: searchKeyword,
-      first: 8
+      first: 6
     };
     switch (orderBy) {
       case "Latest":
