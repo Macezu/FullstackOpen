@@ -4,7 +4,7 @@ import RepositoryItem from "./RepositoryItem";
 import Menu from "./Menu";
 import { FlatList, View, StyleSheet } from "react-native";
 import { Searchbar } from "react-native-paper";
-import { useDebounce } from 'use-debounce';
+import { useDebounce } from "use-debounce";
 
 const styles = StyleSheet.create({
   separator: {
@@ -19,7 +19,8 @@ export const RepositoryListContainer = ({
   setOrderBy,
   orderBy,
   onChangeSearch,
-  searchQuery
+  searchQuery,
+  onEndReach,
 }) => {
   // Get the nodes from the edges array
   const repositoryNodes = repositories
@@ -43,6 +44,8 @@ export const RepositoryListContainer = ({
         ListHeaderComponent={() => (
           <Menu setOrderBy={setOrderBy} orderBy={orderBy} />
         )}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={1.0}
       />
     </>
   );
@@ -55,7 +58,7 @@ const RepositoryList = () => {
   const [debounced] = useDebounce(searchQuery, 500);
 
   const orderSelection = (searchKeyword) => {
-    const reOrganizeRepos = {
+    const organizeRepos = {
       orderBy: "CREATED_AT",
       orderDirection: "DESC",
       searchKeyword: searchKeyword,
@@ -63,20 +66,26 @@ const RepositoryList = () => {
     };
     switch (orderBy) {
       case "Latest":
-        return reOrganizeRepos;
+        return organizeRepos;
       case "Highest":
-        reOrganizeRepos.orderBy = "RATING_AVERAGE";
-        return reOrganizeRepos;
+        organizeRepos.orderBy = "RATING_AVERAGE";
+        return organizeRepos;
       case "Lowest":
-        reOrganizeRepos.orderBy = "RATING_AVERAGE";
-        reOrganizeRepos.orderDirection = "ASC";
-        return reOrganizeRepos;
+        organizeRepos.orderBy = "RATING_AVERAGE";
+        organizeRepos.orderDirection = "ASC";
+        return organizeRepos;
       default:
-        return reOrganizeRepos;
+        return organizeRepos;
     }
   };
 
-  const { repositories } = useRepositories(orderSelection(debounced));
+  
+  const { repositories, fetchMore } = useRepositories(orderSelection(debounced));
+
+  const onEndReach = () => {
+    console.log('Here')
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
@@ -85,6 +94,7 @@ const RepositoryList = () => {
       orderBy={orderBy}
       onChangeSearch={onChangeSearch}
       searchQuery={searchQuery}
+      onEndReach={onEndReach}
     />
   );
 };
