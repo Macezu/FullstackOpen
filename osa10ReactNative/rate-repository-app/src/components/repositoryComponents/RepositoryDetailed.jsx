@@ -8,7 +8,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 const styles = StyleSheet.create({
   separator: {
     height: 5,
-    backgroundColor: "rgb(240, 240, 240)",
+    backgroundColor: "rgb(240, 240, 240)"
   }
 });
 
@@ -22,24 +22,34 @@ export const RepositoryInfo = ({ repository }) => {
   }
 };
 
-
 const SingleRepository = () => {
   let { id } = useParams();
-  const { repository } = useRepository(id);
+  const { repository, fetchMore } = useRepository({
+    id: id,
+    first: 3
+  });
+
+  const onEndReach = () => {
+    console.log("Here");
+    fetchMore();
+  };
 
   const reviews = repository
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
 
   return (
-    <FlatList
-      data={reviews}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={({ item }) => <ReviewItem review={item} />}
-      keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
-      // ...
-    />
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={reviews}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={({ item }) => <ReviewItem review={item} />}
+        keyExtractor={({ id }) => id}
+        ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.1}
+      />
+    </View>
   );
 };
 

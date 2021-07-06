@@ -20,7 +20,7 @@ export const RepositoryListContainer = ({
   orderBy,
   onChangeSearch,
   searchQuery,
-  onEndReach,
+  onEndReach
 }) => {
   // Get the nodes from the edges array
   const repositoryNodes = repositories
@@ -30,7 +30,7 @@ export const RepositoryListContainer = ({
   const renderItem = ({ item }) => <RepositoryItem item={item} />;
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <Searchbar
         placeholder="Search"
         onChangeText={onChangeSearch}
@@ -45,9 +45,9 @@ export const RepositoryListContainer = ({
           <Menu setOrderBy={setOrderBy} orderBy={orderBy} />
         )}
         onEndReached={onEndReach}
-        onEndReachedThreshold={1.0}
+        onEndReachedThreshold={0.2}
       />
-    </>
+    </View>
   );
 };
 
@@ -62,7 +62,7 @@ const RepositoryList = () => {
       orderBy: "CREATED_AT",
       orderDirection: "DESC",
       searchKeyword: searchKeyword,
-      first: 6
+      first: 8
     };
     switch (orderBy) {
       case "Latest":
@@ -79,11 +79,12 @@ const RepositoryList = () => {
     }
   };
 
-  
-  const { repositories, fetchMore } = useRepositories(orderSelection(debounced));
+  const { repositories, fetchMore } = useRepositories(
+    orderSelection(debounced)
+  );
 
   const onEndReach = () => {
-    console.log('Here')
+    console.log("Here");
     fetchMore();
   };
 

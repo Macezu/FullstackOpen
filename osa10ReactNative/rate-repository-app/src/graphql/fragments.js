@@ -5,21 +5,7 @@ export const REPOSITORY_CORE = gql`
     id
     ownerAvatarUrl
     fullName
-    name
     description
-    reviews {
-      edges {
-        node {
-          id
-          text
-          rating
-          createdAt
-          user {
-            username
-          }
-        }
-      }
-    }
     language
     stargazersCount
     forksCount
